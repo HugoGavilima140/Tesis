@@ -1,0 +1,363 @@
+# Prompt: Rediseño de Dashboard Estratégico de Comercios, Payouts y Notificaciones
+
+Actúa como un experto en:
+
+* Business Intelligence
+* Diseño UX para dashboards ejecutivos
+* Power BI Enterprise
+* Data Storytelling
+* Diseño de centros de monitoreo financieros (Financial Operations Cockpit)
+* Visual Analytics
+
+Tu objetivo es rediseñar un dashboard estratégico para una fintech que opera una plataforma de pagos.
+
+Actualmente existen tres páginas separadas:
+
+### 1. Merchants
+
+Información sobre:
+
+* Monto total transaccionado
+* Número de transacciones
+* MDR generado
+* Ticket promedio
+* Comercios activos
+* Evolución de afiliaciones
+* Top comercios por monto
+* Top comercios por transacciones
+
+---
+
+### 2. Payouts
+
+Información sobre:
+
+* Payouts procesados
+* Éxito de payouts
+* Rechazos
+* Pendientes
+* Monto desembolsado
+* Comercios activos en payouts
+* Promedio pagado por comercio
+
+---
+
+### 3. Notificaciones
+
+Información sobre:
+
+* Comercios registrados
+* Comercios integrados
+* Comercios con Email
+* Comercios con SMS
+* Comercios sin notificaciones
+* Cantidad de notificaciones enviadas
+* Costos de SMS
+* Top comercios por consumo de Email
+* Top comercios por consumo de SMS
+
+---
+
+# Objetivo del nuevo dashboard
+
+Construir un único dashboard ejecutivo que permita responder en menos de 30 segundos:
+
+### Crecimiento
+
+* ¿Cuánto está creciendo la plataforma?
+* ¿Cuántos comercios están activos?
+
+### Volumen
+
+* ¿Cuánto dinero procesamos?
+* ¿Cuántas transacciones ejecutamos?
+* ¿Cuántos payouts realizamos?
+
+### Rentabilidad
+
+* ¿Cuánto MDR generamos?
+* ¿Cuál es nuestro margen operativo?
+
+### Costos Operativos
+
+* ¿Cuánto cuestan las notificaciones?
+* ¿Qué comercios generan más costo?
+* ¿Cuál es el costo por transacción?
+
+### Salud Operativa
+
+* ¿Cuál es la tasa de éxito de payouts?
+* ¿Existen anomalías?
+* ¿Existen picos de rechazo?
+
+---
+
+# Principios de diseño
+
+El dashboard NO debe parecer un reporte tradicional de Power BI.
+
+Debe parecer un:
+
+### Executive Control Tower
+
+o
+
+### Fintech Operations Cockpit
+
+Moderno, minimalista y altamente visual.
+
+---
+
+# Distribución deseada
+
+## Header
+
+Filtros globales:
+
+* Fecha
+* Comercio
+* Segmento
+* Tipo cliente
+* Canal
+* Coordinador
+
+Filtros compactos en una sola línea.
+
+---
+
+# Sección 1: Executive KPIs
+
+Primera fila con tarjetas grandes.
+
+Mostrar:
+
+* GMV (Monto Total Transaccionado)
+* Total Transacciones
+* Total Payouts
+* MDR Generado
+* Ticket Promedio
+* Tasa de Éxito Payouts
+* Costo Notificaciones
+
+Cada KPI debe incluir:
+
+* Valor principal
+* Variación vs período anterior
+* Indicador visual de tendencia
+* Sparkline interna
+
+---
+
+# Sección 2: Visión Integral del Negocio
+
+Crear un gráfico principal ocupando aproximadamente 40% del dashboard.
+
+Combinar:
+
+* Monto transaccionado
+* Payouts
+* MDR
+* Costos de notificación
+
+Mostrar la evolución temporal.
+
+El objetivo es visualizar:
+
+* crecimiento
+* ingresos
+* costos
+* rentabilidad
+
+en una sola vista.
+
+---
+
+# Sección 3: Funnel Operativo
+
+Representar visualmente:
+
+Comercios Registrados
+↓
+Comercios Integrados
+↓
+Comercios Activos
+↓
+Comercios con Notificaciones
+↓
+Comercios con Transacciones
+↓
+Comercios con Payouts
+
+Utilizar un funnel moderno.
+
+Permitir detectar pérdidas entre etapas.
+
+---
+
+# Sección 4: Rentabilidad
+
+Mostrar:
+
+### Waterfall Chart
+
+GMV
+↓
+MDR
+↓
+Costo Notificaciones
+↓
+Otros Costos Operativos
+↓
+Margen Neto
+
+Objetivo:
+
+Visualizar rápidamente la contribución financiera de cada componente.
+
+---
+
+# Sección 5: Salud Operativa
+
+Diseñar una sección dedicada a operación.
+
+Incluir:
+
+### Success Rate Gauge
+
+Payout Success Rate
+
+### Heatmap
+
+Rechazos por:
+
+* Día
+* Hora
+
+### Tendencia de Rechazos
+
+Serie temporal de rechazos.
+
+Objetivo:
+
+Detectar problemas operativos inmediatamente.
+
+---
+
+# Sección 6: Costos de Comunicación
+
+Crear una sección específica para notificaciones.
+
+Mostrar:
+
+### Donut Chart
+
+Distribución por canal:
+
+* Email
+* SMS
+* Otros
+
+---
+
+### Pareto Chart
+
+Top comercios que generan costos de notificación.
+
+Mostrar:
+
+* costo acumulado
+* porcentaje acumulado
+
+---
+
+### KPI
+
+Costo promedio por:
+
+* Comercio
+* Transacción
+* Payout
+
+---
+
+# Sección 7: Comercios Estratégicos
+
+Sustituir los rankings tradicionales por una matriz.
+
+Ejes:
+
+X = Monto Transaccionado
+
+Y = Rentabilidad
+
+Tamaño = Cantidad de Transacciones
+
+Color = Costo de Notificaciones
+
+Objetivo:
+
+Identificar:
+
+* Comercios rentables
+* Comercios costosos
+* Comercios de alto volumen
+
+---
+
+# Mejoras visuales obligatorias
+
+Eliminar:
+
+* Tablas tradicionales
+* Exceso de gráficos de barras horizontales
+* Mini gráficos difíciles de interpretar
+* Espacios vacíos
+
+Reemplazar por:
+
+* Sparklines
+* Heatmaps
+* Waterfalls
+* Funnel Charts
+* Pareto Charts
+* Scatter/Bubble Charts
+* KPI Cards avanzadas
+
+---
+
+# Diseño visual
+
+Estilo:
+
+* Stripe
+* Adyen
+* Nubank
+* Mercado Pago Analytics
+* Modern SaaS Dashboard
+
+Características:
+
+* Fondo claro
+* Mucho espacio en blanco
+* Tipografía moderna
+* Uso limitado de colores
+* Morado corporativo como color principal
+* Verde para crecimiento
+* Rojo para alertas
+* Azul para operación
+
+---
+
+# Resultado esperado
+
+Generar un mockup completo de una sola página ejecutiva que combine las tres áreas:
+
+* Merchants
+* Payouts
+* Notificaciones
+
+en una narrativa única orientada a:
+
+**Crecimiento → Operación → Costos → Rentabilidad → Acciones.**
+
+La prioridad debe ser maximizar la capacidad de toma de decisiones de un director, gerente o C-Level en menos de 30 segundos.

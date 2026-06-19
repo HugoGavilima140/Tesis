@@ -1,0 +1,26 @@
+# Secrets
+.env
+*.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Embeddings y modelos (archivos pesados)
+agente/kb_embeddings/
+
+# Logs
+logs/
+
+# VS Code
+.vscode/
+
+# Notebooks de prueba (locales, no versionados)
+notebooks/
+
+# Otros entornos
+.venv/
+venv/
+env/

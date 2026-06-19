@@ -1,0 +1,183 @@
+{
+  "error_patterns": [
+    {
+      "type": "error_patterns",
+      "content": {
+        "question_snippet": "¿Cuánto generamos en MDR este año?",
+        "failed_sql_snippet": "",
+        "error": "Solo se permiten queries SELECT en modo de análisis.",
+        "domain": "finanzas",
+        "correction": ""
+      },
+      "timestamp": "2026-06-18T18:16:58.665285",
+      "uses": 0
+    },
+    {
+      "type": "error_patterns",
+      "content": {
+        "question_snippet": "¿Cuál fue el GMV del mes pasado?",
+        "failed_sql_snippet": "SELECT ROUND(SUM(monto), 2) AS gmv\nFROM transacciones.transacciones\nWHERE estado = 'completada'\n  AND year_month = to_char(CURRENT_DATE - interval '1 month', 'YYYY-MM');",
+        "error": "No se pudo conectar a PostgreSQL: 'utf-8' codec can't decode byte 0xf3 in position 85: invalid continuation byte",
+        "domain": "finanzas",
+        "correction": ""
+      },
+      "timestamp": "2026-06-18T18:26:14.059223",
+      "uses": 0
+    },
+    {
+      "type": "error_patterns",
+      "content": {
+        "question_snippet": "¿Cuál fue el GMV del mes pasado?",
+        "failed_sql_snippet": "SELECT ROUND(SUM(monto), 2) AS gmv FROM transacciones.transacciones WHERE estado = 'completada' AND year_month = TO_CHAR(CURRENT_DATE - INTERVAL '1 month', 'YYYY-MM');",
+        "error": "No se pudo conectar a PostgreSQL: 'utf-8' codec can't decode byte 0xf3 in position 85: invalid continuation byte",
+        "domain": "finanzas",
+        "correction": ""
+      },
+      "timestamp": "2026-06-18T18:30:17.033658",
+      "uses": 0
+    }
+  ],
+  "success_patterns": [
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cuánto generamos en MDR este año?",
+        "domain": "finanzas",
+        "complexity": "simple",
+        "plan_summary": "Consulta directa a la tabla de transacciones para sumar el ingreso por comisión (MDR) de todas las transacciones completadas del año en curso, utilizando el campo `year_month` para filtrar eficientemente.",
+        "sql_snippets": [],
+        "confidence": 0
+      },
+      "timestamp": "2026-06-18T18:16:58.665209",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cuál fue el GMV del mes pasado?",
+        "domain": "finanzas",
+        "complexity": "simple",
+        "plan_summary": "Consultar la tabla de transacciones para sumar el monto de todas las transacciones completadas del mes anterior, usando el campo `year_month` para filtrar eficientemente.",
+        "sql_snippets": [],
+        "confidence": 0
+      },
+      "timestamp": "2026-06-18T18:26:14.059174",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cuál fue el GMV del mes pasado?",
+        "domain": "finanzas",
+        "complexity": "simple",
+        "plan_summary": "Consulta directa a la tabla de transacciones para sumar el monto de las transacciones completadas del mes anterior, utilizando el campo year_month para filtrar eficientemente.",
+        "sql_snippets": [],
+        "confidence": 0
+      },
+      "timestamp": "2026-06-18T18:30:17.033611",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cuánto generamos en MDR este año?",
+        "domain": "finanzas",
+        "complexity": "simple",
+        "plan_summary": "Calcular el total de ingresos por comisión (MDR) generado en el año actual sumando el campo `ingreso_comision` de las transacciones completadas, filtrando por el año actual usando el campo `year_month`.",
+        "sql_snippets": [
+          "SELECT ROUND(SUM(ingreso_comision), 2) AS total_mdr_anual\nFROM transacciones.transacciones\nWHERE estado = 'completada'\n  AND year_month LIKE to_char(c"
+        ],
+        "confidence": 10
+      },
+      "timestamp": "2026-06-18T19:25:15.951246",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "cuantas comercios tengo activos?",
+        "domain": "operaciones",
+        "complexity": "simple",
+        "plan_summary": "Consulta directa a la tabla de comercios para contar aquellos que están operacionalmente activos y han tenido actividad transaccional en los últimos 30 días.",
+        "sql_snippets": [
+          "SELECT COUNT(*) AS comercios_activos\nFROM produccion.merchants\nWHERE status_operacional = 'activo'\n  AND ultima_actividad >= CURRENT_DATE - 30;"
+        ],
+        "confidence": 90
+      },
+      "timestamp": "2026-06-18T19:27:24.985755",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "Cual es mi definición de comercio activo?",
+        "domain": "operaciones",
+        "complexity": "simple",
+        "plan_summary": "Consultar las reglas de negocio y definiciones internas para extraer la definición exacta de \"comercio activo\" según PayNova.",
+        "sql_snippets": [
+          "SELECT 'Comercio activo = merchants.status_operacional=''activo'' AND ultima_actividad >= CURRENT_DATE - INTERVAL ''30 days''' AS definicion_comercio_"
+        ],
+        "confidence": 100
+      },
+      "timestamp": "2026-06-18T19:29:15.195241",
+      "uses": 0
+    }
+  ],
+  "user_feedback": [],
+  "question_cache": [
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cuánto generamos en MDR este año?",
+        "response_summary": "No fue posible calcular el MDR generado este año debido a un error técnico en la consulta a la base de datos. Se intentó ejecutar una operación no permitida (no SELECT), lo que impidió obtener cualquier dato. Se requiere corregir la consulta para obtener el resultado."
+      },
+      "timestamp": "2026-06-18T18:16:58.665316",
+      "uses": 1
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cuál fue el GMV del mes pasado?",
+        "response_summary": "No fue posible calcular el GMV del mes pasado debido a un error de codificación en la conexión a la base de datos PostgreSQL. El equipo técnico debe resolver este problema para poder obtener el dato."
+      },
+      "timestamp": "2026-06-18T18:26:14.059240",
+      "uses": 1
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cuál fue el GMV del mes pasado?",
+        "response_summary": "No fue posible calcular el GMV del mes pasado debido a un error de conexión con la base de datos PostgreSQL. El problema se originó por un fallo de codificación de caracteres (UTF-8) que impidió ejecutar la consulta. Se requiere intervención técnica para resolver el error antes de obtener el dato."
+      },
+      "timestamp": "2026-06-18T18:30:17.033673",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cuánto generamos en MDR este año?",
+        "response_summary": "No fue posible calcular el MDR generado este año porque la consulta a la base de datos no encontró ninguna transacción completada con fecha del año actual. El resultado es nulo, lo que indica que no hay ingresos por comisión registrados en el período solicitado."
+      },
+      "timestamp": "2026-06-18T19:25:15.954641",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "cuantas comercios tengo activos?",
+        "response_summary": "La consulta directa a la tabla de comercios arroja **0 comercios activos** (con actividad transaccional en los últimos 30 días), un resultado fuera del rango esperado de 1.500 a 3.000. Esto indica un posible problema en los datos o en el filtro aplicado, no una situación real de cero actividad."
+      },
+      "timestamp": "2026-06-18T19:27:24.985776",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "Cual es mi definición de comercio activo?",
+        "response_summary": "La definición de comercio activo en PayNova es: un comercio con estado operacional \"activo\" y cuya última actividad registrada sea dentro de los últimos 30 días (ultima_actividad >= hoy - 30 días)."
+      },
+      "timestamp": "2026-06-18T19:29:15.195285",
+      "uses": 0
+    }
+  ]
+}
