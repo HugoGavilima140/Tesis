@@ -15,6 +15,8 @@ from typing import List, Optional
 import re
 from langchain_core.messages import HumanMessage, SystemMessage
 
+# Mod 3: importar field para subproblems
+
 from agente.config import (
     LLM_API_KEY, LLM_MODEL, LLM_BASE_URL, LLM_TIMEOUT, LLM_MAX_RETRIES,
     PAYNOVA_BUSINESS_RULES, MAX_SQL_STEPS,
@@ -48,9 +50,10 @@ class AnalysisPlan:
     """Plan completo de análisis multi-hop."""
     question: str
     steps: List[PlanStep]
-    overall_approach: str     # descripción narrativa del enfoque
-    expected_output: str      # qué se espera obtener al final
-    complexity_note: str      # nota sobre la complejidad del análisis
+    overall_approach: str                              # descripción narrativa del enfoque
+    expected_output: str                               # qué se espera obtener al final
+    complexity_note: str                               # nota sobre la complejidad del análisis
+    subproblems: List[str] = field(default_factory=list)  # Mod 3: subproblemas explícitos
 
 
 SYSTEM_PROMPT = """Eres un analista senior de inteligencia empresarial de PayNova S.A.
@@ -71,6 +74,10 @@ Responde con un plan en este FORMATO EXACTO:
 APPROACH: <descripción en 1-2 frases del enfoque general>
 EXPECTED_OUTPUT: <qué información concreta se entregará al usuario>
 COMPLEXITY_NOTE: <por qué este análisis tiene el nivel de complejidad indicado>
+
+SUBPROBLEM_1: <primer subproblema a resolver>
+SUBPROBLEM_2: <segundo subproblema, o NONE si no aplica>
+SUBPROBLEM_3: <tercer subproblema, o NONE si no aplica>
 
 STEP 1:
 DESCRIPTION: <qué hace este paso>
@@ -155,9 +162,16 @@ class MultiHopPlanner:
             return default
 
         # Campos globales
-        approach       = get_field("APPROACH:", "Análisis directo de la pregunta")
-        expected_out   = get_field("EXPECTED_OUTPUT:", "Respuesta a la pregunta")
+        approach        = get_field("APPROACH:", "Análisis directo de la pregunta")
+        expected_out    = get_field("EXPECTED_OUTPUT:", "Respuesta a la pregunta")
         complexity_note = get_field("COMPLEXITY_NOTE:", "")
+
+        # Mod 3: subproblemas explícitos
+        subproblems = []
+        for i in range(1, 6):
+            sp = get_field(f"SUBPROBLEM_{i}:", "")
+            if sp and sp.upper() != "NONE":
+                subproblems.append(sp)
 
         # Parsear pasos
         steps = self._parse_steps(text)
@@ -179,6 +193,7 @@ class MultiHopPlanner:
             overall_approach=approach,
             expected_output=expected_out,
             complexity_note=complexity_note,
+            subproblems=subproblems,
         )
 
     def _parse_steps(self, text: str) -> List[PlanStep]:
@@ -252,4 +267,5 @@ class MultiHopPlanner:
             overall_approach="Análisis directo",
             expected_output="Respuesta a la pregunta",
             complexity_note=f"Fallback: {error}",
+            subproblems=[],
         )

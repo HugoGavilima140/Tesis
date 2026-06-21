@@ -58,6 +58,8 @@ TOP_K_TABLES   = 8      # tablas candidatas máximas
 MAX_REACT_ITERATIONS = 6   # iteraciones máximas del loop Think-Act-Observe
 MAX_SQL_STEPS        = 5   # subqueries máximas por plan
 MAX_RETRIES_SQL      = 3   # reintentos de corrección SQL
+MAX_TABLE_RETRIES    = 2   # Mod 4: reintentos de selección de tablas por paso
+MAX_CRITIC_ITERS     = 2   # Mod 6/7: iteraciones máximas del critic agent
 
 # ─── Confidence Score ─────────────────────────────────────────────────────────
 CONFIDENCE_THRESHOLDS = {

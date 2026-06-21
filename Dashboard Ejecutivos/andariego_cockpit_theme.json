@@ -1,0 +1,42 @@
+{
+  "name": "Andariego Cockpit",
+  "dataColors": [
+    "#7C3AED", "#3B82F6", "#10B981", "#F59E0B", "#EF4444",
+    "#A855F7", "#60A5FA", "#34D399", "#FBBF24", "#F87171"
+  ],
+  "background": "#FAFAFA",
+  "secondaryBackground": "#FFFFFF",
+  "foreground": "#0F172A",
+  "foregroundNeutralSecondary": "#64748B",
+  "foregroundNeutralTertiary": "#94A3B8",
+  "tableAccent": "#7C3AED",
+  "good": "#10B981",
+  "neutral": "#F59E0B",
+  "bad": "#EF4444",
+  "maximum": "#7C3AED",
+  "center": "#A855F7",
+  "minimum": "#EDE6FD",
+  "hyperlink": "#7C3AED",
+  "textClasses": {
+    "title":    { "fontFace": "DM Sans", "fontSize": 12, "color": "#0F172A" },
+    "header":   { "fontFace": "DM Sans", "fontSize": 11, "color": "#64748B" },
+    "callout":  { "fontFace": "DM Sans", "fontSize": 32, "color": "#0F172A" },
+    "label":    { "fontFace": "Segoe UI", "fontSize": 10, "color": "#64748B" }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [{ "show": true, "color": { "solid": { "color": "#FFFFFF" } }, "transparency": 0 }],
+        "border":     [{ "show": true, "color": { "solid": { "color": "#EBEEF3" } }, "radius": 12 }],
+        "dropShadow": [{ "show": true, "preset": "Custom", "color": { "solid": { "color": "#101828" } },
+                         "position": "Outer", "shadowSpread": 0, "shadowBlur": 16, "angle": 90, "transparency": 92 }],
+        "title": [{ "show": true, "fontColor": { "solid": { "color": "#64748B" } },
+                    "fontFamily": "DM Sans", "fontSize": 11, "alignment": "left" }],
+        "spacing": [{ "customizeSpacing": true, "spaceBelowTitle": 8 }]
+      }
+    },
+    "page": {
+      "*": { "background": [{ "color": { "solid": { "color": "#FAFAFA" } }, "transparency": 0 }] }
+    }
+  }
+}

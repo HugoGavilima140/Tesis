@@ -152,6 +152,10 @@ def confidence_bar(score: int, label: str) -> str:
 def render_response(response, step_results=None, trace_text: str = ""):
     """Renderiza la respuesta ejecutiva en la UI."""
 
+    # Banner KB-directo [Mod 1]
+    if getattr(response, "kb_was_sufficient", False):
+        st.info("ℹ️ **Respuesta directa desde documentación empresarial** (sin consulta SQL)")
+
     # Resumen ejecutivo
     st.markdown(f"### {response.executive_summary}")
 
@@ -173,11 +177,57 @@ def render_response(response, step_results=None, trace_text: str = ""):
         with st.expander("📐 Razonamiento del agente", expanded=False):
             st.markdown(response.reasoning)
 
+    # Riesgos identificados [Mod 9]
+    risks = getattr(response, "risks", [])
+    if risks:
+        with st.expander(f"⚠️ Riesgos identificados ({len(risks)})", expanded=True):
+            for r in risks:
+                st.markdown(f"- {r}")
+
+    # Recomendaciones accionables [Mod 9]
+    recommendations = getattr(response, "recommendations", [])
+    if recommendations:
+        with st.expander(f"✅ Recomendaciones ({len(recommendations)})", expanded=True):
+            for i, rec in enumerate(recommendations, 1):
+                st.markdown(f"{i}. {rec}")
+
     # Barra de confianza
     st.markdown(
         confidence_bar(response.confidence_score, response.confidence_label),
         unsafe_allow_html=True
     )
+
+    # Breakdown de confianza + critic verdict [Mod 8 + Mod 6]
+    confidence_components = getattr(response, "confidence_components", None)
+    critic_verdict        = getattr(response, "critic_verdict", "sufficient")
+    if confidence_components or critic_verdict:
+        with st.expander("🔬 Detalle de confianza (Mod 8)", expanded=False):
+            if confidence_components:
+                labels = {
+                    "retrieval": "Recuperación KB",
+                    "plan": "Plan",
+                    "sql": "SQL",
+                    "business": "Validación negocio",
+                    "critic": "Critic agent",
+                    "iter_penalty": "Penalización reintentos",
+                }
+                cols = st.columns(3)
+                for i, (key, label) in enumerate(labels.items()):
+                    val = int(confidence_components.get(key, 0))
+                    color = "#22c55e" if val >= 80 else "#f59e0b" if val >= 60 else "#ef4444"
+                    with cols[i % 3]:
+                        st.markdown(
+                            f"<small style='color:#6b7280;'>{label}</small><br>"
+                            f"<b style='color:{color};'>{val}</b>",
+                            unsafe_allow_html=True
+                        )
+            if critic_verdict:
+                verdict_colors = {
+                    "sufficient": "✅", "replan": "🔄",
+                    "retable": "📋", "retry_sql": "🔧",
+                }
+                icon = verdict_colors.get(critic_verdict, "")
+                st.caption(f"Critic agent: {icon} `{critic_verdict}`")
 
     # Limitaciones
     if response.limitations:
@@ -269,7 +319,7 @@ def render_sidebar():
     with st.sidebar:
         st.image("https://img.icons8.com/fluency/96/bank-building.png", width=60)
         st.title("PayNova AI Agent")
-        st.caption("Business Reasoning Agent v1.0")
+        st.caption("Business Reasoning Agent v2.0 · 9 Mods")
         st.divider()
 
         # Estado del agente
@@ -332,17 +382,24 @@ def render_sidebar():
         st.divider()
 
         # Info del sistema
-        st.markdown("### Arquitectura")
+        st.markdown("### Arquitectura (v2.0)")
         st.markdown("""
         ```
         Pregunta → IntentAnalyzer
+               → MemoryRetrieval  [Mod 2]
                → KB Retriever
-               → MultiHop Planner
-               → TableRetrieval
-               → SQL Reasoning
-               → Execution (PG)
+               → KB Validator     [Mod 1]
+               ├── KB-directo (sin SQL)
+               └── MultiHop Plan  [Mod 3]
+                     → TableRetrieval
+                     → TableValidator [Mod 4]
+                     → SQL Reasoning
+                     → Execution (PG)
+                     → BizValidator  [Mod 5]
                → Reflection
-               → ResponseFormatter
+               → CriticAgent      [Mod 6/7]
+               → ConfidenceEst.   [Mod 8]
+               → ExecFormatter    [Mod 9]
         ```
         """)
 
@@ -366,15 +423,18 @@ def process_question(question: str):
         status_container = st.empty()
         response_container = st.empty()
 
-        # Fases del ReAct con feedback visual
+        # Fases del ReAct con feedback visual (refleja arquitectura v2.0)
         phases = [
-            ("🧠 Analizando intención de negocio...", 0.5),
-            ("📚 Recuperando conocimiento empresarial...", 0.5),
-            ("📋 Generando plan de análisis...", 0.5),
-            ("🔍 Seleccionando tablas relevantes...", 0.3),
-            ("⚙️ Generando y ejecutando SQL...", 0.3),
-            ("🔎 Reflexionando sobre los resultados...", 0.5),
-            ("✍️ Redactando respuesta ejecutiva...", 0.3),
+            ("🧠 Analizando intención de negocio...", 0.4),
+            ("🗃️ Recuperando memoria histórica [Mod 2]...", 0.3),
+            ("📚 Recuperando conocimiento empresarial...", 0.4),
+            ("🔎 Validando suficiencia de KB [Mod 1]...", 0.3),
+            ("📋 Generando plan + subproblemas [Mod 3]...", 0.4),
+            ("🔍 Seleccionando y validando tablas [Mod 4]...", 0.3),
+            ("⚙️ Generando y ejecutando SQL + validación negocio [Mod 5]...", 0.3),
+            ("🔎 Reflexionando — Critic agent [Mod 6/7]...", 0.4),
+            ("📊 Estimando confianza compuesta [Mod 8]...", 0.3),
+            ("✍️ Redactando respuesta ejecutiva 7 secciones [Mod 9]...", 0.3),
         ]
 
         t_start = time.time()
@@ -418,6 +478,11 @@ def process_question(question: str):
                     "confidence_label": response.confidence_label,
                     "elapsed": elapsed,
                     "step_results": step_results,
+                    "kb_was_sufficient": getattr(response, "kb_was_sufficient", False),
+                    "critic_verdict": getattr(response, "critic_verdict", "sufficient"),
+                    "confidence_components": getattr(response, "confidence_components", None),
+                    "risks": getattr(response, "risks", []),
+                    "recommendations": getattr(response, "recommendations", []),
                 },
             })
 
@@ -495,7 +560,7 @@ def main():
         <div>
             <h1 style="margin:0; font-size:26px; color:#0f172a;">PayNova Business AI Agent</h1>
             <p style="margin:0; color:#64748b; font-size:14px;">
-                Analista empresarial con arquitectura ReAct · Multi-Hop · Reflexión
+                Arquitectura evolucionada: ReAct · Multi-Hop · Critic · Confidence (9 Mods)
             </p>
         </div>
     </div>

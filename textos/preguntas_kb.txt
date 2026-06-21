@@ -1,0 +1,138 @@
+################################################################################
+# PREGUNTAS DE EVALUACIÓN — BASE DE CONOCIMIENTO PAYNOVA
+# 40 preguntas complejas respondibles exclusivamente desde la documentación.
+# Dominio: Negocio, métricas, reglas, procesos y ontología de PayNova S.A.
+# Uso: Benchmark de evaluación del Business Reasoning Agent (tesis IA)
+################################################################################
+
+# ── SECCIÓN 1: MODELO DE NEGOCIO Y VISIÓN GENERAL ────────────────────────────
+
+P01: ¿Qué es PayNova S.A., cuáles son sus roles simultáneos en el ecosistema de pagos y cuál es su principal fuente de ingresos?
+GT01: PayNova S.A. es una fintech fundada en 2015 que actúa simultáneamente como adquirente, procesador y orquestador de pagos. Opera sobre redes de tarjetas existentes sin emitir tarjetas propias. Su principal fuente de ingresos es el MDR (Merchant Discount Rate), que representa el 85% del ingreso total y equivale al 1.8% del monto de cada transacción aprobada.
+
+P02: ¿Cómo funciona el modelo de plataforma de dos lados de PayNova y qué valor entrega a cada lado?
+GT02: PayNova opera conectando usuarios (pagadores) con comercios (receptores). A los usuarios les facilita el pago con tarjetas; a los comercios les proporciona infraestructura de cobro, liquidaciones y analítica. PayNova intermedia cobrando el MDR al comercio (1.8%) y gestionando el riesgo, mientras envía notificaciones y ejecuta payouts periódicos a los comercios.
+
+P03: ¿Cuáles son las cuatro fuentes de ingresos de PayNova y qué porcentaje representa cada una?
+GT03: Las cuatro fuentes son: MDR Transaccional (~85%), Comisión de Liquidación/payout (~8%), Servicios de Notificación (~4%) y Servicios Premium (reportes, integraciones, SLA garantizado) (~3%). El MDR es dominante y es el principal indicador de salud financiera.
+
+P04: ¿Cuáles son los siete objetivos estratégicos de PayNova, sus métricas clave y sus metas anuales?
+GT04: Los objetivos son: 1) Crecimiento de GMV ≥20% YoY; 2) +500 nuevos comercios activos/año; 3) Tasa de aprobación ≥97.5%; 4) Tasa de fraude <0.5%; 5) Margen neto >1.1%; 6) Churn de comercios <5% anual; 7) Activación de usuarios >60% en 30 días.
+
+P05: ¿Cuáles son los segmentos de mercado atendidos por PayNova y qué diferenciadores competitivos tiene frente a otros procesadores de pago?
+GT05: PayNova atiende Retail, Gastronomía, Salud, Combustible y Servicios. Sus diferenciadores son: analítica avanzada con dashboard en tiempo real, onboarding ágil (<48h premium), notificaciones inteligentes multicanal, gestión de riesgo proactiva con modelos ML y arquitectura API-first para comercios digitales.
+
+# ── SECCIÓN 2: MÉTRICAS FINANCIERAS Y REGLAS DE NEGOCIO ─────────────────────
+
+P06: ¿Cuál es la diferencia conceptual y de cálculo entre GMV, ingresos por MDR y margen bruto transaccional en PayNova?
+GT06: El GMV es la suma total del monto de transacciones completadas (escala del negocio, no ingreso). Los ingresos por MDR son el 1.8% del GMV (SUM(ingreso_comision)). El margen bruto transaccional es la diferencia entre MDR y costo operativo: 1.8% - 0.8% = 1.0% del GMV. Nunca debe usarse SUM(monto) como ingreso.
+
+P07: ¿Por qué está prohibido usar SUM(monto) para calcular los ingresos de PayNova y qué columna debe usarse en su lugar?
+GT07: SUM(monto) representa el dinero total que pagaron los clientes a los comercios (GMV), no el dinero que recibe PayNova. Los ingresos de PayNova son únicamente la comisión MDR del 1.8%, almacenada en la columna ingreso_comision. Usar monto sobreestimaría los ingresos aproximadamente 55 veces (1/0.018).
+
+P08: ¿Cómo se calcula el margen neto ajustado de PayNova y qué costos descuenta del margen bruto transaccional?
+GT08: El margen neto ajustado es: SUM(margen) - SUM(notificaciones.costo_total) - otros_costos_fijos. Parte del margen bruto transaccional (1.0% del GMV), descuenta los costos de notificación por canal (email, SMS, push, WhatsApp) y otros costos operativos no transaccionales. Se visualiza como un waterfall chart en el dashboard ejecutivo.
+
+P09: ¿Cuáles son las tasas de comisión de payout por segmento de comercio y cómo se calcula el monto neto que recibe cada comercio?
+GT09: La comisión de payout varía por segmento: Micro=0.5%, Pequeño=0.4%, Mediano=0.3%, Grande=0.2%, Mega=0.1% del monto bruto del desembolso. El monto neto es monto - comision_payout, que es una columna GENERATED en produccion.payouts. Para reportar cuánto recibieron los comercios se usa SUM(monto_neto).
+
+P10: ¿Cuáles son los costos unitarios de cada canal de notificación en PayNova y cómo se calcula el costo total de un envío?
+GT10: Los costos unitarios son: email=$0.001, SMS=$0.05, push=$0.0001, WhatsApp=$0.03, webhook=$0.0005. El costo total de un envío es costo_total = cantidad_enviada * costo_unitario, columna GENERATED en produccion.notificaciones. El SMS es el canal más caro y el push el más económico.
+
+P11: ¿Qué son las columnas GENERATED ALWAYS AS en la base de datos de PayNova y cuáles son?
+GT11: Son columnas calculadas automáticamente por el motor de base de datos sin requerir inserción manual. En PayNova existen: margen = ingreso_comision - costo_operativo en transacciones; monto_neto = monto - comision_payout en payouts; costo_total = cantidad_enviada * costo_unitario en notificaciones. Garantizan consistencia y deben usarse directamente en las consultas.
+
+P12: ¿Cuál es la regla de negocio para determinar si un comercio tiene MDR efectivo sub-estándar y dónde se documenta?
+GT12: Un comercio tiene MDR efectivo sub-estándar si SUM(ingreso_comision)/SUM(monto)*100 < 1.8%. Esto indica condiciones especiales negociadas. El MDR promedio acordado se documenta en la columna mdr_promedio de produccion.segmentacion_merchants. Si el MDR efectivo cae por debajo del 1.7%, el CFO dispara una auditoría.
+
+# ── SECCIÓN 3: PROCESOS OPERATIVOS ──────────────────────────────────────────
+
+P13: ¿Cuáles son los pasos del proceso de onboarding de un comercio y cuáles son los SLAs estándar y premium?
+GT13: El onboarding tiene 7 pasos: 1) Prospección y firma de contrato; 2) Documentación legal KYB; 3) Configuración técnica (API key, webhook); 4) Integración de notificaciones (email, SMS); 5) Validación en pruebas; 6) Activación en producción; 7) Primera transacción exitosa. SLA estándar: 5 días hábiles; SLA premium: 48 horas.
+
+P14: ¿Cómo funciona el proceso transaccional en PayNova desde que el usuario presenta la tarjeta hasta que el comercio recibe la confirmación?
+GT14: El proceso tiene 7 pasos: 1) Usuario presenta tarjeta; 2) Terminal/gateway envía solicitud a PayNova; 3) PayNova valida datos; 4) PayNova envía autorización a red de tarjetas; 5) Red responde aprobada/rechazada; 6) PayNova registra y notifica al comercio; 7) Fondos retenidos hasta ciclo de liquidación. El tiempo promedio de autorización es <3 segundos.
+
+P15: ¿Cómo es el proceso de liquidación (payout) y con qué frecuencia se realiza según el segmento del comercio?
+GT15: El proceso de payout tiene 5 pasos: 1) Cierre del período; 2) Cálculo del monto neto (GMV - MDR - comisión payout); 3) Validación de cuenta bancaria; 4) Emisión de transferencia; 5) Confirmación y registro en produccion.payouts. Frecuencia estándar: semanal; frecuencia premium: diaria. SLA de procesamiento: T+1 día hábil.
+
+P16: ¿Cuál es el proceso completo de gestión de fraude en PayNova y qué umbral de riesgo_score genera una alerta?
+GT16: El proceso de fraude tiene 7 pasos: 1) Monitoreo en tiempo real; 2) Cálculo de riesgo_score por ML; 3) Si riesgo_score > 0.7 → alerta en produccion.fraude; 4) Revisión manual; 5) Decisión: confirmar/descartar/escalar; 6) Si confirmado: reverso y bloqueo; 7) Reporte regulatorio si aplica. La tasa de fraude objetivo es <0.5%, aunque el dataset IBM tiene ~2.5% por ser sintético.
+
+P17: ¿Qué estados puede tener un usuario en PayNova y cuáles son las reglas de transición entre ellos?
+GT17: Los estados son: Registrado (cuenta creada, sin tx), Activo (al menos 1 tx en últimos 30d), En Riesgo (sin tx entre 31-89d), Inactivo (sin tx entre 90-179d), Reactivado (tx después de 90d de inactividad), Abandonado (sin tx en 180+d), Suspendido (bloqueado por fraude). La transición clave: inactividad 60d dispara campaña; 90d cambia estado a Inactivo.
+
+P18: ¿Cuál es el proceso completo del flujo de valor de PayNova desde la adquisición hasta la retención?
+GT18: El flujo tiene 6 etapas: 1) Adquisición (registro de usuario y firma de contrato de comercio); 2) Activación (primera transacción); 3) Transacción (pago, procesamiento, autorización); 4) Generación de ingresos (MDR 1.8%, costo 0.8%, margen 1.0%); 5) Liquidación (payout periódico al comercio neto de comisión); 6) Retención y crecimiento (campañas, notificaciones, analítica).
+
+# ── SECCIÓN 4: MÉTRICAS OPERATIVAS Y DE CRECIMIENTO ─────────────────────────
+
+P19: ¿Cómo se define y calcula la Tasa de Activación de Usuarios a 30 días, cuál es la meta y qué indica un valor bajo?
+GT19: Es el porcentaje de usuarios recién registrados que realizaron al menos una transacción dentro de sus primeros 30 días. Fórmula: COUNT(usuarios con tx en 30d) / COUNT(usuarios registrados en período) * 100. Meta PayNova: >60%. Un valor <40% indica fricción en el primer uso, posiblemente en el proceso de onboarding o en la propuesta de valor.
+
+P20: ¿Qué es la Tasa de Aprobación, cuál es su meta y cuándo se dispara una alerta roja para el CEO?
+GT20: La Tasa de Aprobación es el porcentaje de transacciones intentadas que fueron aprobadas exitosamente: COUNT(estado='completada') / COUNT(*) * 100. Meta: ≥97%. Alerta roja para el CEO cuando cae por debajo del 94%, lo que activa el protocolo de contingencia operativa. Una tasa <95% ya es señal de alerta.
+
+P21: ¿Cuáles son los Usuarios Activos Mensuales (MAU) en PayNova, cómo se calculan y por qué importan?
+GT21: Los MAU son el número de usuarios distintos que realizaron al menos una transacción completada en los últimos 30 días: COUNT(DISTINCT usuario_origen_id) WHERE estado='completada' AND fecha_transaccion >= CURRENT_DATE-30. Representan el indicador clave de engagement real. Un MAU creciente indica salud del negocio; es el KPI ejecutivo principal de crecimiento.
+
+P22: ¿Cómo se mide la Tasa de Fraude, cuál es el umbral de alerta de PayNova y por qué difiere del valor del dataset IBM?
+GT22: La Tasa de Fraude = COUNT(flag_fraude=TRUE) / COUNT(total) * 100. Umbral de alerta PayNova: >0.5%; alerta roja del CEO: >2%. El dataset IBM tiene ~2.5% porque es un dataset sintético diseñado para entrenar modelos de detección de fraude con clases balanceadas artificialmente, lo que no refleja la tasa real de operación.
+
+P23: ¿Qué son los Comercios Activos en PayNova y cuál es la definición exacta que combina status y actividad transaccional?
+GT23: Un comercio activo es aquel que cumple dos condiciones simultáneas: 1) status_operacional = 'activo' en produccion.merchants; Y 2) ha procesado al menos una transacción completada en los últimos 30 días. Solo cumplir una condición no es suficiente. Meta del CEO: >2,500 comercios activos; alerta roja: <2,000.
+
+P24: ¿Qué es el funnel de conversión de comercios en PayNova y qué etapas de conversión contempla?
+GT24: El funnel mide la conversión en cada etapa del onboarding: 1) Registrados → Integrados; 2) Integrados → Activos; 3) Activos → Con Notificaciones; 4) Con Notificaciones → Con Transacciones; 5) Con Transacciones → Con Payouts. Se calcula con la vista produccion.vw_funnel_comercios. Permite identificar dónde se pierden comercios en el proceso.
+
+P25: ¿Cuál es la diferencia entre la Tasa de Éxito de Payouts y la Tasa de Rechazo de Transacciones, y qué metas tienen?
+GT25: La Tasa de Éxito de Payouts mide el porcentaje de desembolsos a comercios procesados exitosamente: COUNT(estado='procesado')/COUNT(*) FROM produccion.payouts. Meta: ≥99%; alerta CFO: <97%. La Tasa de Rechazo de Transacciones es el complemento de la Tasa de Aprobación: COUNT(rechazada+error)/COUNT(*) FROM transacciones. Meta de aprobación: ≥97%.
+
+# ── SECCIÓN 5: ACTORES, ROLES Y KPIs EJECUTIVOS ─────────────────────────────
+
+P26: ¿Cuáles son los KPIs principales del CEO de PayNova, sus metas y cuándo generan alerta roja?
+GT26: CEO monitorea: GMV (meta: ≥15% YoY; alerta: caída >5% vs mes anterior), Comercios Activos (>2,500; alerta: <2,000), MDR Rate (1.8%; alerta: <1.6%), Margen Bruto (≥1% GMV; alerta: <0.8%), Tasa Aprobación (≥97%; alerta: <94%), Tasa Fraude (<0.5%; alerta: >2%), NPS implícito de reactivación (>15%; alerta: <5%).
+
+P27: ¿Qué KPIs monitorea el CFO de PayNova y qué nivel de alerta activa una auditoría de reconciliación?
+GT27: El CFO monitorea: MDR Rate Efectivo (meta 1.80%; alerta <1.70%), Costo Operativo por Transacción (meta <$0.12; alerta >$0.18), Monto Desembolsado en Payouts, Tasa de Éxito de Payouts (≥99%; alerta <97%), ratio Costo Notificaciones/MDR (<5%; alerta >10%), Margen Neto Ajustado (≥0.8% GMV; alerta <0.5%), y Monto en Riesgo por Fraude (<$50K; alerta >$200K).
+
+P28: ¿Cuáles son los actores internos de PayNova, sus roles y responsabilidades principales?
+GT28: Actores internos: CEO (estrategia y crecimiento), CFO (P&L y reportes regulatorios), COO (operación transaccional y SLA), Director Comercial (onboarding y retención de comercios), Director de Marketing (adquisición y engagement de usuarios), Director de Riesgo (modelos de fraude y cumplimiento), Account Manager (acompañamiento de portafolio de comercios), Analista de Datos (reportes y modelos analíticos).
+
+P29: ¿Qué es un Account Manager en PayNova, qué portafolio gestiona y cuáles son sus métricas de desempeño?
+GT29: Un Account Manager es un gestor comercial interno responsable de acompañar, soportar y desarrollar la relación con un portafolio de comercios asignados. Monitorea el GMV, la tasa de aprobación y el churn de sus comercios. Es el punto de escalación cuando un comercio entra en riesgo de churn. Su coordinador_id está referenciado en produccion.merchants.
+
+P30: ¿Cuáles son los actores externos de PayNova y qué rol cumple cada uno en el ecosistema de pagos?
+GT30: Actores externos: Usuario/Cardholder (realiza pagos con tarjeta), Comercio/Merchant (acepta pagos y recibe liquidaciones), Red de Tarjetas como Visa/Mastercard (procesa autorizaciones), Banco Emisor (emite la tarjeta del usuario), Regulador (supervisa cumplimiento normativo), y Proveedor de Notificaciones como Braze y Twilio (gestiona emails, SMS y push).
+
+# ── SECCIÓN 6: ONTOLOGÍA, SEGMENTACIÓN Y ANALÍTICA ──────────────────────────
+
+P31: ¿Cómo se segmentan los comercios por volumen en PayNova y qué implica cada segmento para la comisión de payout?
+GT31: Los comercios se segmentan en: Micro, Pequeño, Mediano, Grande y Mega según su volumen de transacciones. La comisión de payout decrece con el volumen: Micro=0.5%, Pequeño=0.4%, Mediano=0.3%, Grande=0.2%, Mega=0.1%. Este campo se almacena en produccion.segmentacion_merchants y se usa para calcular el monto neto en payouts.
+
+P32: ¿Qué es la columna year_month en la tabla de transacciones y por qué es más eficiente que DATE_TRUNC para filtros mensuales?
+GT32: year_month es una columna derivada en formato 'YYYY-MM' que permite filtrar transacciones por mes directamente con una comparación de igualdad (=), evitando el cálculo de DATE_TRUNC en cada fila. Al estar indexada, reduce dramáticamente el tiempo de consulta en tablas con 24M+ registros comparado con DATE_TRUNC('month', fecha_transaccion).
+
+P33: ¿Cuáles son los benchmarks de Open Rate y Click Rate para notificaciones por email en PayNova?
+GT33: El benchmark de Open Rate para email en PayNova es >25%: AVG(tasa_apertura) WHERE tipo_canal='email' AND estado='entregada'. El Click Rate (tasa de clics sobre emails abiertos) tiene un benchmark de >8%: AVG(tasa_click) WHERE tipo_canal='email'. Estos se monitorean para optimizar campañas de marketing.
+
+P34: ¿Cuándo se considera que un comercio está en situación de churn y qué proceso activa este estado?
+GT34: Un comercio entra en churn cuando estuvo activo el mes pasado (procesó transacciones completadas) pero no ha procesado ninguna transacción en el mes actual. El Director Comercial identifica estos comercios para campañas de reactivación o llamadas de seguimiento por Account Manager. El objetivo es mantener el churn de comercios por debajo del 5% anual.
+
+P35: ¿Qué es el ticket promedio (AOV) en PayNova, cómo se interpreta y qué puede indicar un cambio en su valor?
+GT35: El Ticket Promedio o AOV (Average Order Value) es AVG(monto) WHERE estado='completada'. Un ticket promedio creciente puede indicar: penetración en comercios de mayor valor (ej. electrónica vs gastronomía), cambio en el mix de categorías MCC hacia sectores premium, o cambio en el perfil de usuarios. Se monitorea por canal, comercio y segmento de usuario.
+
+P36: ¿Cuál es la diferencia entre el score_actividad y el score_rentabilidad de un usuario en PayNova?
+GT36: El score_actividad mide la frecuencia y recencia de las transacciones de un usuario (qué tan activo es). El score_rentabilidad mide el valor financiero que genera ese usuario para PayNova (cuánto MDR aportan sus transacciones). Ambos se almacenan en produccion.usuarios y se actualizan con cada transacción. Se usan juntos en la segmentación de usuarios.
+
+P37: ¿Qué indica la Tasa de Falsos Positivos en la detección de fraude y cuáles son sus consecuencias operativas?
+GT37: La Tasa de Falsos Positivos es COUNT(estado_revision='descartado') / COUNT(total_alertas) * 100. Mide qué porcentaje de alertas de fraude corresponden a transacciones legítimas incorrectamente bloqueadas. Una tasa alta indica que el modelo es demasiado agresivo, lo que genera fricción en la experiencia del usuario (transacciones legítimas rechazadas) y sobrecarga al equipo de revisión manual.
+
+P38: ¿Qué es el NPS implícito de reactivación en PayNova, cómo se calcula y cuál es su meta?
+GT38: El NPS implícito de reactivación mide la tasa de usuarios inactivos que vuelven a usar la plataforma: COUNT(reactivados) / COUNT(inactivos_90d). Meta: >15%; alerta roja para el CEO: <5%. No es un NPS tradicional de encuesta sino una métrica proxy de satisfacción/lealtad basada en comportamiento transaccional real. Un valor bajo indica problemas en la propuesta de valor o retención.
+
+P39: ¿Cuáles son las métricas del Ticket Promedio por Transacción vs Transacciones por Usuario Activo y qué relación tienen con el crecimiento del GMV?
+GT39: El Ticket Promedio (AOV) = AVG(monto) WHERE completada mide el valor individual de cada compra. Las Transacciones por Usuario Activo = COUNT(tx) / COUNT(DISTINCT usuario) mide la frecuencia de uso. El GMV = Comercios Activos × Transacciones/Comercio × AOV. El crecimiento del GMV puede lograrse aumentando cualquiera de estos tres componentes (más comercios, más transacciones o montos más altos).
+
+P40: ¿Cuáles son las tablas principales de la base de datos de PayNova, a qué esquema pertenecen y qué información almacena cada una?
+GT40: Las tablas principales son: transacciones.transacciones (tabla central con 24M+ registros de pagos), produccion.merchants (comercios afiliados), produccion.usuarios (clientes), produccion.payouts (liquidaciones a comercios), produccion.notificaciones (comunicaciones enviadas), produccion.fraude (alertas de fraude), produccion.segmentacion_merchants (segmentación por volumen y rentabilidad), produccion.account_managers (gestores comerciales), produccion.integraciones_merchant (estado de onboarding técnico), y las vistas produccion.vw_funnel_comercios, produccion.mv_metricas_diarias y produccion.vw_kpi_dashboard.
