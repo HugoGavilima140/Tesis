@@ -1,0 +1,188 @@
+table 'produccion merchants'
+	lineageTag: 4ba6521e-8e6d-43e8-a670-1fca50bbe9cd
+
+	column merchant_id
+		dataType: string
+		lineageTag: c1084855-f271-46ae-9aa7-a32c31f32a97
+		summarizeBy: none
+		sourceColumn: merchant_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column merchant_id_origen
+		dataType: int64
+		formatString: 0
+		lineageTag: a33d72c1-e70c-4e65-aea9-17ed07ebc226
+		summarizeBy: sum
+		sourceColumn: merchant_id_origen
+
+		annotation SummarizationSetBy = Automatic
+
+	column nombre_comercio
+		dataType: string
+		lineageTag: ca853d2d-1897-4b00-b3af-5e3f15f0279e
+		summarizeBy: none
+		sourceColumn: nombre_comercio
+
+		annotation SummarizationSetBy = Automatic
+
+	column categoria
+		dataType: string
+		lineageTag: 4321cfb0-8049-45d1-a5e8-3747d2d6209a
+		summarizeBy: none
+		sourceColumn: categoria
+
+		annotation SummarizationSetBy = Automatic
+
+	column mcc_code
+		dataType: int64
+		formatString: 0
+		lineageTag: b9069534-04c7-4b71-bf24-4be557babb58
+		summarizeBy: sum
+		sourceColumn: mcc_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column segmento
+		dataType: string
+		lineageTag: 36db1a00-684a-4514-a048-79db38bafc39
+		summarizeBy: none
+		sourceColumn: segmento
+
+		annotation SummarizationSetBy = Automatic
+
+	column ciudad
+		dataType: string
+		lineageTag: c9b9cc4c-78b2-44bf-9c26-d928debb59c1
+		summarizeBy: none
+		sourceColumn: ciudad
+
+		annotation SummarizationSetBy = Automatic
+
+	column estado_region
+		dataType: string
+		lineageTag: 38995426-e973-4dfb-840d-6bf6af28f70c
+		summarizeBy: none
+		sourceColumn: estado_region
+
+		annotation SummarizationSetBy = Automatic
+
+	column zip_code
+		dataType: string
+		lineageTag: 88a88d18-0fd5-4a31-91ca-54ad3da6cd1a
+		summarizeBy: none
+		sourceColumn: zip_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column pais
+		dataType: string
+		lineageTag: d8d0bb91-c293-4ec2-9e8d-a057ef7a4d42
+		summarizeBy: none
+		sourceColumn: pais
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_afiliacion
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 255fe9a7-607f-492e-8355-960aeb8d36fe
+		summarizeBy: none
+		sourceColumn: fecha_afiliacion
+
+		variation Variación
+			isDefault
+			relationship: 492f0cb1-3a88-40e8-a4cb-48c09c37edd6
+			defaultHierarchy: LocalDateTable_08ae3ef7-5452-4844-bb22-dfbd58b0037e.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column estado
+		dataType: string
+		lineageTag: a4592423-f1e0-4204-b8e5-b2326935f992
+		summarizeBy: none
+		sourceColumn: estado
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b14b3163-9f49-4f9b-bddd-6bf993c5bc72
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variación
+			isDefault
+			relationship: 17ea3361-0d04-4d60-b318-c8b92b11e36c
+			defaultHierarchy: LocalDateTable_cc9c9b4a-4010-463e-bbcd-3bbb4f3f5641.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2093f74d-af67-44c0-aa4c-9bbbc43f44f9
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		variation Variación
+			isDefault
+			relationship: 0c6f7a02-ef8b-4dea-b750-20bcb90584b8
+			defaultHierarchy: LocalDateTable_67951349-159a-491b-8f07-65136d21b30f.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column cuenta_tipo
+		dataType: string
+		lineageTag: 25b4f969-3098-4593-8f27-3a66c0c3cb9d
+		summarizeBy: none
+		sourceColumn: cuenta_tipo
+
+		annotation SummarizationSetBy = Automatic
+
+	column status_operacional
+		dataType: string
+		lineageTag: faf340c4-956d-4e59-ad13-2f254bf9651a
+		summarizeBy: none
+		sourceColumn: status_operacional
+
+		annotation SummarizationSetBy = Automatic
+
+	column ultima_actividad
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 33b5ddf4-6ac1-4c26-bf2d-e999973cda70
+		summarizeBy: none
+		sourceColumn: ultima_actividad
+
+		variation Variación
+			isDefault
+			relationship: b2cf3b36-dacd-46a4-ab7a-1d2635123067
+			defaultHierarchy: LocalDateTable_79ccbc14-eb1d-4ca4-b10a-c4fa530f9cef.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column coordinador_id
+		dataType: string
+		lineageTag: 04f4668e-c314-48d0-bb35-29706f142d4d
+		summarizeBy: none
+		sourceColumn: coordinador_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'produccion merchants' = m
+		mode: import
+		source =
+				let
+				    Origen = PostgreSQL.Database("localhost", "produccion"),
+				    produccion_merchants = Origen{[Schema="produccion",Item="merchants"]}[Data]
+				in
+				    produccion_merchants
+
+	annotation PBI_ResultType = Table
+

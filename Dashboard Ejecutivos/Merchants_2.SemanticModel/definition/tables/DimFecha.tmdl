@@ -1,0 +1,57 @@
+table DimFecha
+	lineageTag: 94125bc4-687a-40ad-a515-6ddd846cbda3
+	dataCategory: Time
+
+	column Date
+		isUnique
+		lineageTag: 3b4402e2-8856-4e60-8f72-d1eae27e6dd5
+		isNameInferred
+		sourceColumn: [Date]
+
+	column Año
+		lineageTag: c1abcf00-4229-4764-af89-2a18e8c7d7c5
+		isNameInferred
+		sourceColumn: [Año]
+
+	column MesNum
+		lineageTag: 15157c46-417a-49d0-8cc6-49477fdfe512
+		isNameInferred
+		sourceColumn: [MesNum]
+
+	column NombreMes
+		lineageTag: 3b19eda8-8771-4ca3-bee4-e7ff4cb949ef
+		isNameInferred
+		sourceColumn: [NombreMes]
+		sortByColumn: MesNum
+
+	column AñoMes
+		lineageTag: ac23910c-502e-4b27-86e1-cc873188fd6c
+		isNameInferred
+		sourceColumn: [AñoMes]
+		sortByColumn: AñoMesOrden
+
+	column AñoMesOrden
+		lineageTag: b54aab7b-5dcb-4309-a8ce-78bdf9cc7b9d
+		isNameInferred
+		sourceColumn: [AñoMesOrden]
+
+	column Trimestre
+		lineageTag: 78d7c276-6da0-45ed-8c67-bd823905dc85
+		isNameInferred
+		sourceColumn: [Trimestre]
+
+	column DiaSemanaNum
+		lineageTag: 6b35f647-db48-4082-a4ed-51593a4f76e1
+		isNameInferred
+		sourceColumn: [DiaSemanaNum]
+
+	column DiaSemanaAbrev
+		lineageTag: ace341f3-0cf9-4f66-8c3b-48c678a57259
+		isNameInferred
+		sourceColumn: [DiaSemanaAbrev]
+		sortByColumn: DiaSemanaNum
+
+	partition DimFecha = calculated
+		mode: import
+		source = ADDCOLUMNS(CALENDAR(DATE(2010,1,1), DATE(2026,12,31)), "Año", YEAR([Date]), "MesNum", MONTH([Date]), "NombreMes", FORMAT([Date], "MMM"), "AñoMes", FORMAT([Date], "YYYY-MM"), "AñoMesOrden", YEAR([Date])*100 + MONTH([Date]), "Trimestre", "T" & ROUNDUP(MONTH([Date])/3, 0), "DiaSemanaNum", WEEKDAY([Date], 2), "DiaSemanaAbrev", FORMAT([Date], "ddd"))
+

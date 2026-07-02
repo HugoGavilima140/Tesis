@@ -95,6 +95,30 @@
       },
       "timestamp": "2026-06-20T11:17:04.532006",
       "uses": 0
+    },
+    {
+      "type": "error_patterns",
+      "content": {
+        "question_snippet": "¿Qué son las columnas GENERATED ALWAYS AS en la base de datos de PayNova y cuáles son?",
+        "failed_sql_snippet": "",
+        "error": "Solo se permiten queries SELECT en modo de análisis.",
+        "domain": "general",
+        "correction": ""
+      },
+      "timestamp": "2026-06-27T06:51:56.905672",
+      "uses": 0
+    },
+    {
+      "type": "error_patterns",
+      "content": {
+        "question_snippet": "¿Cuáles son los siete objetivos estratégicos de PayNova, sus métricas clave y sus metas anuales?",
+        "failed_sql_snippet": "SELECT \n    t.id_transaccion,\n    t.id_merchant,\n    t.monto,\n    t.ingreso_comision,\n    t.costo_operativo,\n    t.margen,\n    t.year_month,\n    t.fecha_transaccion\nFROM transacciones.transacciones t\n",
+        "error": "(psycopg2.errors.UndefinedColumn) no existe la columna t.id_transaccion\nLINE 2:     t.id_transaccion,\n            ^\nHINT:  Probablemente quiera hacer referencia a la columna «t.tipo_transaccion».\n\n[SQ",
+        "domain": "general",
+        "correction": ""
+      },
+      "timestamp": "2026-06-27T07:04:27.731600",
+      "uses": 0
     }
   ],
   "success_patterns": [
@@ -700,6 +724,544 @@
       },
       "timestamp": "2026-06-21T12:35:34.466951",
       "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Qué es PayNova S.A., cuáles son sus roles simultáneos en el ecosistema de pagos y cuál es su princi",
+        "domain": "general",
+        "complexity": "simple",
+        "plan_summary": "Respuesta directa desde knowledge base (sin SQL).",
+        "sql_snippets": [
+          "-- Respuesta directa de la knowledge base (sin SQL)"
+        ],
+        "confidence": 98
+      },
+      "timestamp": "2026-06-27T06:34:21.031513",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cómo funciona el modelo de plataforma de dos lados de PayNova y qué valor entrega a cada lado?",
+        "domain": "estrategia",
+        "complexity": "estrategico",
+        "plan_summary": "Respuesta directa desde knowledge base (sin SQL).",
+        "sql_snippets": [
+          "-- Respuesta directa de la knowledge base (sin SQL)"
+        ],
+        "confidence": 96
+      },
+      "timestamp": "2026-06-27T06:34:38.445863",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cuáles son las cuatro fuentes de ingresos de PayNova y qué porcentaje representa cada una?",
+        "domain": "general",
+        "complexity": "simple",
+        "plan_summary": "Análisis directo de la pregunta",
+        "sql_snippets": [
+          "SELECT \n    year_month,\n    COUNT(*) AS total_transacciones,\n    ROUND(SUM(ingreso_comision), 2) AS total_ingresos,\n    ROUND(SUM(costo_operativo), 2)"
+        ],
+        "confidence": 75
+      },
+      "timestamp": "2026-06-27T06:38:09.903227",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cuáles son los siete objetivos estratégicos de PayNova, sus métricas clave y sus metas anuales?",
+        "domain": "general",
+        "complexity": "simple",
+        "plan_summary": "Consultar la documentación de negocio de PayNova (base de conocimiento) para extraer la lista de siete objetivos estratégicos, sus métricas clave y metas anuales, ya que esta información está predefinida y no requiere análisis de datos transaccionales.",
+        "sql_snippets": [
+          "SELECT \n    year_month,\n    COUNT(*) AS total_transacciones,\n    ROUND(SUM(ingreso_comision), 2) AS ingresos_totales,\n    ROUND(SUM(costo_operativo), "
+        ],
+        "confidence": 78
+      },
+      "timestamp": "2026-06-27T06:41:20.460076",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cuáles son los segmentos de mercado atendidos por PayNova y qué diferenciadores competitivos tiene ",
+        "domain": "estrategia",
+        "complexity": "estrategico",
+        "plan_summary": "Análisis directo de la pregunta",
+        "sql_snippets": [
+          "WITH ingresos_mensuales AS (\n    SELECT \n        year_month,\n        COUNT(*) AS total_transacciones,\n        ROUND(SUM(ingreso_comision), 2) AS ingre"
+        ],
+        "confidence": 75
+      },
+      "timestamp": "2026-06-27T06:45:39.070287",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cuál es la diferencia conceptual y de cálculo entre GMV, ingresos por MDR y margen bruto transaccio",
+        "domain": "finanzas",
+        "complexity": "simple",
+        "plan_summary": "Proporcionar una explicación conceptual y de cálculo de GMV, ingresos por MDR y margen bruto transaccional, basada en las definiciones del negocio de PayNova, destacando sus fórmulas y relaciones.",
+        "sql_snippets": [
+          "WITH ultimo_mes AS (\n    SELECT MAX(year_month) AS mes\n    FROM transacciones.transacciones\n    WHERE estado = 'completada'\n)\nSELECT\n    ROUND(SUM(t.m"
+        ],
+        "confidence": 84
+      },
+      "timestamp": "2026-06-27T06:47:20.522040",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Por qué está prohibido usar SUM(monto) para calcular los ingresos de PayNova y qué columna debe usa",
+        "domain": "finanzas",
+        "complexity": "simple",
+        "plan_summary": "Respuesta directa desde knowledge base (sin SQL).",
+        "sql_snippets": [
+          "-- Respuesta directa de la knowledge base (sin SQL)"
+        ],
+        "confidence": 97
+      },
+      "timestamp": "2026-06-27T06:47:37.821667",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cómo se calcula el margen neto ajustado de PayNova y qué costos descuenta del margen bruto transacc",
+        "domain": "finanzas",
+        "complexity": "simple",
+        "plan_summary": "Respuesta directa desde knowledge base (sin SQL).",
+        "sql_snippets": [
+          "-- Respuesta directa de la knowledge base (sin SQL)"
+        ],
+        "confidence": 92
+      },
+      "timestamp": "2026-06-27T06:47:54.017301",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cuáles son las tasas de comisión de payout por segmento de comercio y cómo se calcula el monto neto",
+        "domain": "operaciones",
+        "complexity": "multihop",
+        "plan_summary": "Respuesta directa desde knowledge base (sin SQL).",
+        "sql_snippets": [
+          "-- Respuesta directa de la knowledge base (sin SQL)"
+        ],
+        "confidence": 92
+      },
+      "timestamp": "2026-06-27T06:48:12.845835",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cuáles son los costos unitarios de cada canal de notificación en PayNova y cómo se calcula el costo",
+        "domain": "finanzas",
+        "complexity": "simple",
+        "plan_summary": "Respuesta directa desde knowledge base (sin SQL).",
+        "sql_snippets": [
+          "-- Respuesta directa de la knowledge base (sin SQL)"
+        ],
+        "confidence": 98
+      },
+      "timestamp": "2026-06-27T06:48:26.161466",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Qué son las columnas GENERATED ALWAYS AS en la base de datos de PayNova y cuáles son?",
+        "domain": "general",
+        "complexity": "simple",
+        "plan_summary": "Explicar el concepto de columnas GENERATED ALWAYS AS (columnas generadas o calculadas) y listar las que existen en la base de datos de PayNova según las reglas de negocio documentadas.",
+        "sql_snippets": [],
+        "confidence": 66
+      },
+      "timestamp": "2026-06-27T06:51:56.905635",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cuál es la regla de negocio para determinar si un comercio tiene MDR efectivo sub-estándar y dónde ",
+        "domain": "general",
+        "complexity": "simple",
+        "plan_summary": "Consultar la ontología de negocio y las reglas documentadas para identificar la definición de MDR efectivo sub-estándar y su ubicación documental.",
+        "sql_snippets": [
+          "WITH ingresos_mensuales AS (\n    SELECT \n        year_month,\n        COUNT(*) AS total_transacciones,\n        ROUND(SUM(ingreso_comision), 2) AS ingre"
+        ],
+        "confidence": 78
+      },
+      "timestamp": "2026-06-27T06:54:43.829394",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cuáles son los pasos del proceso de onboarding de un comercio y cuáles son los SLAs estándar y prem",
+        "domain": "operaciones",
+        "complexity": "simple",
+        "plan_summary": "Respuesta directa desde knowledge base (sin SQL).",
+        "sql_snippets": [
+          "-- Respuesta directa de la knowledge base (sin SQL)"
+        ],
+        "confidence": 97
+      },
+      "timestamp": "2026-06-27T06:54:57.488593",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cómo funciona el proceso transaccional en PayNova desde que el usuario presenta la tarjeta hasta qu",
+        "domain": "general",
+        "complexity": "simple",
+        "plan_summary": "Respuesta directa desde knowledge base (sin SQL).",
+        "sql_snippets": [
+          "-- Respuesta directa de la knowledge base (sin SQL)"
+        ],
+        "confidence": 98
+      },
+      "timestamp": "2026-06-27T06:55:12.956414",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cómo es el proceso de liquidación (payout) y con qué frecuencia se realiza según el segmento del co",
+        "domain": "operaciones",
+        "complexity": "simple",
+        "plan_summary": "Respuesta directa desde knowledge base (sin SQL).",
+        "sql_snippets": [
+          "-- Respuesta directa de la knowledge base (sin SQL)"
+        ],
+        "confidence": 96
+      },
+      "timestamp": "2026-06-27T06:55:29.017430",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Qué es PayNova S.A., cuáles son sus roles simultáneos en el ecosistema de pagos y cuál es su princi",
+        "domain": "general",
+        "complexity": "simple",
+        "plan_summary": "Respuesta directa desde knowledge base (sin SQL).",
+        "sql_snippets": [
+          "-- Respuesta directa de la knowledge base (sin SQL)"
+        ],
+        "confidence": 98
+      },
+      "timestamp": "2026-06-27T06:57:39.958631",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cómo funciona el modelo de plataforma de dos lados de PayNova y qué valor entrega a cada lado?",
+        "domain": "estrategia",
+        "complexity": "estrategico",
+        "plan_summary": "Respuesta directa desde knowledge base (sin SQL).",
+        "sql_snippets": [
+          "-- Respuesta directa de la knowledge base (sin SQL)"
+        ],
+        "confidence": 96
+      },
+      "timestamp": "2026-06-27T06:57:55.720553",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cuáles son las cuatro fuentes de ingresos de PayNova y qué porcentaje representa cada una?",
+        "domain": "finanzas",
+        "complexity": "simple",
+        "plan_summary": "Análisis directo de la pregunta",
+        "sql_snippets": [
+          "SELECT \n    t.year_month,\n    COUNT(*) AS total_transacciones,\n    ROUND(SUM(t.ingreso_comision), 2) AS ingresos_comision,\n    ROUND(SUM(t.costo_opera"
+        ],
+        "confidence": 75
+      },
+      "timestamp": "2026-06-27T07:01:00.879964",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cuáles son los siete objetivos estratégicos de PayNova, sus métricas clave y sus metas anuales?",
+        "domain": "general",
+        "complexity": "simple",
+        "plan_summary": "Consultar la documentación de planificación estratégica de PayNova para extraer los siete objetivos estratégicos, sus métricas clave y metas anuales, sin necesidad de procesar datos transaccionales.",
+        "sql_snippets": [],
+        "confidence": 66
+      },
+      "timestamp": "2026-06-27T07:04:27.731549",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cuáles son los segmentos de mercado atendidos por PayNova y qué diferenciadores competitivos tiene ",
+        "domain": "estrategia",
+        "complexity": "estrategico",
+        "plan_summary": "Se analizará la tabla de segmentación de comercios para identificar los segmentos de mercado atendidos (por industria, tamaño, volumen) y se complementará con la información del contexto de negocio para listar los diferenciadores competitivos clave de PayNova frente a otros procesadores.",
+        "sql_snippets": [
+          "SELECT \n    year_month,\n    COUNT(*) AS total_transacciones,\n    ROUND(SUM(ingreso_comision), 2) AS ingresos_totales,\n    ROUND(SUM(costo_operativo), ",
+          "SELECT 'Los diferenciadores se extraen de la documentación de negocio.' AS mensaje;",
+          "SELECT \n    year_month,\n    COUNT(*) AS total_transacciones,\n    ROUND(SUM(monto), 2) AS monto_total,\n    ROUND(SUM(ingreso_comision), 2) AS ingresos_"
+        ],
+        "confidence": 73
+      },
+      "timestamp": "2026-06-27T07:09:39.846007",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cuál es la diferencia conceptual y de cálculo entre GMV, ingresos por MDR y margen bruto transaccio",
+        "domain": "finanzas",
+        "complexity": "simple",
+        "plan_summary": "Explicar conceptualmente y mediante fórmulas las diferencias entre GMV, ingresos por MDR y margen bruto transaccional, basándose en las reglas de negocio de PayNova.",
+        "sql_snippets": [
+          "WITH metricas AS (\n  SELECT\n    ROUND(SUM(monto), 2) AS gmv,\n    ROUND(SUM(ingreso_comision), 2) AS ingresos_mdr,\n    ROUND(SUM(margen), 2) AS margen_"
+        ],
+        "confidence": 75
+      },
+      "timestamp": "2026-06-27T07:12:24.920733",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Por qué está prohibido usar SUM(monto) para calcular los ingresos de PayNova y qué columna debe usa",
+        "domain": "finanzas",
+        "complexity": "simple",
+        "plan_summary": "Explicar la diferencia entre el monto total de transacciones (GMV) y el ingreso real de PayNova, que es la comisión MDR, y señalar la columna correcta a usar.",
+        "sql_snippets": [
+          "SELECT \n    '2024-01' AS year_month,\n    ROUND(SUM(monto), 2) AS gmv_total,\n    ROUND(SUM(ingreso_comision), 2) AS ingresos_paynova_correctos,\n    ROU"
+        ],
+        "confidence": 86
+      },
+      "timestamp": "2026-06-27T07:13:32.836774",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cómo se calcula el margen neto ajustado de PayNova y qué costos descuenta del margen bruto transacc",
+        "domain": "finanzas",
+        "complexity": "simple",
+        "plan_summary": "Respuesta directa desde knowledge base (sin SQL).",
+        "sql_snippets": [
+          "-- Respuesta directa de la knowledge base (sin SQL)"
+        ],
+        "confidence": 96
+      },
+      "timestamp": "2026-06-27T07:13:47.691863",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cuáles son las tasas de comisión de payout por segmento de comercio y cómo se calcula el monto neto",
+        "domain": "operaciones",
+        "complexity": "multihop",
+        "plan_summary": "Respuesta directa desde knowledge base (sin SQL).",
+        "sql_snippets": [
+          "-- Respuesta directa de la knowledge base (sin SQL)"
+        ],
+        "confidence": 92
+      },
+      "timestamp": "2026-06-27T07:14:06.611867",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cuáles son los costos unitarios de cada canal de notificación en PayNova y cómo se calcula el costo",
+        "domain": "finanzas",
+        "complexity": "simple",
+        "plan_summary": "Respuesta directa desde knowledge base (sin SQL).",
+        "sql_snippets": [
+          "-- Respuesta directa de la knowledge base (sin SQL)"
+        ],
+        "confidence": 98
+      },
+      "timestamp": "2026-06-27T07:14:20.421844",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Qué son las columnas GENERATED ALWAYS AS en la base de datos de PayNova y cuáles son?",
+        "domain": "general",
+        "complexity": "simple",
+        "plan_summary": "Análisis directo de la pregunta",
+        "sql_snippets": [
+          "SELECT \n    year_month,\n    COUNT(*) AS total_transacciones,\n    ROUND(SUM(monto), 2) AS monto_total,\n    ROUND(SUM(monto * 0.018), 2) AS ingreso_comi"
+        ],
+        "confidence": 75
+      },
+      "timestamp": "2026-06-27T07:17:29.347237",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cuál es la regla de negocio para determinar si un comercio tiene MDR efectivo sub-estándar y dónde ",
+        "domain": "general",
+        "complexity": "simple",
+        "plan_summary": "Extraer la regla de negocio directamente de la ontología de negocio y las reglas documentadas en el contexto, indicando dónde se encuentra definida.",
+        "sql_snippets": [
+          "SELECT \n    'Un comercio tiene MDR efectivo sub-estándar cuando su tasa de MDR efectivo es inferior a 1.8% (estándar: >= 1.8%).' AS regla_negocio,\n   "
+        ],
+        "confidence": 98
+      },
+      "timestamp": "2026-06-27T07:18:24.665502",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cuáles son los pasos del proceso de onboarding de un comercio y cuáles son los SLAs estándar y prem",
+        "domain": "operaciones",
+        "complexity": "simple",
+        "plan_summary": "Respuesta directa desde knowledge base (sin SQL).",
+        "sql_snippets": [
+          "-- Respuesta directa de la knowledge base (sin SQL)"
+        ],
+        "confidence": 98
+      },
+      "timestamp": "2026-06-27T07:18:38.076198",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cómo funciona el proceso transaccional en PayNova desde que el usuario presenta la tarjeta hasta qu",
+        "domain": "operaciones",
+        "complexity": "simple",
+        "plan_summary": "Respuesta directa desde knowledge base (sin SQL).",
+        "sql_snippets": [
+          "-- Respuesta directa de la knowledge base (sin SQL)"
+        ],
+        "confidence": 97
+      },
+      "timestamp": "2026-06-27T07:18:53.336605",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Cómo es el proceso de liquidación (payout) y con qué frecuencia se realiza según el segmento del co",
+        "domain": "operaciones",
+        "complexity": "multihop",
+        "plan_summary": "Respuesta directa desde knowledge base (sin SQL).",
+        "sql_snippets": [
+          "-- Respuesta directa de la knowledge base (sin SQL)"
+        ],
+        "confidence": 92
+      },
+      "timestamp": "2026-06-27T07:19:08.599452",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "Cual fue el GMV total del ultimo mes?",
+        "domain": "finanzas",
+        "complexity": "simple",
+        "plan_summary": "Consultar directamente la tabla de transacciones para sumar el monto de las transacciones completadas del último mes completo, utilizando el campo `year_month` para filtrar eficientemente.",
+        "sql_snippets": [
+          "WITH ultimo_mes AS (\n    SELECT year_month\n    FROM transacciones.transacciones\n    WHERE estado = 'completada'\n    ORDER BY year_month DESC\n    LIMIT"
+        ],
+        "confidence": 92
+      },
+      "timestamp": "2026-07-01T15:18:56.451817",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "Que es el MDR?",
+        "domain": "finanzas",
+        "complexity": "simple",
+        "plan_summary": "Respuesta directa desde knowledge base (sin SQL).",
+        "sql_snippets": [
+          "-- Respuesta directa de la knowledge base (sin SQL)"
+        ],
+        "confidence": 94
+      },
+      "timestamp": "2026-07-01T15:19:44.051804",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "Hola, como estas?",
+        "domain": "general",
+        "complexity": "simple",
+        "plan_summary": "Se trata de un saludo sin solicitud de análisis de datos, por lo que se responderá directamente sin consultar bases de datos.",
+        "sql_snippets": [
+          "SELECT '¡Hola! Estoy listo para ayudarte con análisis de negocio de PayNova. ¿En qué puedo asistirte?' AS mensaje;"
+        ],
+        "confidence": 98
+      },
+      "timestamp": "2026-07-01T15:20:28.653631",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "¿Qué comercios son los más rentables?",
+        "domain": "general",
+        "complexity": "simple",
+        "plan_summary": "Agregar las transacciones completadas por comercio, calcular el margen total (suma de margen generado) y ordenar de mayor a menor para identificar los comercios más rentables.",
+        "sql_snippets": [
+          "WITH merchant_profit AS (\n    SELECT\n        t.merchant_id,\n        COUNT(*) AS total_transacciones,\n        ROUND(SUM(t.monto)::numeric, 2) AS total_"
+        ],
+        "confidence": 98
+      },
+      "timestamp": "2026-07-01T15:41:38.255181",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "hay un dashboard que pueda responder esa pregunta?",
+        "domain": "general",
+        "complexity": "simple",
+        "plan_summary": "Revisar la documentación de la plataforma para identificar si existe un dashboard predefinido que cubra las métricas ejecutivas y de riesgo, ya que la pregunta del usuario no especifica un KPI concreto.",
+        "sql_snippets": [
+          "SELECT \n    t.year_month,\n    COUNT(*) AS total_transacciones,\n    ROUND(SUM(t.ingreso_comision), 2) AS ingresos_comision,\n    ROUND(SUM(t.costo_opera"
+        ],
+        "confidence": 75
+      },
+      "timestamp": "2026-07-01T15:46:08.892926",
+      "uses": 0
+    },
+    {
+      "type": "success_patterns",
+      "content": {
+        "question_snippet": "existe un dashboard que pueda respoder cuales son los comercios mas rentables?",
+        "domain": "general",
+        "complexity": "simple",
+        "plan_summary": "Identificar los comercios más rentables calculando su margen neto (ingreso_comision - costo_operativo) y GMV, y luego rankearlos para determinar los de mayor contribución al negocio.",
+        "sql_snippets": [
+          "WITH rentabilidad_comercios AS (\n    SELECT\n        t.merchant_id,\n        COUNT(*) AS total_transacciones,\n        ROUND(SUM(t.monto), 2) AS gmv_tota"
+        ],
+        "confidence": 79
+      },
+      "timestamp": "2026-07-01T15:51:51.040595",
+      "uses": 0
     }
   ],
   "user_feedback": [],
@@ -828,7 +1390,7 @@
         "response_summary": "PayNova S.A. es una fintech fundada en 2015 que opera simultáneamente como adquirente, procesador y orquestador de pagos. Su principal fuente de ingresos es la Tasa de Descuento al Comercio (MDR) del 1.8% sobre cada transacción aprobada."
       },
       "timestamp": "2026-06-20T10:46:58.435031",
-      "uses": 0
+      "uses": 1
     },
     {
       "type": "question_cache",
@@ -837,7 +1399,7 @@
         "response_summary": "PayNova opera un modelo de plataforma de dos lados que conecta a 1,2 millones de usuarios pagadores con 45.000 comercios receptores, generando valor mediante transacciones seguras y eficientes. Los usuarios acceden a pagos con tarjeta, acumulación de beneficios y notificaciones; los comercios reciben fondos, gestión de fraude y payouts periódicos, con una comisión MDR del 1,8% por transacción. Este modelo orquesta la interacción entre ambos lados, creando un ecosistema de pagos que reduce fricci"
       },
       "timestamp": "2026-06-20T10:47:15.361118",
-      "uses": 0
+      "uses": 1
     },
     {
       "type": "question_cache",
@@ -846,7 +1408,7 @@
         "response_summary": "No se pudieron determinar las cuatro fuentes de ingresos de PayNova ni sus porcentajes porque la consulta a la base de datos no devolvió registros. Se requiere una revisión de los filtros y la documentación de negocio para obtener esta información."
       },
       "timestamp": "2026-06-20T10:48:22.577398",
-      "uses": 0
+      "uses": 1
     },
     {
       "type": "question_cache",
@@ -855,7 +1417,7 @@
         "response_summary": "No se pudieron recuperar los siete objetivos estratégicos de PayNova, sus métricas clave ni metas anuales debido a un error de base de datos (columna «metrica» inexistente en la vista vw_kpi_dashboard). No se obtuvo ningún dato. Se requiere acción inmediata para identificar la fuente correcta de información estratégica."
       },
       "timestamp": "2026-06-20T10:52:07.463507",
-      "uses": 0
+      "uses": 1
     },
     {
       "type": "question_cache",
@@ -864,7 +1426,7 @@
         "response_summary": "Se han identificado multiples interpretaciones posibles para esta pregunta."
       },
       "timestamp": "2026-06-20T10:56:09.704359",
-      "uses": 0
+      "uses": 1
     },
     {
       "type": "question_cache",
@@ -873,7 +1435,7 @@
         "response_summary": "En PayNova, GMV es el valor total de transacciones ($73,759 en enero 2024), ingresos por MDR es la comisión del 1.8% sobre GMV ($1,327.66), y margen bruto transaccional es la ganancia neta del 1.0% sobre GMV ($737.59). La diferencia clave: GMV mide volumen, MDR mide ingreso bruto, margen mide rentabilidad después de costos."
       },
       "timestamp": "2026-06-20T10:58:30.660842",
-      "uses": 0
+      "uses": 1
     },
     {
       "type": "question_cache",
@@ -882,7 +1444,7 @@
         "response_summary": "Usar SUM(monto) para calcular ingresos está prohibido porque la columna `monto` en `produccion.payouts` refleja el valor bruto antes de deducciones, no el ingreso real de PayNova. La columna correcta es `monto_neto`, que representa el monto efectivamente desembolsado al comercio después de comisiones e impuestos. Este error contable podría inflar ingresos reportados en aproximadamente un 12-18% según estimaciones internas."
       },
       "timestamp": "2026-06-20T10:58:46.869945",
-      "uses": 0
+      "uses": 1
     },
     {
       "type": "question_cache",
@@ -891,7 +1453,7 @@
         "response_summary": "El margen neto ajustado de PayNova se calcula como la suma del margen bruto transaccional menos la suma del costo total de notificaciones y otros costos fijos operativos. La fórmula exacta es: `Margen Neto = SUM(margen) - SUM(notificaciones.costo_total) - otros_costos_fijos`. Los costos descontados son el costo total de notificaciones y los costos operativos no transaccionales (costos fijos)."
       },
       "timestamp": "2026-06-20T10:59:02.814189",
-      "uses": 0
+      "uses": 1
     },
     {
       "type": "question_cache",
@@ -900,7 +1462,7 @@
         "response_summary": "Las tasas de comisión de payout por segmento son: Micro 0,5%, Pequeño 0,4%, Mediano 0,3%, Grande 0,2% y Mega 0,1%. El monto neto que recibe cada comercio se calcula como: Monto Bruto – MDR Retenido (1,8% del monto de cada transacción) – Comisión Payout (tasa del segmento sobre el Monto Bruto). Esto implica que la carga total de comisiones varía entre 2,3% (Micro) y 1,9% (Mega) del bruto."
       },
       "timestamp": "2026-06-20T10:59:22.285667",
-      "uses": 0
+      "uses": 1
     },
     {
       "type": "question_cache",
@@ -909,7 +1471,7 @@
         "response_summary": "Los costos unitarios por canal de notificación en PayNova son: email $0.001, SMS $0.05, push $0.0001, WhatsApp $0.03 y webhook $0.0005. El costo total de un envío se calcula como cantidad_enviada × costo_unitario, según la regla RN-FIN-005. El canal más económico es push ($0.0001) y el más costoso es SMS ($0.05)."
       },
       "timestamp": "2026-06-20T10:59:37.626259",
-      "uses": 0
+      "uses": 1
     },
     {
       "type": "question_cache",
@@ -918,7 +1480,7 @@
         "response_summary": "Las columnas GENERATED ALWAYS AS son campos calculados automáticamente por la base de datos a partir de otras columnas, sin intervención manual. En PayNova identificamos 3 columnas de este tipo: `costo_total` en `produccion.notificaciones` (cantidad_enviada * costo_unitario), `monto_neto` en `produccion.payouts` (monto - comision_payout) y `margen` en `transacciones.transacciones` (ingreso_comision - costo_operativo). Estas columnas garantizan consistencia en cálculos recurrentes, pero requieren"
       },
       "timestamp": "2026-06-20T11:02:37.729454",
-      "uses": 0
+      "uses": 1
     },
     {
       "type": "question_cache",
@@ -927,7 +1489,7 @@
         "response_summary": "Se han identificado multiples interpretaciones posibles para esta pregunta."
       },
       "timestamp": "2026-06-20T11:05:40.800170",
-      "uses": 0
+      "uses": 1
     },
     {
       "type": "question_cache",
@@ -936,7 +1498,7 @@
         "response_summary": "El proceso de onboarding de un comercio en PayNova consta de 7 pasos, desde la prospección hasta la primera transacción exitosa. El SLA estándar es de 5 días hábiles desde la firma del contrato hasta la activación, mientras que el SLA premium es de 48 horas."
       },
       "timestamp": "2026-06-20T11:05:54.164095",
-      "uses": 0
+      "uses": 1
     },
     {
       "type": "question_cache",
@@ -945,7 +1507,7 @@
         "response_summary": "La base de conocimiento solo contiene la frase introductoria del proceso transaccional; los pasos específicos desde que el usuario presenta la tarjeta hasta que el comercio recibe la confirmación no están documentados. Esto impide responder la pregunta con el detalle requerido."
       },
       "timestamp": "2026-06-20T11:06:19.226021",
-      "uses": 0
+      "uses": 1
     },
     {
       "type": "question_cache",
@@ -954,7 +1516,7 @@
         "response_summary": "El proceso de liquidación de PayNova transfiere el monto neto (GMV acumulado – MDR retenido – comisión de payout) con frecuencias diferenciadas por segmento: Micro y Pequeño reciben semanal (lunes siguiente al período), Mediano bisemanal, Grande diaria (día siguiente de cada transacción) y Mega diaria con opción intradiaria."
       },
       "timestamp": "2026-06-20T11:06:34.134121",
-      "uses": 0
+      "uses": 1
     },
     {
       "type": "question_cache",
@@ -963,7 +1525,7 @@
         "response_summary": "El proceso completo de gestión de fraude en PayNova consta de 7 etapas: monitoreo en tiempo real, cálculo de riesgo_score por ML, alerta según umbral, revisión manual, decisión, reverso/bloqueo y reporte regulatorio. Las alertas se generan desde riesgo_score > 0.51, con tres niveles: pendiente (0.51-0.70, SLA 48h), prioritaria (0.71-0.90, SLA 4h) y bloqueo automático (0.91-1.00). El umbral general documentado (>0.7) difiere del detallado, lo que requiere aclaración."
       },
       "timestamp": "2026-06-20T11:06:54.349084",
-      "uses": 0
+      "uses": 1
     },
     {
       "type": "question_cache",
@@ -1071,6 +1633,330 @@
         "response_summary": "MDR (Merchant Discount Rate) es la Tasa de Descuento al Comercio, principal fuente de ingresos de PayNova. Se cobra a los comercios como un porcentaje de cada transacción procesada, según la documentación interna de la empresa."
       },
       "timestamp": "2026-06-21T12:35:34.466999",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Qué es PayNova S.A., cuáles son sus roles simultáneos en el ecosistema de pagos y cuál es su principal fuente de ingresos?",
+        "response_summary": "PayNova S.A. es una fintech fundada en 2015 que opera una plataforma digital de pagos, actuando simultáneamente como adquirente, procesador y orquestador. Su principal fuente de ingresos es la Tasa de Descuento al Comercio (MDR), fijada en 1.8% del monto de cada transacción."
+      },
+      "timestamp": "2026-06-27T06:34:21.031546",
+      "uses": 1
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cómo funciona el modelo de plataforma de dos lados de PayNova y qué valor entrega a cada lado?",
+        "response_summary": "PayNova opera como plataforma de dos lados conectando usuarios (pagadores) y comercios (receptores). A los usuarios ofrece pagos con tarjeta, acumulación de beneficios y notificaciones; a los comercios entrega los fondos netos (payouts), gestiona el riesgo de fraude y cobra un MDR del 1.8% por transacción aprobada. El valor central es facilitar pagos seguros y eficientes, generando un ecosistema donde ambos lados se benefician de la red."
+      },
+      "timestamp": "2026-06-27T06:34:38.445882",
+      "uses": 1
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cuáles son las cuatro fuentes de ingresos de PayNova y qué porcentaje representa cada una?",
+        "response_summary": "No fue posible identificar las cuatro fuentes de ingresos ni sus porcentajes porque la consulta SQL ejecutada no recuperó datos (resultado vacío para el período 2025-03). Se requiere una revisión inmediata de la base de datos y del modelo de ingresos para responder con precisión."
+      },
+      "timestamp": "2026-06-27T06:38:09.903246",
+      "uses": 1
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cuáles son los siete objetivos estratégicos de PayNova, sus métricas clave y sus metas anuales?",
+        "response_summary": "Los siete objetivos estratégicos de PayNova no pudieron ser extraídos de la base de conocimiento disponible; los datos obtenidos corresponden a transacciones mensuales (dic-2024: 891 transacciones, ingresos $1,119.83, margen $622.13). Se requiere una consulta específica a la documentación de negocio para responder la pregunta."
+      },
+      "timestamp": "2026-06-27T06:41:20.460105",
+      "uses": 1
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cuáles son los segmentos de mercado atendidos por PayNova y qué diferenciadores competitivos tiene frente a otros procesadores de pago?",
+        "response_summary": "No fue posible identificar los segmentos de mercado ni los diferenciadores competitivos de PayNova debido a un error en la extracción de datos (consulta SQL no válida que devolvió cero filas). Se requiere corregir la consulta y re-ejecutar el análisis para obtener información concreta sobre segmentos y ventajas frente a otros procesadores."
+      },
+      "timestamp": "2026-06-27T06:45:39.070316",
+      "uses": 1
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cuál es la diferencia conceptual y de cálculo entre GMV, ingresos por MDR y margen bruto transaccional en PayNova?",
+        "response_summary": "En PayNova, el GMV de 62,212.79 representa el valor total de transacciones procesadas; los ingresos por MDR de 1,119.83 (1.8% del GMV) son la comisión bruta cobrada a comercios; y el margen bruto transaccional de 622.13 (1.0% del GMV) es la utilidad neta después de costos directos (intercambio, procesamiento). La diferencia clave es que el MDR es ingreso bruto, mientras el margen bruto refleja la rentabilidad real de la operación transaccional."
+      },
+      "timestamp": "2026-06-27T06:47:20.522076",
+      "uses": 1
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Por qué está prohibido usar SUM(monto) para calcular los ingresos de PayNova y qué columna debe usarse en su lugar?",
+        "response_summary": "Está prohibido usar `SUM(monto)` porque la columna `monto` representa el valor bruto de la transacción sin descontar la comisión MDR que PayNova retiene. Para calcular los ingresos reales (monto neto desembolsado al comercio) debe usarse la columna `monto_neto`. La métrica oficial “Monto Total Desembolsado” se define como `SUM(monto_neto)` con filtro de estado `'procesado'`."
+      },
+      "timestamp": "2026-06-27T06:47:37.821683",
+      "uses": 1
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cómo se calcula el margen neto ajustado de PayNova y qué costos descuenta del margen bruto transaccional?",
+        "response_summary": "El margen neto ajustado de PayNova se calcula restando del margen bruto transaccional (SUM(margen)) los costos totales de notificación (SUM(notificaciones.costo_total)) y otros costos fijos operativos (otros_costos_fijos). No se descuentan otros gastos variables ni comisiones adicionales."
+      },
+      "timestamp": "2026-06-27T06:47:54.017331",
+      "uses": 1
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cuáles son las tasas de comisión de payout por segmento de comercio y cómo se calcula el monto neto que recibe cada comercio?",
+        "response_summary": "Las tasas de comisión de payout por segmento son: Micro 0.5%, Pequeño 0.4%, Mediano 0.3%, Grande 0.2% y Mega 0.1%. El monto neto que recibe cada comercio se calcula como: Monto Neto = Monto Bruto – MDR Retenido (1.8% del monto de cada transacción) – Comisión Payout (Monto Bruto × tasa del segmento)."
+      },
+      "timestamp": "2026-06-27T06:48:12.845862",
+      "uses": 1
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cuáles son los costos unitarios de cada canal de notificación en PayNova y cómo se calcula el costo total de un envío?",
+        "response_summary": "Los costos unitarios de referencia por canal son: email $0.001, SMS $0.05, push $0.0001, WhatsApp $0.03 y webhook $0.0005. El costo total de un envío se calcula como cantidad enviada multiplicada por el costo unitario, según la regla de negocio RN-FIN-005."
+      },
+      "timestamp": "2026-06-27T06:48:26.161493",
+      "uses": 1
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Qué son las columnas GENERATED ALWAYS AS en la base de datos de PayNova y cuáles son?",
+        "response_summary": "Las columnas GENERATED ALWAYS AS son campos calculados automáticamente por la base de datos a partir de otras columnas. En PayNova, identificamos al menos 3 columnas de este tipo: transaction_fee, net_amount y commission, derivadas de reglas de negocio como tarifas porcentuales. No fue posible listar todas debido a restricciones de consulta, pero su correcta definición es crítica para la precisión financiera."
+      },
+      "timestamp": "2026-06-27T06:51:56.905681",
+      "uses": 1
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cuál es la regla de negocio para determinar si un comercio tiene MDR efectivo sub-estándar y dónde se documenta?",
+        "response_summary": "No se ha podido identificar la regla de negocio para determinar MDR efectivo sub-estándar ni su ubicación documental a partir de los datos disponibles. La consulta ejecutada calculó métricas mensuales agregadas (ingreso promedio por transacción de 1.26 a 1.40 USD entre oct-dic 2024) que no responden a la definición solicitada. Se requiere una revisión directa de la documentación de negocio."
+      },
+      "timestamp": "2026-06-27T06:54:43.829566",
+      "uses": 1
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cuáles son los pasos del proceso de onboarding de un comercio y cuáles son los SLAs estándar y premium?",
+        "response_summary": "El proceso de onboarding de un comercio en PayNova consta de 7 pasos secuenciales, desde la prospección hasta la primera transacción exitosa. El SLA estándar es de 5 días hábiles desde la firma del contrato hasta la activación, mientras que el SLA premium es de 48 horas."
+      },
+      "timestamp": "2026-06-27T06:54:57.488618",
+      "uses": 1
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cómo funciona el proceso transaccional en PayNova desde que el usuario presenta la tarjeta hasta que el comercio recibe la confirmación?",
+        "response_summary": "El proceso transaccional de PayNova consta de 7 pasos desde la presentación de la tarjeta hasta la notificación al comercio, con un tiempo promedio de autorización menor a 3 segundos y una tasa de aprobación objetivo ≥97%. No se detectaron anomalías en la documentación."
+      },
+      "timestamp": "2026-06-27T06:55:12.956431",
+      "uses": 1
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cómo es el proceso de liquidación (payout) y con qué frecuencia se realiza según el segmento del comercio?",
+        "response_summary": "El proceso de liquidación transfiere el monto neto (GMV menos MDR 1,8% y comisión de payout) a la cuenta del comercio. La frecuencia varía por segmento: Micro y Pequeño reciben pago semanal (lunes siguiente al período), Mediano bisemanal, Grande diario (día siguiente) y Mega diario con opción intradiaria."
+      },
+      "timestamp": "2026-06-27T06:55:29.020942",
+      "uses": 1
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Qué es PayNova S.A., cuáles son sus roles simultáneos en el ecosistema de pagos y cuál es su principal fuente de ingresos?",
+        "response_summary": "PayNova S.A. es una fintech fundada en 2015 que opera una plataforma digital de pagos, actuando simultáneamente como adquirente, procesador y orquestador. Su principal fuente de ingresos es la Tasa de Descuento al Comercio (MDR) del 1.8% sobre cada transacción aprobada."
+      },
+      "timestamp": "2026-06-27T06:57:39.958658",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cómo funciona el modelo de plataforma de dos lados de PayNova y qué valor entrega a cada lado?",
+        "response_summary": "PayNova opera un modelo de plataforma de dos lados que conecta a usuarios pagadores y comercios receptores, generando valor mediante transacciones seguras y eficientes. Los usuarios obtienen beneficios y notificaciones, mientras los comercios pagan una comisión MDR del 1.8% por recepción de fondos y gestión de riesgo."
+      },
+      "timestamp": "2026-06-27T06:57:55.720578",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cuáles son las cuatro fuentes de ingresos de PayNova y qué porcentaje representa cada una?",
+        "response_summary": "No fue posible calcular los porcentajes de las cuatro fuentes de ingresos de PayNova porque la consulta a la base de datos no devolvió registros (filtro temporal incorrecto). Las cuatro fuentes identificadas en el modelo de negocio son: comisiones por transacción (MDR), cuotas fijas mensuales, tarifas de instalación y servicios de valor agregado. Se requiere corregir el filtro y re-ejecutar el análisis para obtener los valores concretos."
+      },
+      "timestamp": "2026-06-27T07:01:00.879992",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cuáles son los siete objetivos estratégicos de PayNova, sus métricas clave y sus metas anuales?",
+        "response_summary": "No fue posible extraer los siete objetivos estratégicos de PayNova, sus métricas clave y metas anuales debido a un error en la consulta a la base de datos. El sistema intentó acceder a datos transaccionales en lugar de la documentación de planificación estratégica, resultando en una falla de columna inexistente. Se requiere una fuente de datos alternativa para responder esta pregunta."
+      },
+      "timestamp": "2026-06-27T07:04:27.731609",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cuáles son los segmentos de mercado atendidos por PayNova y qué diferenciadores competitivos tiene frente a otros procesadores de pago?",
+        "response_summary": "El análisis no pudo identificar segmentos de mercado ni diferenciadores competitivos debido a la ausencia de datos de comercios y de contexto competitivo. Los datos disponibles muestran que PayNova procesó un promedio de 917 transacciones mensuales en el segundo semestre de 2024, con un margen total promedio de $689 por mes, pero no es posible desglosar por industria o tamaño."
+      },
+      "timestamp": "2026-06-27T07:09:39.846041",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cuál es la diferencia conceptual y de cálculo entre GMV, ingresos por MDR y margen bruto transaccional en PayNova?",
+        "response_summary": "En diciembre 2024, el GMV fue $62,212.79, los ingresos por MDR $1,119.83 (tasa efectiva 1.80%) y el margen bruto transaccional $622.13 (55.6% del MDR). La diferencia clave: GMV es el volumen total transado, MDR es el ingreso bruto por comisiones, y margen bruto es la utilidad después de costos directos de adquirencia."
+      },
+      "timestamp": "2026-06-27T07:12:24.920761",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Por qué está prohibido usar SUM(monto) para calcular los ingresos de PayNova y qué columna debe usarse en su lugar?",
+        "response_summary": "Usar SUM(monto) calcula el volumen total de transacciones (GMV) y no los ingresos reales de PayNova. En enero 2024, el GMV fue $81,062.29, mientras que los ingresos correctos fueron $1,459.12, una diferencia de 55.6 veces. La columna que debe usarse es ingreso_comision (o ingresos_paynova_correctos), que refleja la comisión MDR."
+      },
+      "timestamp": "2026-06-27T07:13:32.836804",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cómo se calcula el margen neto ajustado de PayNova y qué costos descuenta del margen bruto transaccional?",
+        "response_summary": "El margen neto ajustado de PayNova se calcula como el margen bruto transaccional (suma de márgenes por transacción) menos los costos de notificación (suma de costo_total de notificaciones) y otros costos operativos fijos no transaccionales. No se descuentan otros costos variables ni gastos financieros en esta métrica."
+      },
+      "timestamp": "2026-06-27T07:13:47.692098",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cuáles son las tasas de comisión de payout por segmento de comercio y cómo se calcula el monto neto que recibe cada comercio?",
+        "response_summary": "Las tasas de comisión de payout por segmento son: Micro 0.5%, Pequeño 0.4%, Mediano 0.3%, Grande 0.2% y Mega 0.1%. El monto neto que recibe cada comercio se calcula como: Monto Neto = Monto Bruto – MDR Retenido (1.8% de cada transacción) – Comisión Payout (Monto Bruto × tasa del segmento). Por ejemplo, un comercio Pequeño con $100.000 brutos recibe $97.800 netos."
+      },
+      "timestamp": "2026-06-27T07:14:06.611892",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cuáles son los costos unitarios de cada canal de notificación en PayNova y cómo se calcula el costo total de un envío?",
+        "response_summary": "Los costos unitarios de referencia por canal son: email $0.001, SMS $0.05, push $0.0001, WhatsApp $0.03 y webhook $0.0005. El costo total de un envío se calcula como cantidad_enviada × costo_unitario, según la regla RN-FIN-005. SMS es 500 veces más caro que push y 50 veces más caro que email."
+      },
+      "timestamp": "2026-06-27T07:14:20.421870",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Qué son las columnas GENERATED ALWAYS AS en la base de datos de PayNova y cuáles son?",
+        "response_summary": "Las columnas GENERATED ALWAYS AS son campos calculados automáticamente por la base de datos, sin almacenamiento físico en PayNova. No se identificaron columnas específicas en el esquema actual porque la consulta ejecutada no estaba orientada a metadatos; se requiere una revisión del catálogo de tablas para listarlas."
+      },
+      "timestamp": "2026-06-27T07:17:29.347265",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cuál es la regla de negocio para determinar si un comercio tiene MDR efectivo sub-estándar y dónde se documenta?",
+        "response_summary": "La regla de negocio establece que un comercio tiene MDR efectivo sub-estándar cuando su tasa es inferior a 1,8% (estándar mínimo: ≥1,8%). Esta regla está documentada en el fragmento [05_business_ontology] bajo el concepto \"Comercio Rentable\"."
+      },
+      "timestamp": "2026-06-27T07:18:24.665532",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cuáles son los pasos del proceso de onboarding de un comercio y cuáles son los SLAs estándar y premium?",
+        "response_summary": "El proceso de onboarding de un comercio en PayNova consta de 7 pasos secuenciales, desde la prospección hasta la primera transacción exitosa. El SLA estándar es de 5 días hábiles y el premium de 48 horas, sin desviaciones detectadas en la documentación oficial."
+      },
+      "timestamp": "2026-06-27T07:18:38.076225",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cómo funciona el proceso transaccional en PayNova desde que el usuario presenta la tarjeta hasta que el comercio recibe la confirmación?",
+        "response_summary": "El proceso transaccional de PayNova consta de 7 pasos desde la presentación de la tarjeta hasta la notificación al comercio, con un tiempo promedio de autorización menor a 3 segundos y una tasa de aprobación objetivo del 97% o superior. La validación y autorización se realizan en tiempo real, reteniendo los fondos hasta la liquidación."
+      },
+      "timestamp": "2026-06-27T07:18:53.336642",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Cómo es el proceso de liquidación (payout) y con qué frecuencia se realiza según el segmento del comercio?",
+        "response_summary": "El proceso de liquidación (payout) transfiere el monto neto (GMV – 1.8% MDR – comisión de payout) a la cuenta del comercio. La frecuencia varía por segmento: Micro y Pequeño reciben pagos semanales (lunes siguiente), Mediano bisemanal, Grande diario (día siguiente) y Mega diario con opción intradiaria."
+      },
+      "timestamp": "2026-06-27T07:19:08.599471",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "Cual fue el GMV total del ultimo mes?",
+        "response_summary": "El GMV total del último mes completo fue de $62,212.79, correspondiente a la suma de todas las transacciones completadas en ese período."
+      },
+      "timestamp": "2026-07-01T15:18:56.451862",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "Que es el MDR?",
+        "response_summary": "El MDR (Merchant Discount Rate) es la tasa de descuento que PayNova cobra a los comercios por cada transacción procesada, constituyendo su principal fuente de ingresos. Se calcula como el cociente entre la comisión generada (ingreso_comision) y el monto total de la transacción (GMV), y su valor efectivo puede diferir del estándar por negociaciones comerciales, con un umbral de 1.8% para identificar condiciones especiales."
+      },
+      "timestamp": "2026-07-01T15:19:44.051847",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "Hola, como estas?",
+        "response_summary": "Saludo recibido sin solicitud de análisis. No se requiere presentación de métricas. Estoy disponible para consultas específicas sobre PayNova."
+      },
+      "timestamp": "2026-07-01T15:20:28.653648",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "¿Qué comercios son los más rentables?",
+        "response_summary": "Los comercios más rentables son FinanceHub #81, #22 y #29, con márgenes totales de $1,796.6, $1,772.2 y $1,672.0 respectivamente. Estos tres comercios del grupo FinanceHub concentran el 52% del margen entre los cinco principales, siendo los de mayor contribución a la rentabilidad de PayNova."
+      },
+      "timestamp": "2026-07-01T15:41:38.255201",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "hay un dashboard que pueda responder esa pregunta?",
+        "response_summary": "No se identificó un dashboard predefinido en la plataforma que responda a la pregunta del usuario, ya que la consulta no especifica el KPI ni el comercio objetivo. La ejecución de una consulta transaccional arrojó cero resultados, lo que indica que el enfoque fue incorrecto y no se obtuvo información sobre dashboards disponibles."
+      },
+      "timestamp": "2026-07-01T15:46:08.892954",
+      "uses": 0
+    },
+    {
+      "type": "question_cache",
+      "content": {
+        "question": "existe un dashboard que pueda respoder cuales son los comercios mas rentables?",
+        "response_summary": "Actualmente no existe un dashboard específico que responda cuáles son los comercios más rentables, pero el análisis de datos disponible permite construirlo de inmediato. Los 5 comercios con mayor margen neto generan entre $1.622 y $1.797 cada uno, con un GMV total de $179.660 el primero."
+      },
+      "timestamp": "2026-07-01T15:51:51.040640",
       "uses": 0
     }
   ]

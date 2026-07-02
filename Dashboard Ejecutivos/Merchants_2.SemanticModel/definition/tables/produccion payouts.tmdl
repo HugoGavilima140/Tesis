@@ -1,0 +1,207 @@
+table 'produccion payouts'
+	lineageTag: 45350cc4-25ac-496a-abf5-d7443165dab0
+
+	column payout_id
+		dataType: string
+		lineageTag: 9ae7063b-710c-4475-9afd-1c68c3da6d2b
+		summarizeBy: none
+		sourceColumn: payout_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column merchant_id
+		dataType: string
+		lineageTag: 771c0e54-fa62-41e8-9e40-6e43e34e89e5
+		summarizeBy: none
+		sourceColumn: merchant_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column monto
+		dataType: double
+		lineageTag: 55092acb-570d-4424-9a0d-53e1846c1f89
+		summarizeBy: sum
+		sourceColumn: monto
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column comision_payout
+		dataType: double
+		lineageTag: 94ca7961-9676-4eb3-bc6a-5ffac2801321
+		summarizeBy: sum
+		sourceColumn: comision_payout
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column monto_neto
+		dataType: double
+		lineageTag: c4e9c81b-5b67-4478-ad61-a2cd9b62606c
+		summarizeBy: sum
+		sourceColumn: monto_neto
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column estado
+		dataType: string
+		lineageTag: 82d7f02f-4fb3-48da-a4de-8aa7b9b21b23
+		summarizeBy: none
+		sourceColumn: estado
+
+		annotation SummarizationSetBy = Automatic
+
+	column razon_rechazo
+		dataType: string
+		lineageTag: f344048a-91d9-489b-8079-9713b7ecdaad
+		summarizeBy: none
+		sourceColumn: razon_rechazo
+
+		annotation SummarizationSetBy = Automatic
+
+	column metodo_pago
+		dataType: string
+		lineageTag: b99baf6a-b255-496a-89ce-2d85ddd8c39b
+		summarizeBy: none
+		sourceColumn: metodo_pago
+
+		annotation SummarizationSetBy = Automatic
+
+	column numero_referencia
+		dataType: string
+		lineageTag: 84b0bc76-aeff-4939-9b22-66d99f247d42
+		summarizeBy: none
+		sourceColumn: numero_referencia
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_solicitud
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 63854285-95b2-437d-a4f9-34b2dc84a0af
+		summarizeBy: none
+		sourceColumn: fecha_solicitud
+
+		variation Variación
+			isDefault
+			relationship: c426c6b4-a3a0-40dc-ab18-40c1beed515e
+			defaultHierarchy: LocalDateTable_15007319-d00b-4122-b95b-cfa94fc86e5e.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_payout
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 8f491e81-a251-4df4-9b44-2f83426f4c8f
+		summarizeBy: none
+		sourceColumn: fecha_payout
+
+		variation Variación
+			isDefault
+			relationship: 15b2b4c9-dbbd-4e04-aa1c-a4a7b66cff62
+			defaultHierarchy: LocalDateTable_a176476b-5a77-4c36-9dbe-65337a43e029.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_confirmacion
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 741f822a-2508-486a-b85b-192bbdb0e4e4
+		summarizeBy: none
+		sourceColumn: fecha_confirmacion
+
+		variation Variación
+			isDefault
+			relationship: b98510db-7ae9-480a-9044-69040e83f37a
+			defaultHierarchy: LocalDateTable_1a4933e1-d2aa-4f40-aece-2af589369117.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column periodo_desde
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 227616eb-3ee4-4ef9-90fe-98898487f912
+		summarizeBy: none
+		sourceColumn: periodo_desde
+
+		variation Variación
+			isDefault
+			relationship: b1ae1309-0982-46da-9ac5-9af5f23ec195
+			defaultHierarchy: LocalDateTable_fd7f2cdb-d5e9-45d4-a94b-0373ab84c8c1.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column periodo_hasta
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 07fab3e9-3391-4358-a490-4edb6551e5ef
+		summarizeBy: none
+		sourceColumn: periodo_hasta
+
+		variation Variación
+			isDefault
+			relationship: a68cf4db-9fef-4097-acff-24d71424cead
+			defaultHierarchy: LocalDateTable_fde194d1-caf4-4a59-8df6-bbd50ea037a0.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column notas
+		dataType: string
+		lineageTag: c5f847cc-3251-474e-97da-fb48b8b87665
+		summarizeBy: none
+		sourceColumn: notas
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0c893335-1360-4ee9-9ef0-aedd4ffdfff8
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variación
+			isDefault
+			relationship: c779082c-dde8-425c-8f7d-f990dc2f3bff
+			defaultHierarchy: LocalDateTable_cb3d2c48-737a-43fd-ad44-3ff86d24fb4a.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 1f34d579-0722-4aab-8cb1-e7650fbb57f3
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		variation Variación
+			isDefault
+			relationship: 2e9333f7-9016-49d1-bbf3-1633bb508487
+			defaultHierarchy: LocalDateTable_517af749-d3f5-4f35-ae5c-1223c625b7a3.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column FechaDia = DATE(YEAR('produccion payouts'[fecha_payout]), MONTH('produccion payouts'[fecha_payout]), DAY('produccion payouts'[fecha_payout]))
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 647a287a-f618-4411-86f1-b50a7ad46942
+
+	partition 'produccion payouts' = m
+		mode: import
+		source =
+				let
+				    Origen = PostgreSQL.Database("localhost", "produccion"),
+				    produccion_payouts = Origen{[Schema="produccion",Item="payouts"]}[Data]
+				in
+				    produccion_payouts
+
+	annotation PBI_ResultType = Table
+

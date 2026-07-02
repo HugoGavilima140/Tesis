@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "ed758cba32e57fd0fb54",
+  "position": {
+    "x": 320,
+    "y": 360,
+    "z": 8000,
+    "height": 44.444444444444443,
+    "width": 127.77777777777777,
+    "tabOrder": 8000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Rechazados",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "color": "#ef4444"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "center"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

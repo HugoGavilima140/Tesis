@@ -156,6 +156,11 @@ def render_response(response, step_results=None, trace_text: str = ""):
     if getattr(response, "kb_was_sufficient", False):
         st.info("ℹ️ **Respuesta directa desde documentación empresarial** (sin consulta SQL)")
 
+    # Banner de dashboard relacionado [Mod 10]
+    dashboard_reference = getattr(response, "dashboard_reference", "")
+    if dashboard_reference:
+        st.info(f"📊 **Datos también visualizados en el dashboard:** {dashboard_reference}")
+
     # Resumen ejecutivo
     st.markdown(f"### {response.executive_summary}")
 
@@ -479,6 +484,7 @@ def process_question(question: str):
                     "elapsed": elapsed,
                     "step_results": step_results,
                     "kb_was_sufficient": getattr(response, "kb_was_sufficient", False),
+                    "dashboard_reference": getattr(response, "dashboard_reference", ""),
                     "critic_verdict": getattr(response, "critic_verdict", "sufficient"),
                     "confidence_components": getattr(response, "confidence_components", None),
                     "risks": getattr(response, "risks", []),

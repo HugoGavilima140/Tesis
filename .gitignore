@@ -18,7 +18,7 @@ logs/
 .vscode/
 
 # Notebooks de prueba (locales, no versionados)
-notebooks/
+# notebooks/
 
 # Otros entornos
 .venv/

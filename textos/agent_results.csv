@@ -1,0 +1,633 @@
+id,question,ground_truth,answer,context,kb_was_sufficient,critic_verdict,confidence_score,c_retrieval,c_plan,c_sql,c_business,c_critic,c_iter_penalty,q_length,answer_length,elapsed_s
+P01,"¿Qué es PayNova S.A., cuáles son sus roles simultáneos en el ecosistema de pagos y cuál es su principal fuente de ingresos?","PayNova S.A. es una fintech fundada en 2015 que actúa simultáneamente como adquirente, procesador y orquestador de pagos. Opera sobre redes de tarjetas existentes sin emitir tarjetas propias. Su principal fuente de ingresos es el MDR (Merchant Discount Rate), que representa el 85% del ingreso total y equivale al 1.8% del monto de cada transacción aprobada.","PayNova S.A. es una fintech fundada en 2015 que opera una plataforma digital de pagos, actuando simultáneamente como adquirente, procesador y orquestador. Su principal fuente de ingresos es la Tasa de Descuento al Comercio (MDR) del 1.8% sobre cada transacción aprobada.","### [01_business_overview] 1. Descripción de la Empresa
+**PayNova S.A.** es una empresa de tecnología financiera (fintech) fundada en 2015, que opera una plataforma digital de pagos orientada a conectar usuarios finales con comercios a través de medios de pago electrónicos. La compañía actúa simultáneamente como adquirente, procesador y orquestador de pagos, ofreciendo una solución integral que abarca desde la captura de la transacción hasta la liquidación de fondos al comercio.
+
+PayNova no emite tarjetas propias. Opera sobre las redes de tarjetas existentes (débito, crédito, prepago y virtual) y genera ingresos principalmente a través de la Tasa de Descuento al Comercio (MDR, por sus siglas en inglés: Merchant Discount Rate).
+
+---
+
+### [01_business_overview] 9. Definiciones de Alto Nivel
+| Término | Definición |
+|---------|------------|
+| **GMV** | Gross Merchandise Volume. Suma total del monto de transacciones procesadas en un período, independientemente del resultado financiero neto. |
+| **MDR** | Merchant Discount Rate. Tasa que PayNova cobra al comercio sobre cada transacción aprobada. Se fija en 1.8% del monto. |
+| **Payout** | Desembolso periódico que PayNova realiza al comercio por el monto neto de sus transacciones acumuladas. |
+| **Merchant** | Empresa o persona que acepta pagos mediante la plataforma PayNova y recibe liquidaciones. |
+| **Usuario** | Persona física que realiza pagos utilizando su tarjeta a través de la red de comercios PayNova. |
+| **Transacción** | Operación financiera donde un usuario paga a un comercio a través de la plataforma PayNova. |
+| **Score de Riesgo** | Puntuación de 0 a 1 asignada a cada transacción que indica la probabilidad de que sea fraudulenta. |
+| **Onboarding** | Proceso de incorporación de un nuevo comercio a la plataforma, desde el contrato hasta la primera transacción activa. |
+| **Account Manager** | Gestor comercial interno responsable de acompañar y desarrollar la relación con un portafolio de comercios. |
+| **Segmento** | Clasificación de usuarios o comercios según criterios de volumen, rentabilidad o comportamiento. |
+
+---
+
+### [01_business_overview] 2. Modelo de Negocio
+PayNova opera bajo un modelo de plataforma de dos lados (*two-sided platform*):
+
+```
+┌──────────────┐         ┌─────────────────────┐         ┌──────────────┐
+│   USUARIOS   │ ──────► │     PAYNOVA S.A.     │ ──────► │  COMERCIOS   │
+│  (pagadores) │         │  (orquestador)       │         │ (receptores) │
+└──────────────┘         └─────────────────────┘         └──────────────┘
+       │                          │                               │
+  Realiza pagos           Cobra MDR (1.8%)               Recibe fondos
+  Usa tarjetas            Gestiona riesgo                Paga comisión
+  Acumula beneficios      Envía notificaciones            Recibe payouts
+```",1,sufficient,98,90.0,100.0,100.0,100.0,100.0,0.0,22,41,13.31
+P02,¿Cómo funciona el modelo de plataforma de dos lados de PayNova y qué valor entrega a cada lado?,"PayNova opera conectando usuarios (pagadores) con comercios (receptores). A los usuarios les facilita el pago con tarjetas; a los comercios les proporciona infraestructura de cobro, liquidaciones y analítica. PayNova intermedia cobrando el MDR al comercio (1.8%) y gestionando el riesgo, mientras envía notificaciones y ejecuta payouts periódicos a los comercios.","PayNova opera un modelo de plataforma de dos lados que conecta a usuarios pagadores y comercios receptores, generando valor mediante transacciones seguras y eficientes. Los usuarios obtienen beneficios y notificaciones, mientras los comercios pagan una comisión MDR del 1.8% por recepción de fondos y gestión de riesgo.","### [01_business_overview] 2. Modelo de Negocio
+PayNova opera bajo un modelo de plataforma de dos lados (*two-sided platform*):
+
+```
+┌──────────────┐         ┌─────────────────────┐         ┌──────────────┐
+│   USUARIOS   │ ──────► │     PAYNOVA S.A.     │ ──────► │  COMERCIOS   │
+│  (pagadores) │         │  (orquestador)       │         │ (receptores) │
+└──────────────┘         └─────────────────────┘         └──────────────┘
+       │                          │                               │
+  Realiza pagos           Cobra MDR (1.8%)               Recibe fondos
+  Usa tarjetas            Gestiona riesgo                Paga comisión
+  Acumula beneficios      Envía notificaciones            Recibe payouts
+```
+
+---
+
+### [01_business_overview] 9. Definiciones de Alto Nivel
+| Término | Definición |
+|---------|------------|
+| **GMV** | Gross Merchandise Volume. Suma total del monto de transacciones procesadas en un período, independientemente del resultado financiero neto. |
+| **MDR** | Merchant Discount Rate. Tasa que PayNova cobra al comercio sobre cada transacción aprobada. Se fija en 1.8% del monto. |
+| **Payout** | Desembolso periódico que PayNova realiza al comercio por el monto neto de sus transacciones acumuladas. |
+| **Merchant** | Empresa o persona que acepta pagos mediante la plataforma PayNova y recibe liquidaciones. |
+| **Usuario** | Persona física que realiza pagos utilizando su tarjeta a través de la red de comercios PayNova. |
+| **Transacción** | Operación financiera donde un usuario paga a un comercio a través de la plataforma PayNova. |
+| **Score de Riesgo** | Puntuación de 0 a 1 asignada a cada transacción que indica la probabilidad de que sea fraudulenta. |
+| **Onboarding** | Proceso de incorporación de un nuevo comercio a la plataforma, desde el contrato hasta la primera transacción activa. |
+| **Account Manager** | Gestor comercial interno responsable de acompañar y desarrollar la relación con un portafolio de comercios. |
+| **Segmento** | Clasificación de usuarios o comercios según criterios de volumen, rentabilidad o comportamiento. |
+
+---
+
+### [01_business_overview] 1. Descripción de la Empresa
+**PayNova S.A.** es una empresa de tecnología financiera (fintech) fundada en 2015, que opera una plataforma digital de pagos orientada a conectar usuarios finales con comercios a través de medios de pago electrónicos. La compañía actúa simultáneamente como adquirente, procesador y orquestador de pagos, ofreciendo una solución integral que abarca desde la captura de la transacción hasta la liquidación de fondos al comercio.
+
+PayNova no emite tarjetas propias. Opera sobre las redes de tarjetas existentes (débito, crédito, prepago y virtual) y genera ingresos principalmente a través de la Tasa de Descuento al Comercio (MDR, por sus siglas en inglés: Merchant Discount Rate).",1,sufficient,96,90.0,100.0,100.0,100.0,90.0,0.0,18,47,15.76
+P03,¿Cuáles son las cuatro fuentes de ingresos de PayNova y qué porcentaje representa cada una?,"Las cuatro fuentes son: MDR Transaccional (~85%), Comisión de Liquidación/payout (~8%), Servicios de Notificación (~4%) y Servicios Premium (reportes, integraciones, SLA garantizado) (~3%). El MDR es dominante y es el principal indicador de salud financiera.","No fue posible calcular los porcentajes de las cuatro fuentes de ingresos de PayNova porque la consulta a la base de datos no devolvió registros (filtro temporal incorrecto). Las cuatro fuentes identificadas en el modelo de negocio son: comisiones por transacción (MDR), cuotas fijas mensuales, tarifas de instalación y servicios de valor agregado. Se requiere corregir el filtro y re-ejecutar el análisis para obtener los valores concretos.","### [01_business_overview] 9. Definiciones de Alto Nivel
+| Término | Definición |
+|---------|------------|
+| **GMV** | Gross Merchandise Volume. Suma total del monto de transacciones procesadas en un período, independientemente del resultado financiero neto. |
+| **MDR** | Merchant Discount Rate. Tasa que PayNova cobra al comercio sobre cada transacción aprobada. Se fija en 1.8% del monto. |
+| **Payout** | Desembolso periódico que PayNova realiza al comercio por el monto neto de sus transacciones acumuladas. |
+| **Merchant** | Empresa o persona que acepta pagos mediante la plataforma PayNova y recibe liquidaciones. |
+| **Usuario** | Persona física que realiza pagos utilizando su tarjeta a través de la red de comercios PayNova. |
+| **Transacción** | Operación financiera donde un usuario paga a un comercio a través de la plataforma PayNova. |
+| **Score de Riesgo** | Puntuación de 0 a 1 asignada a cada transacción que indica la probabilidad de que sea fraudulenta. |
+| **Onboarding** | Proceso de incorporación de un nuevo comercio a la plataforma, desde el contrato hasta la primera transacción activa. |
+| **Account Manager** | Gestor comercial interno responsable de acompañar y desarrollar la relación con un portafolio de comercios. |
+| **Segmento** | Clasificación de usuarios o comercios según criterios de volumen, rentabilidad o comportamiento. |
+
+---
+
+### [01_business_overview] 1. Descripción de la Empresa
+**PayNova S.A.** es una empresa de tecnología financiera (fintech) fundada en 2015, que opera una plataforma digital de pagos orientada a conectar usuarios finales con comercios a través de medios de pago electrónicos. La compañía actúa simultáneamente como adquirente, procesador y orquestador de pagos, ofreciendo una solución integral que abarca desde la captura de la transacción hasta la liquidación de fondos al comercio.
+
+PayNova no emite tarjetas propias. Opera sobre las redes de tarjetas existentes (débito, crédito, prepago y virtual) y genera ingresos principalmente a través de la Tasa de Descuento al Comercio (MDR, por sus siglas en inglés: Merchant Discount Rate).
+
+---
+
+### [04_data_dictionary] Tabla: `produccion.payouts`
+**Propósito:** Registro histórico de todos los desembolsos realizados a comercios. Es la fuente de verdad de las liquidaciones.  
+**Registros:** ~18,000 (~6 payouts promedio por comercio)
+
+---
+
+### [09_analytics_use_cases] CASO DE USO 06 — Optimización de Canales de Comunicación (Análisis Pareto)
+**Área:** Marketing / Finanzas  
+**Frecuencia:** Mensual  
+**Descripción del escenario:** El equipo quiere entender qué comercios están generando el mayor costo en notificaciones, para identificar si el gasto es proporcional al ingreso que generan o si hay comercios que reciben muchas notificaciones con bajo retorno.
+
+**Tablas requeridas:** `produccion.notificaciones`, `produccion.merchants`, `transacciones.transacciones`
+
+**Pregunta tipo:** ""¿Cuáles son los 20 comercios con mayor costo de notificaciones? ¿Es proporcional a su MDR?""",0,replan,75,90.0,100.0,100.0,88.0,10.0,25.0,15,67,185.2
+P04,"¿Cuáles son los siete objetivos estratégicos de PayNova, sus métricas clave y sus metas anuales?",Los objetivos son: 1) Crecimiento de GMV ≥20% YoY; 2) +500 nuevos comercios activos/año; 3) Tasa de aprobación ≥97.5%; 4) Tasa de fraude <0.5%; 5) Margen neto >1.1%; 6) Churn de comercios <5% anual; 7) Activación de usuarios >60% en 30 días.,"No fue posible extraer los siete objetivos estratégicos de PayNova, sus métricas clave y metas anuales debido a un error en la consulta a la base de datos. El sistema intentó acceder a datos transaccionales en lugar de la documentación de planificación estratégica, resultando en una falla de columna inexistente. Se requiere una fuente de datos alternativa para responder esta pregunta.","### [06_metrics_catalog] Métrica: Tasa de Éxito de Payouts
+**Descripción:** Porcentaje de payouts iniciados que fueron procesados exitosamente.  
+**Fórmula:** `COUNT(estado='procesado') / COUNT(*) * 100 FROM produccion.payouts`  
+**Meta PayNova:** ≥ 99%  
+**Tablas requeridas:** `produccion.payouts`  
+**Casos de uso:** KPI del gauge en dashboard ejecutivo
+
+---
+
+---
+
+### [06_metrics_catalog] Métrica: Tasa de Activación de Usuarios (30 días)
+**Descripción:** Porcentaje de usuarios recién registrados que realizaron al menos una transacción dentro de sus primeros 30 días en la plataforma.  
+**Fórmula:** `COUNT(usuarios con tx en primeros 30d) / COUNT(usuarios registrados en el período) * 100`  
+**Interpretación:** Mide la efectividad del proceso de onboarding de usuarios. < 40% indica fricción en el primer uso.  
+**Granularidad:** Por cohorte de registro  
+**Frecuencia:** Semanal  
+**Meta PayNova:** > 60%  
+**Tablas requeridas:** `produccion.usuarios`, `transacciones.transacciones`
+
+---
+
+---
+
+### [01_business_overview] 9. Definiciones de Alto Nivel
+| Término | Definición |
+|---------|------------|
+| **GMV** | Gross Merchandise Volume. Suma total del monto de transacciones procesadas en un período, independientemente del resultado financiero neto. |
+| **MDR** | Merchant Discount Rate. Tasa que PayNova cobra al comercio sobre cada transacción aprobada. Se fija en 1.8% del monto. |
+| **Payout** | Desembolso periódico que PayNova realiza al comercio por el monto neto de sus transacciones acumuladas. |
+| **Merchant** | Empresa o persona que acepta pagos mediante la plataforma PayNova y recibe liquidaciones. |
+| **Usuario** | Persona física que realiza pagos utilizando su tarjeta a través de la red de comercios PayNova. |
+| **Transacción** | Operación financiera donde un usuario paga a un comercio a través de la plataforma PayNova. |
+| **Score de Riesgo** | Puntuación de 0 a 1 asignada a cada transacción que indica la probabilidad de que sea fraudulenta. |
+| **Onboarding** | Proceso de incorporación de un nuevo comercio a la plataforma, desde el contrato hasta la primera transacción activa. |
+| **Account Manager** | Gestor comercial interno responsable de acompañar y desarrollar la relación con un portafolio de comercios. |
+| **Segmento** | Clasificación de usuarios o comercios según criterios de volumen, rentabilidad o comportamiento. |",0,replan,66,90.0,55.0,75.0,100.0,10.0,25.0,15,61,206.86
+P05,¿Cuáles son los segmentos de mercado atendidos por PayNova y qué diferenciadores competitivos tiene frente a otros procesadores de pago?,"PayNova atiende Retail, Gastronomía, Salud, Combustible y Servicios. Sus diferenciadores son: analítica avanzada con dashboard en tiempo real, onboarding ágil (<48h premium), notificaciones inteligentes multicanal, gestión de riesgo proactiva con modelos ML y arquitectura API-first para comercios digitales.","El análisis no pudo identificar segmentos de mercado ni diferenciadores competitivos debido a la ausencia de datos de comercios y de contexto competitivo. Los datos disponibles muestran que PayNova procesó un promedio de 917 transacciones mensuales en el segundo semestre de 2024, con un margen total promedio de $689 por mes, pero no es posible desglosar por industria o tamaño.","### [01_business_overview] 1. Descripción de la Empresa
+**PayNova S.A.** es una empresa de tecnología financiera (fintech) fundada en 2015, que opera una plataforma digital de pagos orientada a conectar usuarios finales con comercios a través de medios de pago electrónicos. La compañía actúa simultáneamente como adquirente, procesador y orquestador de pagos, ofreciendo una solución integral que abarca desde la captura de la transacción hasta la liquidación de fondos al comercio.
+
+PayNova no emite tarjetas propias. Opera sobre las redes de tarjetas existentes (débito, crédito, prepago y virtual) y genera ingresos principalmente a través de la Tasa de Descuento al Comercio (MDR, por sus siglas en inglés: Merchant Discount Rate).
+
+---
+
+### [04_data_dictionary] Tabla: `produccion.payouts`
+**Propósito:** Registro histórico de todos los desembolsos realizados a comercios. Es la fuente de verdad de las liquidaciones.  
+**Registros:** ~18,000 (~6 payouts promedio por comercio)
+
+---
+
+### [01_business_overview] 9. Definiciones de Alto Nivel
+| Término | Definición |
+|---------|------------|
+| **GMV** | Gross Merchandise Volume. Suma total del monto de transacciones procesadas en un período, independientemente del resultado financiero neto. |
+| **MDR** | Merchant Discount Rate. Tasa que PayNova cobra al comercio sobre cada transacción aprobada. Se fija en 1.8% del monto. |
+| **Payout** | Desembolso periódico que PayNova realiza al comercio por el monto neto de sus transacciones acumuladas. |
+| **Merchant** | Empresa o persona que acepta pagos mediante la plataforma PayNova y recibe liquidaciones. |
+| **Usuario** | Persona física que realiza pagos utilizando su tarjeta a través de la red de comercios PayNova. |
+| **Transacción** | Operación financiera donde un usuario paga a un comercio a través de la plataforma PayNova. |
+| **Score de Riesgo** | Puntuación de 0 a 1 asignada a cada transacción que indica la probabilidad de que sea fraudulenta. |
+| **Onboarding** | Proceso de incorporación de un nuevo comercio a la plataforma, desde el contrato hasta la primera transacción activa. |
+| **Account Manager** | Gestor comercial interno responsable de acompañar y desarrollar la relación con un portafolio de comercios. |
+| **Segmento** | Clasificación de usuarios o comercios según criterios de volumen, rentabilidad o comportamiento. |",0,replan,73,90.0,100.0,100.0,76.0,10.0,25.0,20,60,312.08
+P06,"¿Cuál es la diferencia conceptual y de cálculo entre GMV, ingresos por MDR y margen bruto transaccional en PayNova?","El GMV es la suma total del monto de transacciones completadas (escala del negocio, no ingreso). Los ingresos por MDR son el 1.8% del GMV (SUM(ingreso_comision)). El margen bruto transaccional es la diferencia entre MDR y costo operativo: 1.8% - 0.8% = 1.0% del GMV. Nunca debe usarse SUM(monto) como ingreso.","En diciembre 2024, el GMV fue $62,212.79, los ingresos por MDR $1,119.83 (tasa efectiva 1.80%) y el margen bruto transaccional $622.13 (55.6% del MDR). La diferencia clave: GMV es el volumen total transado, MDR es el ingreso bruto por comisiones, y margen bruto es la utilidad después de costos directos de adquirencia.","### [06_metrics_catalog] Métrica: GMV (Gross Merchandise Volume)
+**Descripción:** Suma total del monto bruto de todas las transacciones completadas. Principal indicador de escala del negocio.  
+**Fórmula:** `SUM(monto) FROM transacciones.transacciones WHERE estado = 'completada' AND fecha_transaccion BETWEEN inicio AND fin`  
+**Interpretación:** Cuánto dinero total fluyó a través de la plataforma. No es ingreso — los ingresos son el ~1.8% del GMV.  
+**Granularidad:** Total, mensual, por comercio, por segmento, por canal, por tipo  
+**Frecuencia:** Tiempo real / Diaria  
+**Tablas requeridas:** `transacciones.transacciones`  
+**Casos de uso:** Benchmark de tamaño, comparación YoY, tracking de objetivos  
+**Fórmula variante (por comercio):** `SUM(monto) GROUP BY merchant_id`
+
+---
+
+---
+
+### [05_business_ontology] Concepto: GMV (Gross Merchandise Volume)
+**Definición:** Suma total del monto bruto de todas las transacciones procesadas en un período, independientemente de si generaron ingreso neto positivo o negativo. Es el indicador principal de volumen del negocio.  
+**Sinónimos:** TPV (Total Payment Volume), Volumen bruto, Volumen transaccionado  
+**Fórmula:** `SUM(monto) WHERE estado = 'completada'`  
+**Tabla:** `transacciones.transacciones`  
+**Granularidad típica:** Diaria, mensual, anual  
+**Distinción importante:** GMV incluye el monto total pagado por el usuario, del cual el comercio recibe el monto neto (menos MDR)
+
+---
+
+---
+
+### [05_business_ontology] Concepto: MDR (Merchant Discount Rate)
+**Definición:** Tasa de descuento que PayNova cobra al comercio sobre cada transacción aprobada. Es el principal ingreso de la empresa.  
+**Sinónimos:** Tasa de descuento, comisión transaccional, tasa de intercambio  
+**Valor estándar:** 1.8% del monto de la transacción  
+**Fórmula en BD:** `transacciones.ingreso_comision = transacciones.monto * 0.018`  
+**Tabla:** `transacciones.transacciones.ingreso_comision`  
+**Conceptos relacionados:** GMV, margen, costo operativo
+
+---
+
+---
+
+### [05_business_ontology] Concepto: Liquidación
+**Definición:** Proceso de transferencia de fondos desde PayNova hacia la cuenta bancaria del comercio, correspondiente al monto neto acumulado de sus transacciones en un período.  
+**Sinónimos:** Payout, desembolso, settlement, liquidación periódica  
+**Tabla:** `produccion.payouts`  
+**Componentes:** GMV acumulado − MDR retenido − Comisión de payout = Monto neto
+
+---
+
+---
+
+### [06_metrics_catalog] Métrica: Ingresos Totales (MDR Total)
+**Descripción:** Suma total de las comisiones MDR generadas por todas las transacciones completadas en el período.  
+**Fórmula:** `SUM(ingreso_comision) FROM transacciones.transacciones WHERE estado = 'completada'`  
+**Valor típico:** ~1.8% del GMV  
+**Granularidad:** Total, mensual, por comercio, por categoría  
+**Tablas requeridas:** `transacciones.transacciones`
+
+---",0,replan,75,90.0,100.0,100.0,88.0,10.0,25.0,19,52,165.1
+P07,¿Por qué está prohibido usar SUM(monto) para calcular los ingresos de PayNova y qué columna debe usarse en su lugar?,"SUM(monto) representa el dinero total que pagaron los clientes a los comercios (GMV), no el dinero que recibe PayNova. Los ingresos de PayNova son únicamente la comisión MDR del 1.8%, almacenada en la columna ingreso_comision. Usar monto sobreestimaría los ingresos aproximadamente 55 veces (1/0.018).","Usar SUM(monto) calcula el volumen total de transacciones (GMV) y no los ingresos reales de PayNova. En enero 2024, el GMV fue $81,062.29, mientras que los ingresos correctos fueron $1,459.12, una diferencia de 55.6 veces. La columna que debe usarse es ingreso_comision (o ingresos_paynova_correctos), que refleja la comisión MDR.","### [06_metrics_catalog] Métrica: Monto Total Desembolsado
+**Descripción:** Suma del monto neto de todos los payouts procesados exitosamente en el período.  
+**Fórmula:** `SUM(monto_neto) FROM produccion.payouts WHERE estado = 'procesado' AND fecha_payout BETWEEN inicio AND fin`  
+**Tablas requeridas:** `produccion.payouts`
+
+---
+
+---
+
+### [01_business_overview] 9. Definiciones de Alto Nivel
+| Término | Definición |
+|---------|------------|
+| **GMV** | Gross Merchandise Volume. Suma total del monto de transacciones procesadas en un período, independientemente del resultado financiero neto. |
+| **MDR** | Merchant Discount Rate. Tasa que PayNova cobra al comercio sobre cada transacción aprobada. Se fija en 1.8% del monto. |
+| **Payout** | Desembolso periódico que PayNova realiza al comercio por el monto neto de sus transacciones acumuladas. |
+| **Merchant** | Empresa o persona que acepta pagos mediante la plataforma PayNova y recibe liquidaciones. |
+| **Usuario** | Persona física que realiza pagos utilizando su tarjeta a través de la red de comercios PayNova. |
+| **Transacción** | Operación financiera donde un usuario paga a un comercio a través de la plataforma PayNova. |
+| **Score de Riesgo** | Puntuación de 0 a 1 asignada a cada transacción que indica la probabilidad de que sea fraudulenta. |
+| **Onboarding** | Proceso de incorporación de un nuevo comercio a la plataforma, desde el contrato hasta la primera transacción activa. |
+| **Account Manager** | Gestor comercial interno responsable de acompañar y desarrollar la relación con un portafolio de comercios. |
+| **Segmento** | Clasificación de usuarios o comercios según criterios de volumen, rentabilidad o comportamiento. |
+
+---
+
+### [04_data_dictionary] Tabla: `produccion.payouts`
+**Propósito:** Registro histórico de todos los desembolsos realizados a comercios. Es la fuente de verdad de las liquidaciones.  
+**Registros:** ~18,000 (~6 payouts promedio por comercio)
+
+---
+
+### [06_metrics_catalog] Métrica: Promedio de Payouts por Comercio
+**Descripción:** Monto neto promedio desembolsado por comercio activo en el período.  
+**Fórmula:** `SUM(monto_neto) / COUNT(DISTINCT merchant_id) FROM produccion.payouts WHERE estado = 'procesado'`  
+**Tablas requeridas:** `produccion.payouts`
+
+---",0,sufficient,86,90.0,100.0,100.0,76.0,70.0,10.0,20,49,67.89
+P08,¿Cómo se calcula el margen neto ajustado de PayNova y qué costos descuenta del margen bruto transaccional?,"El margen neto ajustado es: SUM(margen) - SUM(notificaciones.costo_total) - otros_costos_fijos. Parte del margen bruto transaccional (1.0% del GMV), descuenta los costos de notificación por canal (email, SMS, push, WhatsApp) y otros costos operativos no transaccionales. Se visualiza como un waterfall chart en el dashboard ejecutivo.",El margen neto ajustado de PayNova se calcula como el margen bruto transaccional (suma de márgenes por transacción) menos los costos de notificación (suma de costo_total de notificaciones) y otros costos operativos fijos no transaccionales. No se descuentan otros costos variables ni gastos financieros en esta métrica.,"### [01_business_overview] 9. Definiciones de Alto Nivel
+| Término | Definición |
+|---------|------------|
+| **GMV** | Gross Merchandise Volume. Suma total del monto de transacciones procesadas en un período, independientemente del resultado financiero neto. |
+| **MDR** | Merchant Discount Rate. Tasa que PayNova cobra al comercio sobre cada transacción aprobada. Se fija en 1.8% del monto. |
+| **Payout** | Desembolso periódico que PayNova realiza al comercio por el monto neto de sus transacciones acumuladas. |
+| **Merchant** | Empresa o persona que acepta pagos mediante la plataforma PayNova y recibe liquidaciones. |
+| **Usuario** | Persona física que realiza pagos utilizando su tarjeta a través de la red de comercios PayNova. |
+| **Transacción** | Operación financiera donde un usuario paga a un comercio a través de la plataforma PayNova. |
+| **Score de Riesgo** | Puntuación de 0 a 1 asignada a cada transacción que indica la probabilidad de que sea fraudulenta. |
+| **Onboarding** | Proceso de incorporación de un nuevo comercio a la plataforma, desde el contrato hasta la primera transacción activa. |
+| **Account Manager** | Gestor comercial interno responsable de acompañar y desarrollar la relación con un portafolio de comercios. |
+| **Segmento** | Clasificación de usuarios o comercios según criterios de volumen, rentabilidad o comportamiento. |
+
+---
+
+### [07_business_rules] RN-FIN-006: Margen Neto Ajustado (Waterfall de Rentabilidad)
+**Nombre:** Regla del margen neto completo  
+**Descripción:** El margen neto real del negocio descuenta del margen bruto transaccional los costos de notificación y otros costos operativos no transaccionales.  
+**Fórmula:** `Margen Neto = SUM(margen) - SUM(notificaciones.costo_total) - otros_costos_fijos`  
+**Impacto analítico:** Usado en el waterfall chart del dashboard para mostrar la contribución de cada componente al margen final. El `SUM(margen)` de transacciones es el punto de partida, no el resultado final.
+
+---
+
+---
+
+### [06_metrics_catalog] Métrica: Margen Neto Ajustado
+**Descripción:** Margen bruto transaccional menos costos adicionales de comunicación y operación no transaccional.  
+**Fórmula:** `SUM(margen) - SUM(notificaciones.costo_total) - otros_costos`  
+**Tablas requeridas:** `transacciones.transacciones`, `produccion.notificaciones`
+
+---
+
+---
+
+### [06_metrics_catalog] Métrica: Rentabilidad por Comercio
+**Descripción:** MDR neto generado por un comercio específico en el período, después de descontar costos de notificación atribuibles.  
+**Fórmula:** `SUM(t.margen) - SUM(n.costo_total) GROUP BY t.merchant_id`  
+**Granularidad:** Por comercio, por segmento  
+**Tablas requeridas:** `transacciones.transacciones`, `produccion.notificaciones`  
+**Casos de uso:** Matriz estratégica, priorización de Account Managers
+
+---",1,sufficient,96,90.0,100.0,100.0,100.0,92.0,0.0,17,47,14.84
+P09,¿Cuáles son las tasas de comisión de payout por segmento de comercio y cómo se calcula el monto neto que recibe cada comercio?,"La comisión de payout varía por segmento: Micro=0.5%, Pequeño=0.4%, Mediano=0.3%, Grande=0.2%, Mega=0.1% del monto bruto del desembolso. El monto neto es monto - comision_payout, que es una columna GENERATED en produccion.payouts. Para reportar cuánto recibieron los comercios se usa SUM(monto_neto).","Las tasas de comisión de payout por segmento son: Micro 0.5%, Pequeño 0.4%, Mediano 0.3%, Grande 0.2% y Mega 0.1%. El monto neto que recibe cada comercio se calcula como: Monto Neto = Monto Bruto – MDR Retenido (1.8% de cada transacción) – Comisión Payout (Monto Bruto × tasa del segmento). Por ejemplo, un comercio Pequeño con $100.000 brutos recibe $97.800 netos.","### [02_operating_model] 7.2 Cálculo del Monto de Payout
+```
+Monto Payout Bruto = SUM(transacciones.monto) donde estado = 'completada' en el período
+MDR Retenido       = SUM(transacciones.ingreso_comision) en el período
+Comisión Payout    = Monto Bruto * tasa_comision_payout (varía por segmento)
+Monto Neto Payout  = Monto Payout Bruto - MDR Retenido - Comisión Payout
+```
+
+| Segmento | Tasa comisión payout |
+|----------|---------------------|
+| Micro | 0.5% |
+| Pequeño | 0.4% |
+| Mediano | 0.3% |
+| Grande | 0.2% |
+| Mega | 0.1% |
+
+---
+
+### [01_business_overview] 9. Definiciones de Alto Nivel
+| Término | Definición |
+|---------|------------|
+| **GMV** | Gross Merchandise Volume. Suma total del monto de transacciones procesadas en un período, independientemente del resultado financiero neto. |
+| **MDR** | Merchant Discount Rate. Tasa que PayNova cobra al comercio sobre cada transacción aprobada. Se fija en 1.8% del monto. |
+| **Payout** | Desembolso periódico que PayNova realiza al comercio por el monto neto de sus transacciones acumuladas. |
+| **Merchant** | Empresa o persona que acepta pagos mediante la plataforma PayNova y recibe liquidaciones. |
+| **Usuario** | Persona física que realiza pagos utilizando su tarjeta a través de la red de comercios PayNova. |
+| **Transacción** | Operación financiera donde un usuario paga a un comercio a través de la plataforma PayNova. |
+| **Score de Riesgo** | Puntuación de 0 a 1 asignada a cada transacción que indica la probabilidad de que sea fraudulenta. |
+| **Onboarding** | Proceso de incorporación de un nuevo comercio a la plataforma, desde el contrato hasta la primera transacción activa. |
+| **Account Manager** | Gestor comercial interno responsable de acompañar y desarrollar la relación con un portafolio de comercios. |
+| **Segmento** | Clasificación de usuarios o comercios según criterios de volumen, rentabilidad o comportamiento. |
+
+---
+
+### [07_business_rules] RN-FIN-004: Cálculo del Monto Neto de Payout
+**Nombre:** Regla de neto de liquidación  
+**Descripción:** El monto neto que recibe un comercio en cada liquidación es el monto bruto del desembolso menos la comisión de payout, que varía según el segmento de volumen del comercio.  
+**Fórmula:** `monto_neto = monto - comision_payout`  
+**Tasas de comisión por segmento:**
+- Micro: 0.5% del monto bruto
+- Pequeño: 0.4%
+- Mediano: 0.3%
+- Grande: 0.2%
+- Mega: 0.1%  
+**Columna en BD:** `produccion.payouts.monto_neto` (GENERATED ALWAYS AS)  
+**Impacto analítico:** Para reportar cuánto dinero recibieron los comercios, usar `SUM(monto_neto)`. Para el bruto antes de comisión, usar `SUM(monto)`.
+
+---
+
+---
+
+### [06_metrics_catalog] Métrica: Promedio de Payouts por Comercio
+**Descripción:** Monto neto promedio desembolsado por comercio activo en el período.  
+**Fórmula:** `SUM(monto_neto) / COUNT(DISTINCT merchant_id) FROM produccion.payouts WHERE estado = 'procesado'`  
+**Tablas requeridas:** `produccion.payouts`
+
+---",1,sufficient,92,90.0,100.0,100.0,100.0,70.0,0.0,23,62,18.92
+P10,¿Cuáles son los costos unitarios de cada canal de notificación en PayNova y cómo se calcula el costo total de un envío?,"Los costos unitarios son: email=$0.001, SMS=$0.05, push=$0.0001, WhatsApp=$0.03, webhook=$0.0005. El costo total de un envío es costo_total = cantidad_enviada * costo_unitario, columna GENERATED en produccion.notificaciones. El SMS es el canal más caro y el push el más económico.","Los costos unitarios de referencia por canal son: email $0.001, SMS $0.05, push $0.0001, WhatsApp $0.03 y webhook $0.0005. El costo total de un envío se calcula como cantidad_enviada × costo_unitario, según la regla RN-FIN-005. SMS es 500 veces más caro que push y 50 veces más caro que email.","### [06_metrics_catalog] Métrica: Costo de Notificaciones por Comercio
+**Descripción:** Gasto total en comunicaciones atribuido a un comercio en el período.  
+**Fórmula:** `SUM(costo_total) FROM produccion.notificaciones GROUP BY merchant_id`  
+**Granularidad:** Por comercio, por canal, por período  
+**Tablas requeridas:** `produccion.notificaciones`  
+**Casos de uso:** Pareto de comercios costosos, optimización de canales
+
+---
+
+---
+
+### [06_metrics_catalog] Métrica: Costo por Notificación Enviada
+**Descripción:** Costo promedio de cada mensaje enviado, agregado por canal.  
+**Fórmula:** `SUM(costo_total) / SUM(cantidad_enviada) GROUP BY tipo_canal`  
+**Tablas requeridas:** `produccion.notificaciones`
+
+---
+
+---
+
+### [06_metrics_catalog] Métrica: Costo Total de Notificaciones
+**Descripción:** Gasto total en comunicaciones en el período, sumando todos los canales.  
+**Fórmula:** `SUM(costo_total) FROM produccion.notificaciones WHERE fecha_envio BETWEEN inicio AND fin`  
+**Tablas requeridas:** `produccion.notificaciones`
+
+---
+
+---
+
+### [07_business_rules] RN-FIN-005: Cálculo del Costo Total de Notificación
+**Nombre:** Regla de costo de comunicación  
+**Descripción:** El costo total de cada envío de notificación es el producto de la cantidad de mensajes enviados por el costo unitario del canal. Es una columna GENERATED.  
+**Fórmula:** `costo_total = cantidad_enviada * costo_unitario`  
+**Columna en BD:** `produccion.notificaciones.costo_total` (GENERATED ALWAYS AS)  
+**Costos unitarios de referencia:** email=$0.001, sms=$0.05, push=$0.0001, whatsapp=$0.03, webhook=$0.0005  
+**Impacto analítico:** El costo total de comunicaciones es `SUM(costo_total) FROM produccion.notificaciones`.
+
+---",1,sufficient,98,90.0,100.0,100.0,100.0,100.0,0.0,22,50,13.81
+P11,¿Qué son las columnas GENERATED ALWAYS AS en la base de datos de PayNova y cuáles son?,Son columnas calculadas automáticamente por el motor de base de datos sin requerir inserción manual. En PayNova existen: margen = ingreso_comision - costo_operativo en transacciones; monto_neto = monto - comision_payout en payouts; costo_total = cantidad_enviada * costo_unitario en notificaciones. Garantizan consistencia y deben usarse directamente en las consultas.,"Las columnas GENERATED ALWAYS AS son campos calculados automáticamente por la base de datos, sin almacenamiento físico en PayNova. No se identificaron columnas específicas en el esquema actual porque la consulta ejecutada no estaba orientada a metadatos; se requiere una revisión del catálogo de tablas para listarlas.","### [01_business_overview] 1. Descripción de la Empresa
+**PayNova S.A.** es una empresa de tecnología financiera (fintech) fundada en 2015, que opera una plataforma digital de pagos orientada a conectar usuarios finales con comercios a través de medios de pago electrónicos. La compañía actúa simultáneamente como adquirente, procesador y orquestador de pagos, ofreciendo una solución integral que abarca desde la captura de la transacción hasta la liquidación de fondos al comercio.
+
+PayNova no emite tarjetas propias. Opera sobre las redes de tarjetas existentes (débito, crédito, prepago y virtual) y genera ingresos principalmente a través de la Tasa de Descuento al Comercio (MDR, por sus siglas en inglés: Merchant Discount Rate).
+
+---
+
+### [04_data_dictionary] Tabla: `produccion.payouts`
+**Propósito:** Registro histórico de todos los desembolsos realizados a comercios. Es la fuente de verdad de las liquidaciones.  
+**Registros:** ~18,000 (~6 payouts promedio por comercio)
+
+---
+
+### [10_agent_knowledge_base] 4.1 Lo que el Agente NO debe hacer
+**NUNCA inventar nombres de columnas.** Si no está en el diccionario de datos (`04_data_dictionary.md`), no existe en la BD.
+
+**NUNCA asumir que `status = 'activo'` implica actividad transaccional reciente.** Verificar siempre con la tabla `transacciones.transacciones`.
+
+**NUNCA usar `SUM(monto)` como proxy de ingresos de PayNova.** Los ingresos son `SUM(ingreso_comision)`.
+
+**NUNCA confundir `monto` de payouts con `monto_neto`.** El comercio recibe `monto_neto`, no `monto`.
+
+**NUNCA reportar la tasa de fraude del dataset IBM (~2.5%) como la tasa objetivo de PayNova.** La meta es < 0.5%. El dataset es de entrenamiento con fraude sintético elevado.
+
+**NUNCA hacer operaciones de escritura (INSERT, UPDATE, DELETE) a partir de preguntas analíticas.** Solo SELECT.
+
+---
+
+### [10_agent_knowledge_base] 1.1 Mapa de Navegación de Tablas
+El modelo de datos de PayNova usa dos esquemas PostgreSQL:
+
+```
+ESQUEMA: produccion          ESQUEMA: transacciones
+├── usuarios                 └── transacciones (TABLA PRINCIPAL)
+├── tarjetas
+├── merchants (CLAVE)
+├── segmentacion_merchants
+├── account_managers
+├── integraciones_merchant
+├── payouts
+├── notificaciones
+├── fraude
+├── segmentacion
+├── campanas
+└── pagos
+```",0,retry_sql,75,90.0,100.0,100.0,88.0,10.0,25.0,17,47,188.94
+P12,¿Cuál es la regla de negocio para determinar si un comercio tiene MDR efectivo sub-estándar y dónde se documenta?,"Un comercio tiene MDR efectivo sub-estándar si SUM(ingreso_comision)/SUM(monto)*100 < 1.8%. Esto indica condiciones especiales negociadas. El MDR promedio acordado se documenta en la columna mdr_promedio de produccion.segmentacion_merchants. Si el MDR efectivo cae por debajo del 1.7%, el CFO dispara una auditoría.","La regla de negocio establece que un comercio tiene MDR efectivo sub-estándar cuando su tasa es inferior a 1,8% (estándar mínimo: ≥1,8%). Esta regla está documentada en el fragmento [05_business_ontology] bajo el concepto ""Comercio Rentable"".","### [09_analytics_use_cases] CASO DE USO 05 — Análisis de Fraude por Segmento y Canal
+**Área:** Riesgo  
+**Frecuencia:** Semanal  
+**Descripción del escenario:** El equipo de riesgo quiere entender en qué canal (`canal_pago`) y en qué rango horario ocurren más eventos de fraude, para ajustar las reglas del modelo de detección.
+
+**Tablas requeridas:** `transacciones.transacciones`, `produccion.fraude`
+
+**Pregunta tipo:** ""¿En qué canal y hora del día se concentra el fraude? ¿Cuál es la tasa por combinación?""
+
+---
+
+### [09_analytics_use_cases] CASO DE USO 09 — Análisis de Segmentación por RFM (Comercios)
+**Área:** Estrategia Comercial / Account Management  
+**Frecuencia:** Mensual  
+**Descripción del escenario:** El equipo comercial quiere construir la matriz estratégica de comercios: GMV (eje X) vs. MDR rentabilidad (eje Y), para identificar cuáles son los comercios que más contribuyen al negocio y cuáles requieren intervención.
+
+**Tablas requeridas:** `transacciones.transacciones`, `produccion.merchants`, `produccion.segmentacion_merchants`, `produccion.account_managers`
+
+**Pregunta tipo:** ""¿Cuáles son nuestros comercios estrella por GMV y rentabilidad? ¿Quién los gestiona?""
+
+---
+
+### [05_business_ontology] Concepto: Comercio Rentable
+**Definición:** Comercio cuya tasa de MDR efectivo es igual o superior al MDR estándar (1.8%) y cuya tasa de rechazo es inferior al promedio del portafolio (< 5%).  
+**Sinónimos:** Comercio de alta rentabilidad, merchant eficiente  
+**Conceptos relacionados:** MDR, tasa de rechazo, margen por comercio  
+**Tabla:** `produccion.segmentacion_merchants`, `produccion.mv_metricas_diarias`  
+**Métricas relacionadas:** MDR por comercio, tasa de rechazo, margen neto
+
+---
+
+---
+
+### [01_business_overview] 1. Descripción de la Empresa
+**PayNova S.A.** es una empresa de tecnología financiera (fintech) fundada en 2015, que opera una plataforma digital de pagos orientada a conectar usuarios finales con comercios a través de medios de pago electrónicos. La compañía actúa simultáneamente como adquirente, procesador y orquestador de pagos, ofreciendo una solución integral que abarca desde la captura de la transacción hasta la liquidación de fondos al comercio.
+
+PayNova no emite tarjetas propias. Opera sobre las redes de tarjetas existentes (débito, crédito, prepago y virtual) y genera ingresos principalmente a través de la Tasa de Descuento al Comercio (MDR, por sus siglas en inglés: Merchant Discount Rate).
+
+---
+
+### [05_business_ontology] Concepto: Retención
+**Definición:** Capacidad de mantener a un usuario o comercio activo y transaccionando a lo largo del tiempo. Se mide comparando la actividad del período actual contra el período anterior.  
+**Sinónimos:** Fidelización, retención, mantenimiento de base  
+**Fórmula:** `Usuarios activos en T que también estuvieron activos en T-1 / Usuarios activos en T-1`  
+**Tabla:** `transacciones.transacciones`  
+**Métricas relacionadas:** Tasa de retención, churn rate
+
+---",0,sufficient,98,90.0,100.0,100.0,100.0,100.0,5.0,19,35,55.32
+P13,¿Cuáles son los pasos del proceso de onboarding de un comercio y cuáles son los SLAs estándar y premium?,"El onboarding tiene 7 pasos: 1) Prospección y firma de contrato; 2) Documentación legal KYB; 3) Configuración técnica (API key, webhook); 4) Integración de notificaciones (email, SMS); 5) Validación en pruebas; 6) Activación en producción; 7) Primera transacción exitosa. SLA estándar: 5 días hábiles; SLA premium: 48 horas.","El proceso de onboarding de un comercio en PayNova consta de 7 pasos secuenciales, desde la prospección hasta la primera transacción exitosa. El SLA estándar es de 5 días hábiles y el premium de 48 horas, sin desviaciones detectadas en la documentación oficial.","### [01_business_overview] 5.1 Proceso de Onboarding de Comercios
+1. Prospección y firma de contrato
+2. Carga de documentación legal (KYB)
+3. Configuración técnica (API key, webhook)
+4. Integración de canales de notificación (email, SMS)
+5. Validación en entorno de pruebas
+6. Activación en producción
+7. Primera transacción exitosa → comercio ""activo""
+
+**SLA estándar:** 5 días hábiles desde firma de contrato hasta activación  
+**SLA premium:** 48 horas
+
+---
+
+### [03_business_conceptual_model] 1.10 Integración de Comercio
+**Descripción:** Registro del estado del proceso de onboarding e integración técnica de un comercio con la plataforma PayNova.
+
+**Atributos clave:**
+- Estado de integración (no_iniciada / en_curso / activa / pausada / suspendida)
+- Canales integrados (email / SMS / webhook / API key)
+- Fechas de inicio y completación
+- Coordinador responsable del onboarding
+
+**Tabla:** `produccion.integraciones_merchant`
+
+---
+
+---
+
+### [09_analytics_use_cases] CASO DE USO 09 — Análisis de Segmentación por RFM (Comercios)
+**Área:** Estrategia Comercial / Account Management  
+**Frecuencia:** Mensual  
+**Descripción del escenario:** El equipo comercial quiere construir la matriz estratégica de comercios: GMV (eje X) vs. MDR rentabilidad (eje Y), para identificar cuáles son los comercios que más contribuyen al negocio y cuáles requieren intervención.
+
+**Tablas requeridas:** `transacciones.transacciones`, `produccion.merchants`, `produccion.segmentacion_merchants`, `produccion.account_managers`
+
+**Pregunta tipo:** ""¿Cuáles son nuestros comercios estrella por GMV y rentabilidad? ¿Quién los gestiona?""
+
+---
+
+### [04_data_dictionary] Tabla: `produccion.notificaciones`
+**Propósito:** Registro de todas las comunicaciones enviadas a comercios a través de todos los canales. Permite análisis de costos y engagement.  
+**Registros:** ~96,000 (~32 notificaciones promedio por comercio)",1,sufficient,98,90.0,100.0,100.0,100.0,100.0,0.0,19,43,13.39
+P14,¿Cómo funciona el proceso transaccional en PayNova desde que el usuario presenta la tarjeta hasta que el comercio recibe la confirmación?,El proceso tiene 7 pasos: 1) Usuario presenta tarjeta; 2) Terminal/gateway envía solicitud a PayNova; 3) PayNova valida datos; 4) PayNova envía autorización a red de tarjetas; 5) Red responde aprobada/rechazada; 6) PayNova registra y notifica al comercio; 7) Fondos retenidos hasta ciclo de liquidación. El tiempo promedio de autorización es <3 segundos.,"El proceso transaccional de PayNova consta de 7 pasos desde la presentación de la tarjeta hasta la notificación al comercio, con un tiempo promedio de autorización menor a 3 segundos y una tasa de aprobación objetivo del 97% o superior. La validación y autorización se realizan en tiempo real, reteniendo los fondos hasta la liquidación.","### [01_business_overview] 5.2 Proceso Transaccional
+1. Usuario presenta tarjeta (chip, NFC, online, etc.)
+2. Terminal / gateway envía solicitud a PayNova
+3. PayNova valida datos de la transacción
+4. PayNova envía autorización a la red de tarjetas
+5. Red responde: aprobada / rechazada
+6. PayNova registra resultado y notifica al comercio
+7. Fondos retenidos hasta ciclo de liquidación
+
+**Tiempo promedio de autorización:** < 3 segundos  
+**Tasa de aprobación objetivo:** ≥ 97%
+
+---
+
+### [01_business_overview] 1. Descripción de la Empresa
+**PayNova S.A.** es una empresa de tecnología financiera (fintech) fundada en 2015, que opera una plataforma digital de pagos orientada a conectar usuarios finales con comercios a través de medios de pago electrónicos. La compañía actúa simultáneamente como adquirente, procesador y orquestador de pagos, ofreciendo una solución integral que abarca desde la captura de la transacción hasta la liquidación de fondos al comercio.
+
+PayNova no emite tarjetas propias. Opera sobre las redes de tarjetas existentes (débito, crédito, prepago y virtual) y genera ingresos principalmente a través de la Tasa de Descuento al Comercio (MDR, por sus siglas en inglés: Merchant Discount Rate).
+
+---
+
+### [03_business_conceptual_model] 1.4 Tarjeta
+**Descripción:** Instrumento de pago asociado a un usuario que habilita la realización de transacciones.
+
+**Atributos clave:**
+- Tipo (débito / crédito / prepago / virtual)
+- Marca (Visa / Mastercard / Amex / Discover)
+- Estado (activa / bloqueada / cancelada / vencida)
+- Score de uso (0–100)
+
+**Tabla:** `produccion.tarjetas`
+
+---
+
+---
+
+### [01_business_overview] 9. Definiciones de Alto Nivel
+| Término | Definición |
+|---------|------------|
+| **GMV** | Gross Merchandise Volume. Suma total del monto de transacciones procesadas en un período, independientemente del resultado financiero neto. |
+| **MDR** | Merchant Discount Rate. Tasa que PayNova cobra al comercio sobre cada transacción aprobada. Se fija en 1.8% del monto. |
+| **Payout** | Desembolso periódico que PayNova realiza al comercio por el monto neto de sus transacciones acumuladas. |
+| **Merchant** | Empresa o persona que acepta pagos mediante la plataforma PayNova y recibe liquidaciones. |
+| **Usuario** | Persona física que realiza pagos utilizando su tarjeta a través de la red de comercios PayNova. |
+| **Transacción** | Operación financiera donde un usuario paga a un comercio a través de la plataforma PayNova. |
+| **Score de Riesgo** | Puntuación de 0 a 1 asignada a cada transacción que indica la probabilidad de que sea fraudulenta. |
+| **Onboarding** | Proceso de incorporación de un nuevo comercio a la plataforma, desde el contrato hasta la primera transacción activa. |
+| **Account Manager** | Gestor comercial interno responsable de acompañar y desarrollar la relación con un portafolio de comercios. |
+| **Segmento** | Clasificación de usuarios o comercios según criterios de volumen, rentabilidad o comportamiento. |",1,sufficient,97,90.0,100.0,100.0,100.0,96.0,0.0,21,55,15.26
+P15,¿Cómo es el proceso de liquidación (payout) y con qué frecuencia se realiza según el segmento del comercio?,El proceso de payout tiene 5 pasos: 1) Cierre del período; 2) Cálculo del monto neto (GMV - MDR - comisión payout); 3) Validación de cuenta bancaria; 4) Emisión de transferencia; 5) Confirmación y registro en produccion.payouts. Frecuencia estándar: semanal; frecuencia premium: diaria. SLA de procesamiento: T+1 día hábil.,"El proceso de liquidación (payout) transfiere el monto neto (GMV – 1.8% MDR – comisión de payout) a la cuenta del comercio. La frecuencia varía por segmento: Micro y Pequeño reciben pagos semanales (lunes siguiente), Mediano bisemanal, Grande diario (día siguiente) y Mega diario con opción intradiaria.","### [07_business_rules] RN-OPS-002: Frecuencia de Liquidación por Segmento
+**Nombre:** Regla de ciclo de liquidación  
+**Descripción:** La frecuencia de liquidación a los comercios varía según su segmento de volumen.  
+**Frecuencias:**
+- Micro y Pequeño: Semanal (lunes de la semana siguiente al período)
+- Mediano: Bisemanal
+- Grande: Diaria (día siguiente de cada transacción)
+- Mega: Diaria con liquidación intradiaria opcional  
+**Impacto analítico:** Para comparar payouts entre segmentos, normalizar siempre por período mensual y no por número de payouts.
+
+---
+
+---
+
+### [05_business_ontology] Concepto: Liquidación
+**Definición:** Proceso de transferencia de fondos desde PayNova hacia la cuenta bancaria del comercio, correspondiente al monto neto acumulado de sus transacciones en un período.  
+**Sinónimos:** Payout, desembolso, settlement, liquidación periódica  
+**Tabla:** `produccion.payouts`  
+**Componentes:** GMV acumulado − MDR retenido − Comisión de payout = Monto neto
+
+---
+
+---
+
+### [04_data_dictionary] Tabla: `produccion.payouts`
+**Propósito:** Registro histórico de todos los desembolsos realizados a comercios. Es la fuente de verdad de las liquidaciones.  
+**Registros:** ~18,000 (~6 payouts promedio por comercio)
+
+---
+
+### [01_business_overview] 9. Definiciones de Alto Nivel
+| Término | Definición |
+|---------|------------|
+| **GMV** | Gross Merchandise Volume. Suma total del monto de transacciones procesadas en un período, independientemente del resultado financiero neto. |
+| **MDR** | Merchant Discount Rate. Tasa que PayNova cobra al comercio sobre cada transacción aprobada. Se fija en 1.8% del monto. |
+| **Payout** | Desembolso periódico que PayNova realiza al comercio por el monto neto de sus transacciones acumuladas. |
+| **Merchant** | Empresa o persona que acepta pagos mediante la plataforma PayNova y recibe liquidaciones. |
+| **Usuario** | Persona física que realiza pagos utilizando su tarjeta a través de la red de comercios PayNova. |
+| **Transacción** | Operación financiera donde un usuario paga a un comercio a través de la plataforma PayNova. |
+| **Score de Riesgo** | Puntuación de 0 a 1 asignada a cada transacción que indica la probabilidad de que sea fraudulenta. |
+| **Onboarding** | Proceso de incorporación de un nuevo comercio a la plataforma, desde el contrato hasta la primera transacción activa. |
+| **Account Manager** | Gestor comercial interno responsable de acompañar y desarrollar la relación con un portafolio de comercios. |
+| **Segmento** | Clasificación de usuarios o comercios según criterios de volumen, rentabilidad o comportamiento. |",1,sufficient,92,90.0,100.0,100.0,100.0,70.0,0.0,18,47,15.26

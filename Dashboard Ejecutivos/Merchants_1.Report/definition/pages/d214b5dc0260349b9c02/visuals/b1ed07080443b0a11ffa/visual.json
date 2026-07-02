@@ -1,0 +1,33 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "b1ed07080443b0a11ffa",
+  "position": {
+    "x": 25,
+    "y": 111.66666666666667,
+    "z": 7007,
+    "height": 75,
+    "width": 391.66666666666669,
+    "tabOrder": 7007
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Crecimiento del volumen de transacciones y salud del negocio "
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

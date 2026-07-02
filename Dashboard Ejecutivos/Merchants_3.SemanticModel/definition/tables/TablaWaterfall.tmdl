@@ -1,0 +1,23 @@
+table TablaWaterfall
+	lineageTag: 37faaa9c-63b3-44bc-8be5-e7d8198d29bc
+
+	column Componente
+		lineageTag: 10442f93-937a-457a-bb6a-941dc4b4fecb
+		isNameInferred
+		sourceColumn: [Componente]
+		sortByColumn: Orden
+
+	column Orden
+		lineageTag: 59a897a3-300b-4103-8c97-debf9a3b910a
+		isNameInferred
+		sourceColumn: [Orden]
+
+	column EsTotal
+		lineageTag: 71ed376e-4397-4dec-af50-7ff1946cc501
+		isNameInferred
+		sourceColumn: [EsTotal]
+
+	partition TablaWaterfall = calculated
+		mode: import
+		source = DATATABLE("Componente", STRING, "Orden", INTEGER, "EsTotal", BOOLEAN, {{"MDR Generado",1,FALSE()},{"Costo SMS",2,FALSE()},{"Costo Email",3,FALSE()},{"Otros Costos Op.",4,FALSE()},{"Margen Neto",5,TRUE()}})
+

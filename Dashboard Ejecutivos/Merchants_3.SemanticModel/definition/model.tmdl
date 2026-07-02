@@ -1,0 +1,56 @@
+model Model
+	culture: es-MX
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: es-EC
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["transacciones transacciones","produccion payouts","produccion merchants","produccion notificaciones","produccion integraciones_merchant","produccion segmentacion_merchants","produccion account_managers"]
+
+annotation PBI_ProTooling = ["MCP-PBIModeling","DevMode"]
+
+ref table 'transacciones transacciones'
+ref table DateTableTemplate_5b3f59f6-ba69-4c7a-8d81-2365241a147e
+ref table LocalDateTable_ddcf6829-a669-4b8e-b72d-c1ce4af96755
+ref table LocalDateTable_343f0d3d-6fd3-4b11-9440-3a3124e07791
+ref table 'produccion payouts'
+ref table LocalDateTable_15007319-d00b-4122-b95b-cfa94fc86e5e
+ref table LocalDateTable_a176476b-5a77-4c36-9dbe-65337a43e029
+ref table LocalDateTable_1a4933e1-d2aa-4f40-aece-2af589369117
+ref table LocalDateTable_fd7f2cdb-d5e9-45d4-a94b-0373ab84c8c1
+ref table LocalDateTable_fde194d1-caf4-4a59-8df6-bbd50ea037a0
+ref table LocalDateTable_cb3d2c48-737a-43fd-ad44-3ff86d24fb4a
+ref table LocalDateTable_517af749-d3f5-4f35-ae5c-1223c625b7a3
+ref table 'produccion merchants'
+ref table LocalDateTable_08ae3ef7-5452-4844-bb22-dfbd58b0037e
+ref table LocalDateTable_cc9c9b4a-4010-463e-bbcd-3bbb4f3f5641
+ref table LocalDateTable_67951349-159a-491b-8f07-65136d21b30f
+ref table LocalDateTable_79ccbc14-eb1d-4ca4-b10a-c4fa530f9cef
+ref table 'produccion notificaciones'
+ref table LocalDateTable_81d600be-6b8b-414e-8981-579c5e193a00
+ref table LocalDateTable_4a5084ee-96ce-48fd-b322-cf844f2730f9
+ref table LocalDateTable_cb706181-64f0-4174-8c16-2f91416ab3f4
+ref table 'produccion integraciones_merchant'
+ref table LocalDateTable_14167a54-1211-4e99-9557-f27f4d5808cb
+ref table LocalDateTable_d84f7366-22e5-4d91-b0b4-01e727a294b3
+ref table LocalDateTable_8632000b-91e0-42da-8cae-683c5c1bf02d
+ref table LocalDateTable_3789c135-f3d6-42c2-9a37-fbc370c8ed0d
+ref table 'produccion segmentacion_merchants'
+ref table LocalDateTable_9c0e6cdb-3a25-47e8-9c06-67d2bae83fe6
+ref table LocalDateTable_c3c200a8-e3a9-4c7e-8eb7-a3461e6a888a
+ref table LocalDateTable_f6afdc45-c2b4-42c9-87b6-fd3a637cea10
+ref table LocalDateTable_8d2653cc-8214-4843-82b4-ca645d5d2c0b
+ref table 'produccion account_managers'
+ref table LocalDateTable_bdb94ab0-9b9e-4a45-975b-3d7e2c49bab1
+ref table LocalDateTable_39da32ae-39b6-4eb9-8ea7-cc2afaf56132
+ref table LocalDateTable_8cf77867-92af-49a6-9cc6-3395257c3e0b
+ref table DimFecha
+ref table _Medidas
+ref table TablaFunnel
+ref table TablaWaterfall
+
+ref cultureInfo es-MX
+

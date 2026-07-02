@@ -1,0 +1,142 @@
+table 'produccion integraciones_merchant'
+	lineageTag: 69d42cc9-0fbb-40a4-a382-68a0947c0f06
+
+	column integracion_id
+		dataType: string
+		lineageTag: 24fdcaa6-eedc-48f0-a1b6-bea15cb2ea44
+		summarizeBy: none
+		sourceColumn: integracion_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column merchant_id
+		dataType: string
+		lineageTag: bed6cff6-8220-434e-8294-643f4737092f
+		summarizeBy: none
+		sourceColumn: merchant_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column estado_integracion
+		dataType: string
+		lineageTag: 8be9d37c-ab9b-48dd-846c-f8728311cbe0
+		summarizeBy: none
+		sourceColumn: estado_integracion
+
+		annotation SummarizationSetBy = Automatic
+
+	column email_integrado
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 791f1552-a36a-4436-b4f4-b13e7cc77653
+		summarizeBy: none
+		sourceColumn: email_integrado
+
+		annotation SummarizationSetBy = Automatic
+
+	column sms_integrado
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 2ae7de5c-6675-49c0-b37b-d32ef383fedb
+		summarizeBy: none
+		sourceColumn: sms_integrado
+
+		annotation SummarizationSetBy = Automatic
+
+	column webhook_integrado
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 38d53260-d28f-4f99-8cb9-c9d40a4abb82
+		summarizeBy: none
+		sourceColumn: webhook_integrado
+
+		annotation SummarizationSetBy = Automatic
+
+	column api_key_validado
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: c1c4aada-2c35-47e6-bd6a-a58889529938
+		summarizeBy: none
+		sourceColumn: api_key_validado
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_inicio
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 2e238b4d-11a5-4787-ac86-2876c27bbfd8
+		summarizeBy: none
+		sourceColumn: fecha_inicio
+
+		variation Variación
+			isDefault
+			relationship: 0a354688-5f65-4d47-bb6d-3e9d5141fecf
+			defaultHierarchy: LocalDateTable_14167a54-1211-4e99-9557-f27f4d5808cb.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column fecha_completacion
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3a532ffa-37e0-4286-b7b3-aa506d46414c
+		summarizeBy: none
+		sourceColumn: fecha_completacion
+
+		variation Variación
+			isDefault
+			relationship: fd2b52c5-aa7b-4422-8bee-bcbf73e299aa
+			defaultHierarchy: LocalDateTable_d84f7366-22e5-4d91-b0b4-01e727a294b3.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column coordinador_id
+		dataType: string
+		lineageTag: 0b6acef3-4e61-4110-8681-28bf78bd5b24
+		summarizeBy: none
+		sourceColumn: coordinador_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 6efa295e-8a6f-4a95-b756-54856b7cb225
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variación
+			isDefault
+			relationship: 07ce34fa-13e5-4b46-b195-62a25797da8f
+			defaultHierarchy: LocalDateTable_8632000b-91e0-42da-8cae-683c5c1bf02d.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5e8cdd56-c1f1-4567-a5ef-db4833f51dba
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		variation Variación
+			isDefault
+			relationship: 6df83b91-6b9d-4f0c-ba47-879b42684ac1
+			defaultHierarchy: LocalDateTable_3789c135-f3d6-42c2-9a37-fbc370c8ed0d.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'produccion integraciones_merchant' = m
+		mode: import
+		source =
+				let
+				    Origen = PostgreSQL.Database("localhost", "produccion"),
+				    produccion_integraciones_merchant = Origen{[Schema="produccion",Item="integraciones_merchant"]}[Data]
+				in
+				    produccion_integraciones_merchant
+
+	annotation PBI_ResultType = Table
+

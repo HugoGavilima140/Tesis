@@ -1,0 +1,258 @@
+table _Medidas
+	isHidden
+	lineageTag: a4cf873d-93d6-46f8-ad36-2b777f8c6271
+
+	measure GMV = CALCULATE(SUM('transacciones transacciones'[monto]), 'transacciones transacciones'[estado]="completada")
+		formatString: $#,##0
+		displayFolder: 00 Base
+		lineageTag: c4f76f26-1ca7-4f46-9d2c-ac0b0e3e8afa
+
+	measure 'Total Transacciones' = CALCULATE(COUNTROWS('transacciones transacciones'), 'transacciones transacciones'[estado]="completada")
+		formatString: #,##0
+		displayFolder: 00 Base
+		lineageTag: b2955ac1-427f-495f-a5fb-201eaf915b6a
+
+	measure 'MDR Generado' = CALCULATE(SUM('transacciones transacciones'[ingreso_comision]), 'transacciones transacciones'[estado]="completada")
+		formatString: $#,##0
+		displayFolder: 00 Base
+		lineageTag: de073e46-410f-4f33-b13e-829698132360
+
+	measure 'Costo Operativo Tx' = CALCULATE(SUM('transacciones transacciones'[costo_operativo]), 'transacciones transacciones'[estado]="completada")
+		formatString: $#,##0
+		displayFolder: 00 Base
+		lineageTag: bd1d21dc-be88-424c-a83c-0742064274fc
+
+	measure 'Payouts Monto' = CALCULATE(SUM('produccion payouts'[monto]), 'produccion payouts'[estado]="procesado")
+		formatString: $#,##0
+		displayFolder: 00 Base
+		lineageTag: e2d24b6e-cb6d-4485-b5f0-4e4b22d8d3fc
+
+	measure 'Payouts Procesados' = CALCULATE(COUNTROWS('produccion payouts'), 'produccion payouts'[estado]="procesado")
+		formatString: #,##0
+		displayFolder: 00 Base
+		lineageTag: c86970f1-4a49-4d5e-8ffa-f76a923bfffe
+
+	measure 'Payouts Total' = COUNTROWS('produccion payouts')
+		formatString: #,##0
+		displayFolder: 00 Base
+		lineageTag: 70b11998-fb74-4e1e-a531-9498d745d44d
+
+	measure 'Costo Notificaciones' = SUM('produccion notificaciones'[costo_total])
+		formatString: $#,##0
+		displayFolder: 00 Base
+		lineageTag: 9b53f109-deae-4030-b846-d583164efd44
+
+	measure 'Costo SMS' = CALCULATE(SUM('produccion notificaciones'[costo_total]), 'produccion notificaciones'[tipo_canal]="sms")
+		formatString: $#,##0
+		displayFolder: 00 Base
+		lineageTag: ca67676e-9425-4074-b3fe-f335245d6a1b
+
+	measure 'Costo Email' = CALCULATE(SUM('produccion notificaciones'[costo_total]), 'produccion notificaciones'[tipo_canal]="email")
+		formatString: $#,##0
+		displayFolder: 00 Base
+		lineageTag: 0642a092-d7aa-4273-b1c8-458ffa796e8e
+
+	measure 'Costo Otros Notif' = CALCULATE(SUM('produccion notificaciones'[costo_total]), NOT('produccion notificaciones'[tipo_canal] IN {"sms","email"}))
+		formatString: $#,##0
+		displayFolder: 00 Base
+		lineageTag: fa9ac5ba-3449-4e17-b6ee-e0b4eb572411
+
+	measure 'Merchants Registrados' = DISTINCTCOUNT('produccion merchants'[merchant_id])
+		formatString: #,##0
+		displayFolder: 01 Funnel
+		lineageTag: 18710d8b-1768-4763-834f-70fb8f1ffd80
+
+	measure 'Merchants Integrados' = CALCULATE(DISTINCTCOUNT('produccion integraciones_merchant'[merchant_id]), 'produccion integraciones_merchant'[estado_integracion]="activa")
+		formatString: #,##0
+		displayFolder: 01 Funnel
+		lineageTag: 1e53a322-0c50-4b24-b1b2-77a08b46a5ab
+
+	measure 'Merchants Activos' = CALCULATE(DISTINCTCOUNT('produccion merchants'[merchant_id]), 'produccion merchants'[estado]="activo")
+		formatString: #,##0
+		displayFolder: 01 Funnel
+		lineageTag: f698ea81-059d-44d1-84af-eb6f5e561f4b
+
+	measure 'Merchants Con Notificaciones' = DISTINCTCOUNT('produccion notificaciones'[merchant_id])
+		formatString: #,##0
+		displayFolder: 01 Funnel
+		lineageTag: ca97d6f4-c23d-4651-9fdd-aa9949a50f71
+
+	measure 'Merchants Con Transacciones' = CALCULATE(DISTINCTCOUNT('transacciones transacciones'[merchant_id]), 'transacciones transacciones'[estado]="completada")
+		formatString: #,##0
+		displayFolder: 01 Funnel
+		lineageTag: e93e37fc-a746-4430-b59c-8ae244e833ab
+
+	measure 'Merchants Con Payouts' = CALCULATE(DISTINCTCOUNT('produccion payouts'[merchant_id]), 'produccion payouts'[estado]="procesado")
+		formatString: #,##0
+		displayFolder: 01 Funnel
+		lineageTag: 1dd22e17-0bda-4d64-87a5-4deae020a9c7
+
+	measure 'Ticket Promedio' = DIVIDE([GMV], [Total Transacciones])
+		formatString: $#,##0.00
+		displayFolder: 00 Base
+		lineageTag: 50070317-67f7-456c-a009-c0dfa8629673
+
+	measure 'Tasa Exito Payouts' = DIVIDE([Payouts Procesados], [Payouts Total])
+		formatString: 0.0%
+		displayFolder: 00 Base
+		lineageTag: 42afcd87-6483-493d-a203-6d98397e79c6
+
+	measure 'Otros Costos Op' = [Costo Operativo Tx] + [Costo Otros Notif]
+		formatString: $#,##0
+		displayFolder: 02 Waterfall
+		lineageTag: da29fbd8-5c70-4ac5-81d9-8f20ed46265a
+
+	measure 'Margen Neto' = [MDR Generado] - [Costo SMS] - [Costo Email] - [Otros Costos Op]
+		formatString: $#,##0
+		displayFolder: 02 Waterfall
+		lineageTag: 5b70b3d7-3364-4c0e-b79f-93054a3efd8a
+
+	measure 'Funnel Valor por Etapa' = SWITCH(SELECTEDVALUE(TablaFunnel[Orden]), 1, [Merchants Registrados], 2, [Merchants Integrados], 3, [Merchants Activos], 4, [Merchants Con Notificaciones], 5, [Merchants Con Transacciones], 6, [Merchants Con Payouts])
+		formatString: #,##0
+		displayFolder: 01 Funnel
+		lineageTag: 53335eb7-f502-43a5-9c4c-c81f87dc79bc
+
+	measure 'Waterfall Valor' = SWITCH(SELECTEDVALUE(TablaWaterfall[Orden]), 1, [MDR Generado], 2, -[Costo SMS], 3, -[Costo Email], 4, -[Otros Costos Op], BLANK())
+		formatString: $#,##0
+		displayFolder: 02 Waterfall
+		lineageTag: b30856e7-b991-46ca-80df-786f0a222f48
+
+	measure 'GMV PA' = CALCULATE([GMV], DATEADD(DimFecha[Date], -1, YEAR))
+		formatString: $#,##0
+		displayFolder: 03 Variacion
+		lineageTag: 904e499c-be05-40fd-a542-c10c63103fe4
+
+	measure 'GMV Var %' = DIVIDE([GMV] - [GMV PA], [GMV PA])
+		formatString: 0.0%
+		displayFolder: 03 Variacion
+		lineageTag: 5cdf28f6-0f34-457f-a0cc-7ce36e3b18b0
+
+	measure 'Transacciones PA' = CALCULATE([Total Transacciones], DATEADD(DimFecha[Date], -1, YEAR))
+		formatString: #,##0
+		displayFolder: 03 Variacion
+		lineageTag: c50d4203-15d3-4b39-b402-dd04792dbaf2
+
+	measure 'Transacciones Var %' = DIVIDE([Total Transacciones] - [Transacciones PA], [Transacciones PA])
+		formatString: 0.0%
+		displayFolder: 03 Variacion
+		lineageTag: 83cdd196-d5b4-4aed-a049-a37758de253a
+
+	measure 'Payouts PA' = CALCULATE([Payouts Monto], DATEADD(DimFecha[Date], -1, YEAR))
+		formatString: $#,##0
+		displayFolder: 03 Variacion
+		lineageTag: f0c66e44-b248-412f-a18f-3cd43255df69
+
+	measure 'Payouts Var %' = DIVIDE([Payouts Monto] - [Payouts PA], [Payouts PA])
+		formatString: 0.0%
+		displayFolder: 03 Variacion
+		lineageTag: 7a9c2f39-e25f-47f2-8fc6-3190ca6eb4a5
+
+	measure 'MDR PA' = CALCULATE([MDR Generado], DATEADD(DimFecha[Date], -1, YEAR))
+		formatString: $#,##0
+		displayFolder: 03 Variacion
+		lineageTag: 3ffeaf2d-88d9-4bfa-b425-fa3d1e014e9b
+
+	measure 'MDR Var %' = DIVIDE([MDR Generado] - [MDR PA], [MDR PA])
+		formatString: 0.0%
+		displayFolder: 03 Variacion
+		lineageTag: bd1c8e4f-def1-4182-b6c0-ed82f076d952
+
+	measure 'Ticket PA' = CALCULATE([Ticket Promedio], DATEADD(DimFecha[Date], -1, YEAR))
+		formatString: $#,##0.00
+		displayFolder: 03 Variacion
+		lineageTag: 1d607c38-fcad-43cc-82b5-b2feae327a9f
+
+	measure 'Ticket Var %' = DIVIDE([Ticket Promedio] - [Ticket PA], [Ticket PA])
+		formatString: 0.0%
+		displayFolder: 03 Variacion
+		lineageTag: b331b74a-4d3c-425b-bb3c-6940abcc67bc
+
+	measure 'Tasa Exito PA' = CALCULATE([Tasa Exito Payouts], DATEADD(DimFecha[Date], -1, YEAR))
+		formatString: 0.0%
+		displayFolder: 03 Variacion
+		lineageTag: 16f3fe90-2b59-4f23-b747-b36afa8347ce
+
+	measure 'Tasa Exito Var pp' = [Tasa Exito Payouts] - [Tasa Exito PA]
+		formatString: 0.0%
+		displayFolder: 03 Variacion
+		lineageTag: 22dbbe04-72e4-4e30-8907-4c3e7a5ee5b4
+
+	measure 'Costo Notif PA' = CALCULATE([Costo Notificaciones], DATEADD(DimFecha[Date], -1, YEAR))
+		formatString: $#,##0
+		displayFolder: 03 Variacion
+		lineageTag: f23ba029-e242-4649-93f1-9d362f25cc57
+
+	measure 'Costo Notif Var %' = DIVIDE([Costo Notificaciones] - [Costo Notif PA], [Costo Notif PA])
+		formatString: 0.0%
+		displayFolder: 03 Variacion
+		lineageTag: 528f8a11-d423-488e-ae5c-a75c56075116
+
+	measure 'Payouts Rechazados' = CALCULATE(COUNTROWS('produccion payouts'), 'produccion payouts'[estado] IN {"rechazado","fallido"})
+		formatString: #,##0
+		displayFolder: 04 Salud Operativa
+		lineageTag: dc6072c5-1834-42a4-a0ab-1ae77a99f3cb
+
+	measure 'Payouts Pendientes' = CALCULATE(COUNTROWS('produccion payouts'), 'produccion payouts'[estado]="pendiente")
+		formatString: #,##0
+		displayFolder: 04 Salud Operativa
+		lineageTag: b1f313c2-ff2a-4eb2-80c0-c0b841fc453a
+
+	measure 'Meta Exito Payouts' = 0.98
+		formatString: 0.0%
+		displayFolder: 04 Salud Operativa
+		lineageTag: afe3b872-ab18-4bef-bb53-6d0d25c4410d
+
+	measure 'Transacciones Intentadas' = COUNTROWS('transacciones transacciones')
+		formatString: #,##0
+		displayFolder: 04 Salud Operativa
+		lineageTag: 5ba24d6d-e935-4016-9848-86f78afeed91
+
+	measure 'Rechazos Tx' = CALCULATE(COUNTROWS('transacciones transacciones'), 'transacciones transacciones'[estado]="rechazada")
+		formatString: #,##0
+		displayFolder: 04 Salud Operativa
+		lineageTag: 10a669be-4264-40db-85e8-a95348bb7ebd
+
+	measure 'Tasa Rechazo Tx %' = DIVIDE([Rechazos Tx], [Transacciones Intentadas])
+		formatString: 0.0%
+		displayFolder: 04 Salud Operativa
+		lineageTag: fee5b78c-e5b8-4d71-a73c-34d359c024ba
+
+	measure 'Umbral Rechazo Alerta' = 0.035
+		formatString: 0.0%
+		displayFolder: 04 Salud Operativa
+		lineageTag: cef8359c-0b8d-4604-bc30-489a5f5db13d
+
+	measure 'MDR Rate %' = DIVIDE([MDR Generado], [GMV])
+		formatString: 0.00%
+		displayFolder: 05 Costos
+		lineageTag: 165d2f28-f8df-4af8-98c0-34d13bbb7a8a
+
+	measure 'Costo Notif por Comercio' = DIVIDE([Costo Notificaciones], [Merchants Con Notificaciones])
+		formatString: $#,##0.00
+		displayFolder: 05 Costos
+		lineageTag: 30f3068e-67c8-464c-8cb6-081ab35e8cf3
+
+	measure 'Costo Notif por Transaccion' = DIVIDE([Costo Notificaciones], [Total Transacciones])
+		formatString: $#,##0.000
+		displayFolder: 05 Costos
+		lineageTag: d14f29ad-6b86-4d7c-a4ec-2dcc702005b8
+
+	measure 'Costo Notif por Payout' = DIVIDE([Costo Notificaciones], [Payouts Procesados])
+		formatString: $#,##0.00
+		displayFolder: 05 Costos
+		lineageTag: 5026ed12-e4ba-481c-951f-6dd2aedd0cad
+
+	measure 'Pct Costo Notif Acumulado' = VAR cur = [Costo Notificaciones] VAR tot = CALCULATE([Costo Notificaciones], ALLSELECTED('produccion merchants'[nombre_comercio])) VAR running = CALCULATE([Costo Notificaciones], FILTER(ALLSELECTED('produccion merchants'[nombre_comercio]), [Costo Notificaciones] >= cur)) RETURN DIVIDE(running, tot)
+		formatString: 0.0%
+		displayFolder: 05 Costos
+		lineageTag: c1d4f074-085e-4d2e-b259-e8d07967df40
+
+	column _
+		lineageTag: c43027e0-5fca-473c-9277-a062598f2d0d
+		isNameInferred
+		sourceColumn: [_]
+
+	partition _Medidas = calculated
+		mode: import
+		source = ROW("_", 1)
+

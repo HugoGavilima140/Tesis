@@ -1,0 +1,166 @@
+table 'produccion notificaciones'
+	lineageTag: 5b358d9a-6ff1-423e-9aa5-75fc3255e2f2
+
+	column notificacion_id
+		dataType: string
+		lineageTag: 3405e0cc-3a28-436a-98e2-dfd419c4218e
+		summarizeBy: none
+		sourceColumn: notificacion_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column merchant_id
+		dataType: string
+		lineageTag: 06341561-8a29-440a-a7d3-07ec1f50b237
+		summarizeBy: none
+		sourceColumn: merchant_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column tipo_canal
+		dataType: string
+		lineageTag: b6eda23d-0fc2-42f9-b62a-2dcd4006d29f
+		summarizeBy: none
+		sourceColumn: tipo_canal
+
+		annotation SummarizationSetBy = Automatic
+
+	column destinatario
+		dataType: string
+		lineageTag: cb14397c-fc1c-433b-b38b-a6689f496d2b
+		summarizeBy: none
+		sourceColumn: destinatario
+
+		annotation SummarizationSetBy = Automatic
+
+	column asunto_titulo
+		dataType: string
+		lineageTag: 48d7ef83-dc3b-4e52-908a-a1a784d1939c
+		summarizeBy: none
+		sourceColumn: asunto_titulo
+
+		annotation SummarizationSetBy = Automatic
+
+	column cantidad_enviada
+		dataType: int64
+		formatString: 0
+		lineageTag: b69d65f4-f00e-4ac2-bedf-bd2ca3929480
+		summarizeBy: sum
+		sourceColumn: cantidad_enviada
+
+		annotation SummarizationSetBy = Automatic
+
+	column costo_unitario
+		dataType: double
+		lineageTag: 254894c4-465c-47a3-9982-118dfaee17b1
+		summarizeBy: sum
+		sourceColumn: costo_unitario
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column costo_total
+		dataType: double
+		lineageTag: b3eb3cbb-592b-4079-a0ee-452be562ab33
+		summarizeBy: sum
+		sourceColumn: costo_total
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column estado
+		dataType: string
+		lineageTag: e1b28106-8a30-4601-895d-f3479859690d
+		summarizeBy: none
+		sourceColumn: estado
+
+		annotation SummarizationSetBy = Automatic
+
+	column motivo_fallo
+		dataType: string
+		lineageTag: 45cdcfcd-e276-443b-8bb9-dfd03afda792
+		summarizeBy: none
+		sourceColumn: motivo_fallo
+
+		annotation SummarizationSetBy = Automatic
+
+	column tasa_apertura
+		dataType: double
+		lineageTag: a6bfb3f5-dbcb-456a-8fb5-d5e0854aa155
+		summarizeBy: sum
+		sourceColumn: tasa_apertura
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column tasa_click
+		dataType: double
+		lineageTag: c843ffff-2c55-4b32-b222-bd7c419ac560
+		summarizeBy: sum
+		sourceColumn: tasa_click
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column fecha_envio
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: a4eca45c-7201-44cf-a2b6-df46d157916e
+		summarizeBy: none
+		sourceColumn: fecha_envio
+
+		variation Variación
+			isDefault
+			relationship: a775cd99-9d34-427d-8e74-801acb418d05
+			defaultHierarchy: LocalDateTable_81d600be-6b8b-414e-8981-579c5e193a00.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_entrega
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b418bcd5-7f2a-4735-a969-6167ef129460
+		summarizeBy: none
+		sourceColumn: fecha_entrega
+
+		variation Variación
+			isDefault
+			relationship: 8bbc3874-651c-4b1f-ab2d-39e170303d94
+			defaultHierarchy: LocalDateTable_4a5084ee-96ce-48fd-b322-cf844f2730f9.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 24771a34-6038-4c29-8111-0adf651de452
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variación
+			isDefault
+			relationship: 5733890a-b7e2-4252-a9cc-50edb9f39e8d
+			defaultHierarchy: LocalDateTable_cb706181-64f0-4174-8c16-2f91416ab3f4.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column FechaDia = DATE(YEAR('produccion notificaciones'[fecha_envio]), MONTH('produccion notificaciones'[fecha_envio]), DAY('produccion notificaciones'[fecha_envio]))
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 965b926e-1282-4e60-9092-8928bb6758d1
+
+	partition 'produccion notificaciones' = m
+		mode: import
+		source =
+				let
+				    Origen = PostgreSQL.Database("localhost", "produccion"),
+				    produccion_notificaciones = Origen{[Schema="produccion",Item="notificaciones"]}[Data]
+				in
+				    produccion_notificaciones
+
+	annotation PBI_ResultType = Table
+

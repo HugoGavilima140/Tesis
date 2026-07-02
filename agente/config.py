@@ -20,6 +20,9 @@ PROJECT_DIR = AGENT_DIR.parent
 _KB_ENV = os.getenv("KB_DIR", "")
 KB_DIR = Path(_KB_ENV) if _KB_ENV else PROJECT_DIR / "knowledge_base"
 
+_DASHBOARD_ENV = os.getenv("DASHBOARD_ROOT", "")
+DASHBOARD_ROOT = Path(_DASHBOARD_ENV) if _DASHBOARD_ENV else PROJECT_DIR / "Dashboard Ejecutivos"
+
 MEMORY_PATH  = AGENT_DIR / "memory_store.json"
 KB_INDEX_DIR = AGENT_DIR / "kb_embeddings"
 KB_INDEX_DIR.mkdir(parents=True, exist_ok=True)

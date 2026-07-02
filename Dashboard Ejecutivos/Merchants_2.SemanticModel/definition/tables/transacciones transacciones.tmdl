@@ -1,0 +1,229 @@
+table 'transacciones transacciones'
+	lineageTag: 4203f56b-4abe-4ccd-b81d-4b4955f8326f
+
+	column transaccion_id
+		dataType: string
+		lineageTag: 81fc5bd6-e5cc-4f79-aec4-842629420b71
+		summarizeBy: none
+		sourceColumn: transaccion_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column transaction_id_origen
+		dataType: int64
+		formatString: 0
+		lineageTag: 49ad614b-60f0-44ef-94ab-23e5c48abbc6
+		summarizeBy: sum
+		sourceColumn: transaction_id_origen
+
+		annotation SummarizationSetBy = Automatic
+
+	column year_month
+		dataType: string
+		lineageTag: c3c2378d-7d9d-4f30-9a2b-38450f2c8da1
+		summarizeBy: none
+		sourceColumn: year_month
+
+		annotation SummarizationSetBy = Automatic
+
+	column usuario_origen_id
+		dataType: string
+		lineageTag: 7101579d-4e5e-49b3-aaae-5eaa75a54c94
+		summarizeBy: none
+		sourceColumn: usuario_origen_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column usuario_destino_id
+		dataType: string
+		lineageTag: b4daa975-af10-434e-a62a-97b30cb3640b
+		summarizeBy: none
+		sourceColumn: usuario_destino_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column merchant_id
+		dataType: string
+		lineageTag: d31df84a-3390-4ba4-9030-6c4e72a8da5a
+		summarizeBy: none
+		sourceColumn: merchant_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column tarjeta_id
+		dataType: string
+		lineageTag: 645f99c0-cb84-48cf-9120-d64a483bbc1e
+		summarizeBy: none
+		sourceColumn: tarjeta_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_transaccion
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2d9b94f4-a36d-46c6-97a0-19398594fc10
+		summarizeBy: none
+		sourceColumn: fecha_transaccion
+
+		variation Variación
+			isDefault
+			relationship: 570d8863-e683-40d0-9740-6abd2757f383
+			defaultHierarchy: LocalDateTable_ddcf6829-a669-4b8e-b72d-c1ce4af96755.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column tipo_transaccion
+		dataType: string
+		lineageTag: a8ad31d4-66d8-4db8-8eed-b644533e8ec5
+		summarizeBy: none
+		sourceColumn: tipo_transaccion
+
+		annotation SummarizationSetBy = Automatic
+
+	column subtipo_transaccion
+		dataType: string
+		lineageTag: 49d3537d-20ed-4bec-a371-a8716af11846
+		summarizeBy: none
+		sourceColumn: subtipo_transaccion
+
+		annotation SummarizationSetBy = Automatic
+
+	column monto
+		dataType: double
+		lineageTag: 951d0c9d-73e4-4607-855c-1f47621a198e
+		summarizeBy: sum
+		sourceColumn: monto
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column moneda
+		dataType: string
+		lineageTag: c7e602f4-5aba-4668-b125-cbb3c3e7d179
+		summarizeBy: none
+		sourceColumn: moneda
+
+		annotation SummarizationSetBy = Automatic
+
+	column canal
+		dataType: string
+		lineageTag: fff069dd-e67b-4736-ac51-81fc692d6bd6
+		summarizeBy: none
+		sourceColumn: canal
+
+		annotation SummarizationSetBy = Automatic
+
+	column estado
+		dataType: string
+		lineageTag: cd2c3872-ecbc-43bc-afa2-42f79d6008cf
+		summarizeBy: none
+		sourceColumn: estado
+
+		annotation SummarizationSetBy = Automatic
+
+	column costo_operativo
+		dataType: double
+		lineageTag: df06459d-3a65-47ee-88ca-d991cea683aa
+		summarizeBy: sum
+		sourceColumn: costo_operativo
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ingreso_comision
+		dataType: double
+		lineageTag: 1e57ad51-80c1-4a01-bfab-032ddc3c3ddc
+		summarizeBy: sum
+		sourceColumn: ingreso_comision
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column margen
+		dataType: double
+		lineageTag: 51ad75af-e8a6-4054-8e14-c77aa22db40e
+		summarizeBy: sum
+		sourceColumn: margen
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column riesgo_score
+		dataType: double
+		lineageTag: 0c74b24a-03d3-4a53-9dea-98ccf9b4701c
+		summarizeBy: sum
+		sourceColumn: riesgo_score
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: a0f7cc2f-f4ae-404c-846f-8bae211d4c21
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variación
+			isDefault
+			relationship: de49da4d-8ed7-4814-9159-58902741793c
+			defaultHierarchy: LocalDateTable_343f0d3d-6fd3-4b11-9440-3a3124e07791.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column razon_rechazo
+		dataType: string
+		lineageTag: 749c4e81-c5a7-460f-b777-486d2628c1b3
+		summarizeBy: none
+		sourceColumn: razon_rechazo
+
+		annotation SummarizationSetBy = Automatic
+
+	column hora_transaccion
+		dataType: int64
+		formatString: 0
+		lineageTag: 97144357-96af-4acf-8660-0c8bb34805da
+		summarizeBy: sum
+		sourceColumn: hora_transaccion
+
+		annotation SummarizationSetBy = Automatic
+
+	column dia_semana
+		dataType: int64
+		formatString: 0
+		lineageTag: 4ab30724-a1d2-477e-b091-b0b67e195d60
+		summarizeBy: sum
+		sourceColumn: dia_semana
+
+		annotation SummarizationSetBy = Automatic
+
+	column mes
+		dataType: int64
+		formatString: 0
+		lineageTag: bd03d5dc-ddeb-42b3-97b2-fa8c053543f1
+		summarizeBy: sum
+		sourceColumn: mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column FechaDia = DATE(YEAR('transacciones transacciones'[fecha_transaccion]), MONTH('transacciones transacciones'[fecha_transaccion]), DAY('transacciones transacciones'[fecha_transaccion]))
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 896cb3bb-e2ab-4144-b65b-6edea99456c7
+
+	partition 'transacciones transacciones' = m
+		mode: import
+		source =
+				let
+				    Origen = PostgreSQL.Database("localhost", "produccion"),
+				    transacciones_transacciones = Origen{[Schema="transacciones",Item="transacciones"]}[Data]
+				in
+				    transacciones_transacciones
+
+	annotation PBI_ResultType = Table
+

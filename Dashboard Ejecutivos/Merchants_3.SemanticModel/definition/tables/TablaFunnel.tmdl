@@ -1,0 +1,18 @@
+table TablaFunnel
+	lineageTag: 3767fcde-486b-422d-a244-6e72e6a89507
+
+	column Etapa
+		lineageTag: 9db76ee8-0ccd-4f0b-b41b-8eb32e4237c2
+		isNameInferred
+		sourceColumn: [Etapa]
+		sortByColumn: Orden
+
+	column Orden
+		lineageTag: 992d4e25-7be9-4ce4-902f-3f4e4574205f
+		isNameInferred
+		sourceColumn: [Orden]
+
+	partition TablaFunnel = calculated
+		mode: import
+		source = DATATABLE("Etapa", STRING, "Orden", INTEGER, {{"Registrados",1},{"Integrados",2},{"Activos",3},{"Con Notificaciones",4},{"Con Transacciones",5},{"Con Payouts",6}})
+

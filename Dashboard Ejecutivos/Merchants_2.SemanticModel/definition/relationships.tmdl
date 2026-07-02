@@ -1,0 +1,194 @@
+relationship 570d8863-e683-40d0-9740-6abd2757f383
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'transacciones transacciones'.fecha_transaccion
+	toColumn: LocalDateTable_ddcf6829-a669-4b8e-b72d-c1ce4af96755.Date
+
+relationship de49da4d-8ed7-4814-9159-58902741793c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'transacciones transacciones'.created_at
+	toColumn: LocalDateTable_343f0d3d-6fd3-4b11-9440-3a3124e07791.Date
+
+relationship c426c6b4-a3a0-40dc-ab18-40c1beed515e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion payouts'.fecha_solicitud
+	toColumn: LocalDateTable_15007319-d00b-4122-b95b-cfa94fc86e5e.Date
+
+relationship 15b2b4c9-dbbd-4e04-aa1c-a4a7b66cff62
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion payouts'.fecha_payout
+	toColumn: LocalDateTable_a176476b-5a77-4c36-9dbe-65337a43e029.Date
+
+relationship b98510db-7ae9-480a-9044-69040e83f37a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion payouts'.fecha_confirmacion
+	toColumn: LocalDateTable_1a4933e1-d2aa-4f40-aece-2af589369117.Date
+
+relationship b1ae1309-0982-46da-9ac5-9af5f23ec195
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion payouts'.periodo_desde
+	toColumn: LocalDateTable_fd7f2cdb-d5e9-45d4-a94b-0373ab84c8c1.Date
+
+relationship a68cf4db-9fef-4097-acff-24d71424cead
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion payouts'.periodo_hasta
+	toColumn: LocalDateTable_fde194d1-caf4-4a59-8df6-bbd50ea037a0.Date
+
+relationship c779082c-dde8-425c-8f7d-f990dc2f3bff
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion payouts'.created_at
+	toColumn: LocalDateTable_cb3d2c48-737a-43fd-ad44-3ff86d24fb4a.Date
+
+relationship 2e9333f7-9016-49d1-bbf3-1633bb508487
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion payouts'.updated_at
+	toColumn: LocalDateTable_517af749-d3f5-4f35-ae5c-1223c625b7a3.Date
+
+relationship 492f0cb1-3a88-40e8-a4cb-48c09c37edd6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion merchants'.fecha_afiliacion
+	toColumn: LocalDateTable_08ae3ef7-5452-4844-bb22-dfbd58b0037e.Date
+
+relationship 17ea3361-0d04-4d60-b318-c8b92b11e36c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion merchants'.created_at
+	toColumn: LocalDateTable_cc9c9b4a-4010-463e-bbcd-3bbb4f3f5641.Date
+
+relationship 0c6f7a02-ef8b-4dea-b750-20bcb90584b8
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion merchants'.updated_at
+	toColumn: LocalDateTable_67951349-159a-491b-8f07-65136d21b30f.Date
+
+relationship b2cf3b36-dacd-46a4-ab7a-1d2635123067
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion merchants'.ultima_actividad
+	toColumn: LocalDateTable_79ccbc14-eb1d-4ca4-b10a-c4fa530f9cef.Date
+
+relationship a775cd99-9d34-427d-8e74-801acb418d05
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion notificaciones'.fecha_envio
+	toColumn: LocalDateTable_81d600be-6b8b-414e-8981-579c5e193a00.Date
+
+relationship 8bbc3874-651c-4b1f-ab2d-39e170303d94
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion notificaciones'.fecha_entrega
+	toColumn: LocalDateTable_4a5084ee-96ce-48fd-b322-cf844f2730f9.Date
+
+relationship 5733890a-b7e2-4252-a9cc-50edb9f39e8d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion notificaciones'.created_at
+	toColumn: LocalDateTable_cb706181-64f0-4174-8c16-2f91416ab3f4.Date
+
+relationship 0a354688-5f65-4d47-bb6d-3e9d5141fecf
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion integraciones_merchant'.fecha_inicio
+	toColumn: LocalDateTable_14167a54-1211-4e99-9557-f27f4d5808cb.Date
+
+relationship fd2b52c5-aa7b-4422-8bee-bcbf73e299aa
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion integraciones_merchant'.fecha_completacion
+	toColumn: LocalDateTable_d84f7366-22e5-4d91-b0b4-01e727a294b3.Date
+
+relationship 07ce34fa-13e5-4b46-b195-62a25797da8f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion integraciones_merchant'.created_at
+	toColumn: LocalDateTable_8632000b-91e0-42da-8cae-683c5c1bf02d.Date
+
+relationship 6df83b91-6b9d-4f0c-ba47-879b42684ac1
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion integraciones_merchant'.updated_at
+	toColumn: LocalDateTable_3789c135-f3d6-42c2-9a37-fbc370c8ed0d.Date
+
+relationship 1478f0c6-97ec-4b51-a6ff-f77bc2f6494e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion segmentacion_merchants'.fecha_segmentacion
+	toColumn: LocalDateTable_9c0e6cdb-3a25-47e8-9c06-67d2bae83fe6.Date
+
+relationship ff68831e-a385-4ad4-8dfe-a33b163374c4
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion segmentacion_merchants'.proxima_revision
+	toColumn: LocalDateTable_c3c200a8-e3a9-4c7e-8eb7-a3461e6a888a.Date
+
+relationship d6af0e76-7ced-4c56-9bbb-6970b50c859d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion segmentacion_merchants'.created_at
+	toColumn: LocalDateTable_f6afdc45-c2b4-42c9-87b6-fd3a637cea10.Date
+
+relationship 4d2ec048-f74b-4f4e-a5eb-41cbf5df7c44
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion segmentacion_merchants'.updated_at
+	toColumn: LocalDateTable_8d2653cc-8214-4843-82b4-ca645d5d2c0b.Date
+
+relationship 8b8479ca-dc36-44b9-b328-68d5ed6ebadb
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion account_managers'.fecha_contratacion
+	toColumn: LocalDateTable_bdb94ab0-9b9e-4a45-975b-3d7e2c49bab1.Date
+
+relationship 81ead477-8243-48f2-94a9-fa180acd7bad
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion account_managers'.created_at
+	toColumn: LocalDateTable_39da32ae-39b6-4eb9-8ea7-cc2afaf56132.Date
+
+relationship dd5c46a7-a4d9-43f4-a079-0fca0f35e7e6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'produccion account_managers'.updated_at
+	toColumn: LocalDateTable_8cf77867-92af-49a6-9cc6-3395257c3e0b.Date
+
+relationship 3c83ad88-d104-4852-b265-a423353c17ef
+	fromColumn: 'transacciones transacciones'.merchant_id
+	toColumn: 'produccion merchants'.merchant_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 8606e33e-d665-4d39-aefc-d88c4fc3dbd3
+	fromColumn: 'produccion payouts'.merchant_id
+	toColumn: 'produccion merchants'.merchant_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship e7438a02-5c8a-4f9a-b75a-5edf8c4fc2c7
+	fromColumn: 'produccion merchants'.coordinador_id
+	toColumn: 'produccion account_managers'.manager_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 3a737042-6306-4d2b-a5fc-80e4b11f6962
+	fromColumn: 'produccion notificaciones'.merchant_id
+	toColumn: 'produccion merchants'.merchant_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 79670eeb-5a85-45c5-bd99-21028ad21739
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'produccion integraciones_merchant'.merchant_id
+	toColumn: 'produccion merchants'.merchant_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 700ad845-fef7-4c36-b74d-5f7f26f44fee
+	isActive: false
+	fromColumn: 'produccion integraciones_merchant'.coordinador_id
+	toColumn: 'produccion account_managers'.manager_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 49dbff43-0b64-42c1-bfab-4d2f1f327b8e
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'produccion segmentacion_merchants'.merchant_id
+	toColumn: 'produccion merchants'.merchant_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship DimFecha_transacciones
+	fromColumn: 'transacciones transacciones'.FechaDia
+	toColumn: DimFecha.Date
+
+relationship DimFecha_payouts
+	fromColumn: 'produccion payouts'.FechaDia
+	toColumn: DimFecha.Date
+
+relationship DimFecha_notificaciones
+	fromColumn: 'produccion notificaciones'.FechaDia
+	toColumn: DimFecha.Date
+

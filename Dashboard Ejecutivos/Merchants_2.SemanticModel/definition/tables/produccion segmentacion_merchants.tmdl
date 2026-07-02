@@ -1,0 +1,162 @@
+table 'produccion segmentacion_merchants'
+	lineageTag: 21fd0824-dfb2-4d69-a21e-f07713a5363d
+
+	column segmentacion_id
+		dataType: string
+		lineageTag: ade52562-bdb6-4a8c-a410-9b73eff0fea3
+		summarizeBy: none
+		sourceColumn: segmentacion_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column merchant_id
+		dataType: string
+		lineageTag: 3214a918-c327-4771-8d9c-0fdab0042152
+		summarizeBy: none
+		sourceColumn: merchant_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column segmento_volumen
+		dataType: string
+		lineageTag: d55dd499-0bcc-43c0-b24b-e3526a79b01b
+		summarizeBy: none
+		sourceColumn: segmento_volumen
+
+		annotation SummarizationSetBy = Automatic
+
+	column segmento_rentabilidad
+		dataType: string
+		lineageTag: 951e5829-952c-4a46-bb2c-4aa587798380
+		summarizeBy: none
+		sourceColumn: segmento_rentabilidad
+
+		annotation SummarizationSetBy = Automatic
+
+	column segmento_riesgo
+		dataType: string
+		lineageTag: 7e645db3-47ef-490f-87b8-6de8b6945493
+		summarizeBy: none
+		sourceColumn: segmento_riesgo
+
+		annotation SummarizationSetBy = Automatic
+
+	column mdr_promedio
+		dataType: double
+		lineageTag: be4f2154-9491-469f-8cd5-8e9b455dda10
+		summarizeBy: sum
+		sourceColumn: mdr_promedio
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column valor_promedio_tx
+		dataType: double
+		lineageTag: 4011c12b-8187-4a97-99f7-7897de8d3f00
+		summarizeBy: sum
+		sourceColumn: valor_promedio_tx
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column volumen_anual_estimado
+		dataType: double
+		lineageTag: cd15d96b-d024-4351-b170-62255b9fb5e8
+		summarizeBy: sum
+		sourceColumn: volumen_anual_estimado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column tasa_rechazo_promedio
+		dataType: double
+		lineageTag: 9ddffec9-7158-442f-aefd-783fb53e7be2
+		summarizeBy: sum
+		sourceColumn: tasa_rechazo_promedio
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column estado_riesgo
+		dataType: string
+		lineageTag: 964de09e-d4ae-4e6b-aa86-2d3dfbee8747
+		summarizeBy: none
+		sourceColumn: estado_riesgo
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_segmentacion
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a3ee1320-4f4d-461a-8448-d6b1d3e86bb1
+		summarizeBy: none
+		sourceColumn: fecha_segmentacion
+
+		variation Variación
+			isDefault
+			relationship: 1478f0c6-97ec-4b51-a6ff-f77bc2f6494e
+			defaultHierarchy: LocalDateTable_9c0e6cdb-3a25-47e8-9c06-67d2bae83fe6.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column proxima_revision
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 1eb9c98e-3d2f-4a84-b024-4fe3730432fc
+		summarizeBy: none
+		sourceColumn: proxima_revision
+
+		variation Variación
+			isDefault
+			relationship: ff68831e-a385-4ad4-8dfe-a33b163374c4
+			defaultHierarchy: LocalDateTable_c3c200a8-e3a9-4c7e-8eb7-a3461e6a888a.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 033f8349-88f0-4f2f-a818-85df64ce1944
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variación
+			isDefault
+			relationship: d6af0e76-7ced-4c56-9bbb-6970b50c859d
+			defaultHierarchy: LocalDateTable_f6afdc45-c2b4-42c9-87b6-fd3a637cea10.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2534b4f3-22fb-44a6-ab2c-8e8295310006
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		variation Variación
+			isDefault
+			relationship: 4d2ec048-f74b-4f4e-a5eb-41cbf5df7c44
+			defaultHierarchy: LocalDateTable_8d2653cc-8214-4843-82b4-ca645d5d2c0b.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'produccion segmentacion_merchants' = m
+		mode: import
+		source =
+				let
+				    Origen = PostgreSQL.Database("localhost", "produccion"),
+				    produccion_segmentacion_merchants = Origen{[Schema="produccion",Item="segmentacion_merchants"]}[Data]
+				in
+				    produccion_segmentacion_merchants
+
+	annotation PBI_ResultType = Table
+

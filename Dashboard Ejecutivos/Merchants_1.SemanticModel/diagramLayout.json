@@ -1,0 +1,165 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 652.12612967799168,
+            "y": 541.88931275915525
+          },
+          "nodeIndex": "produccion account_managers",
+          "nodeLineageTag": "a9bf3e13-6f7e-471e-8d84-7881d34ac39f",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 667.80117505687849,
+            "y": 191.72999115933584
+          },
+          "nodeIndex": "produccion integraciones_merchant",
+          "nodeLineageTag": "69d42cc9-0fbb-40a4-a382-68a0947c0f06",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 350.54812920177494,
+            "y": 300.25084922041378
+          },
+          "nodeIndex": "produccion merchants",
+          "nodeLineageTag": "4ba6521e-8e6d-43e8-a670-1fca50bbe9cd",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 364.86888724155341,
+            "y": 650.492307971102
+          },
+          "nodeIndex": "produccion notificaciones",
+          "nodeLineageTag": "5b358d9a-6ff1-423e-9aa5-75fc3255e2f2",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 66.3484859973596,
+            "y": 87.011610314901418
+          },
+          "nodeIndex": "produccion payouts",
+          "nodeLineageTag": "45350cc4-25ac-496a-abf5-d7443165dab0",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": 437.28010977957445
+          },
+          "nodeIndex": "produccion segmentacion_merchants",
+          "nodeLineageTag": "21fd0824-dfb2-4d69-a21e-f07713a5363d",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 383.5821877853395,
+            "y": -50
+          },
+          "nodeIndex": "transacciones transacciones",
+          "nodeLineageTag": "4203f56b-4abe-4ccd-b81d-4b4955f8326f",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 901.80117505687849,
+            "y": 352.246153985551
+          },
+          "nodeIndex": "DimFecha",
+          "nodeLineageTag": "94125bc4-687a-40ad-a515-6ddd846cbda3",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1135.8011750568785,
+            "y": 400.246153985551
+          },
+          "nodeIndex": "_Medidas",
+          "nodeLineageTag": "a4cf873d-93d6-46f8-ad36-2b777f8c6271",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1419.8011750568785,
+            "y": 436.246153985551
+          },
+          "nodeIndex": "TablaFunnel",
+          "nodeLineageTag": "3767fcde-486b-422d-a244-6e72e6a89507",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1703.8011750568785,
+            "y": 424.246153985551
+          },
+          "nodeIndex": "TablaWaterfall",
+          "nodeLineageTag": "37faaa9c-63b3-44bc-8be5-e7d8198d29bc",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Todas las tablas",
+      "zoomValue": 31.863081771035667,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Todas las tablas",
+  "defaultDiagram": "Todas las tablas"
+}

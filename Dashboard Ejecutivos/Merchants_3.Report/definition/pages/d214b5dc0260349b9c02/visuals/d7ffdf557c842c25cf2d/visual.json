@@ -1,0 +1,74 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "d7ffdf557c842c25cf2d",
+  "position": {
+    "x": 308.13928422164048,
+    "y": 544.19920371307273,
+    "z": 14003,
+    "height": 131.54484063263016,
+    "width": 268.49563362002596,
+    "tabOrder": 14003
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Costo Notif por Transaccion"
+                }
+              },
+              "queryRef": "_Medidas.Costo Notif por Transaccion",
+              "nativeQueryRef": "Costo Notif por Transaccion"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_Medidas"
+                  }
+                },
+                "Property": "Costo Notif por Transaccion"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "737698ed4f03b555ce17",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Medidas"
+              }
+            },
+            "Property": "Costo Notif por Transaccion"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

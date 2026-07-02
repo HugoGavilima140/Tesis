@@ -1,0 +1,106 @@
+table 'produccion account_managers'
+	lineageTag: a9bf3e13-6f7e-471e-8d84-7881d34ac39f
+
+	column manager_id
+		dataType: string
+		lineageTag: c7231efa-5202-43be-b6e0-4db9a8d9a18d
+		summarizeBy: none
+		sourceColumn: manager_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column nombre
+		dataType: string
+		lineageTag: ec13f3a3-3516-42ea-aac4-93fe7695f3b1
+		summarizeBy: none
+		sourceColumn: nombre
+
+		annotation SummarizationSetBy = Automatic
+
+	column email
+		dataType: string
+		lineageTag: e4b540ab-bfcc-4c33-b25e-355600b33266
+		summarizeBy: none
+		sourceColumn: email
+
+		annotation SummarizationSetBy = Automatic
+
+	column telefono
+		dataType: string
+		lineageTag: 1e2d5110-95f0-4786-bab6-a196d27e41e1
+		summarizeBy: none
+		sourceColumn: telefono
+
+		annotation SummarizationSetBy = Automatic
+
+	column estado
+		dataType: string
+		lineageTag: 9bc4d6c9-ab89-4f7f-954a-fc1814036234
+		summarizeBy: none
+		sourceColumn: estado
+
+		annotation SummarizationSetBy = Automatic
+
+	column region
+		dataType: string
+		lineageTag: dd1f1295-0268-44df-ab19-c7d8767a7d77
+		summarizeBy: none
+		sourceColumn: region
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_contratacion
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 120d3e53-6891-4cd9-99ef-84172a1f9225
+		summarizeBy: none
+		sourceColumn: fecha_contratacion
+
+		variation Variación
+			isDefault
+			relationship: 8b8479ca-dc36-44b9-b328-68d5ed6ebadb
+			defaultHierarchy: LocalDateTable_bdb94ab0-9b9e-4a45-975b-3d7e2c49bab1.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2c1205db-6787-4d31-9ec1-87231699808e
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variación
+			isDefault
+			relationship: 81ead477-8243-48f2-94a9-fa180acd7bad
+			defaultHierarchy: LocalDateTable_39da32ae-39b6-4eb9-8ea7-cc2afaf56132.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 072e6623-41a9-470e-b087-2e6e40b47770
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		variation Variación
+			isDefault
+			relationship: dd5c46a7-a4d9-43f4-a079-0fca0f35e7e6
+			defaultHierarchy: LocalDateTable_8cf77867-92af-49a6-9cc6-3395257c3e0b.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'produccion account_managers' = m
+		mode: import
+		source =
+				let
+				    Origen = PostgreSQL.Database("localhost", "produccion"),
+				    produccion_account_managers = Origen{[Schema="produccion",Item="account_managers"]}[Data]
+				in
+				    produccion_account_managers
+
+	annotation PBI_ResultType = Table
+

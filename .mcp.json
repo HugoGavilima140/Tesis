@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "powerbi-structure": {
+      "command": "C:\\Users\\ASUS\\.conda\\envs\\tesis_env\\python.exe",
+      "args": [
+        "mcp_powerbi/server.py"
+      ]
+    }
+  }
+}

@@ -1,17 +1,20 @@
 """
 agente/pipeline/react_loop.py — Orquestador ReAct Evolucionado del Business Reasoning Agent.
 
-Integra las 9 modificaciones sobre la arquitectura ReAct + Multi-Hop original:
+Integra las 10 modificaciones sobre la arquitectura ReAct + Multi-Hop original:
 
-  Mod 1: Business Knowledge Validation   — KB suficiente? Skip SQL.
-  Mod 2: Memory Retrieval previo         — recuperar errores/exitos ANTES de la KB.
-  Mod 3: Subproblemas explicitos         — MultiHopPlanner descompone en subproblemas.
-  Mod 4: Table Validation                — valida cobertura antes de generar SQL.
-  Mod 5: Business Validation             — valida resultados contra reglas de negocio.
-  Mod 6: Critic Agent                    — segunda capa de evaluacion independiente.
-  Mod 7: Bucle de correccion del critic  — puede disparar replan/retable/retry_sql.
-  Mod 8: Confidence Estimator compuesto  — score multi-dimensional antes del formato.
-  Mod 9: Formato ejecutivo mejorado      — 7 secciones para CEO/CFO/COO.
+  Mod 1:  Business Knowledge Validation   — KB suficiente? Skip SQL.
+  Mod 2:  Memory Retrieval previo         — recuperar errores/exitos ANTES de la KB.
+  Mod 3:  Subproblemas explicitos         — MultiHopPlanner descompone en subproblemas.
+  Mod 4:  Table Validation                — valida cobertura antes de generar SQL.
+  Mod 5:  Business Validation             — valida resultados contra reglas de negocio.
+  Mod 6:  Critic Agent                    — segunda capa de evaluacion independiente.
+  Mod 7:  Bucle de correccion del critic  — puede disparar replan/retable/retry_sql.
+  Mod 8:  Confidence Estimator compuesto  — score multi-dimensional antes del formato.
+  Mod 9:  Formato ejecutivo mejorado      — 7 secciones para CEO/CFO/COO.
+  Mod 10: Dashboard Context Validation    — ¿la pregunta corresponde a algun dashboard
+          Power BI? Si es asi, reformula la pregunta en terminos del modelo de datos
+          real (medidas DAX, tablas SQL) y ese contexto guia planificacion + SQL.
 
 Flujo evolucionado:
   Pregunta
@@ -19,6 +22,8 @@ Flujo evolucionado:
     ↓ THINK: Analisis de intencion
     ↓ ACT: Recuperacion de memoria historica     [Mod 2]
     ↓ ACT: Recuperacion de conocimiento KB
+    ↓ THINK: ¿La pregunta corresponde a un dashboard Power BI? [Mod 10]
+      └── Si: reformular en terminos de datos + medidas/tablas reales → enriquecer contexto
     ↓ OBSERVE+THINK: Validacion KB suficiente?   [Mod 1]
       ├── Si: Synthesis directo → saltar SQL pipeline
       └── No:
@@ -58,6 +63,7 @@ from agente.agents.table_validator import TableValidator
 from agente.agents.business_validator import BusinessValidator
 from agente.agents.critic import CriticAgent, CriticResult
 from agente.agents.confidence_estimator import ConfidenceEstimator, ConfidenceEstimate
+from agente.agents.dashboard_validator import DashboardContextAgent, DashboardContextResult
 
 from agente.config import (
     MAX_REACT_ITERATIONS, MAX_RETRIES_SQL, MAX_TABLE_RETRIES, MAX_CRITIC_ITERS,
@@ -126,6 +132,7 @@ class BusinessReasoningAgent:
         self.business_validator   = BusinessValidator()            # Mod 5
         self.critic               = CriticAgent()                  # Mod 6+7
         self.confidence_estimator = ConfidenceEstimator()          # Mod 8
+        self.dashboard_agent      = DashboardContextAgent()        # Mod 10
 
         print("[ReAct] Agente evolucionado listo.")
 
@@ -205,6 +212,28 @@ class BusinessReasoningAgent:
             "BusinessKnowledgeRetriever.retrieve_formatted()",
             f"{len(kb_context)} chars KB | {len(memory_context)} chars memoria",
         )
+
+        # ─── PASO 3.5 (Mod 10): Contexto de dashboards Power BI ──────────────
+        if verbose:
+            print("[ReAct] THINK (Mod 10): ¿La pregunta corresponde a algún dashboard?")
+
+        dashboard_result = self.dashboard_agent.analyze(question, intent)
+        trace.add_step(
+            "DASHBOARD_CONTEXT",
+            "¿Esta pregunta corresponde a datos visualizados en algún dashboard?",
+            "DashboardContextAgent.analyze()",
+            f"relevant={dashboard_result.is_dashboard_relevant}, "
+            f"dashboards={dashboard_result.matched_dashboards}, "
+            f"medidas={[m.name for m in dashboard_result.relevant_measures]}",
+        )
+        if verbose:
+            print(f"  → Dashboard relevante: {dashboard_result.is_dashboard_relevant} "
+                  f"{dashboard_result.matched_dashboards or ''}")
+
+        if dashboard_result.is_dashboard_relevant and dashboard_result.context_text:
+            # Se antepone: el contexto de dashboard es corto y de alta prioridad,
+            # y otros agentes truncan enriched_context a un numero fijo de caracteres.
+            enriched_context = f"{dashboard_result.context_text}\n\n{enriched_context}"
 
         # ─── PASO 4 (Mod 1): Validación de suficiencia de KB ─────────────────
         if verbose:
@@ -302,6 +331,11 @@ class BusinessReasoningAgent:
         if verbose:
             print("[ReAct] FORMAT (Mod 9): Generando respuesta ejecutiva...")
 
+        dashboard_reference = (
+            ", ".join(dashboard_result.matched_dashboards)
+            if dashboard_result.is_dashboard_relevant else ""
+        )
+
         response = self.formatter.format(
             question=question,
             intent=intent,
@@ -312,6 +346,7 @@ class BusinessReasoningAgent:
             confidence_estimate=confidence,
             critic=critic_result,
             kb_was_sufficient=kb_was_sufficient,
+            dashboard_reference=dashboard_reference,
         )
 
         response.step_results = all_step_results

@@ -56,6 +56,7 @@ class ExecutiveResponse:
     confidence_components: Optional[Dict[str, float]] = None        # breakdown 6 componentes
     critic_verdict: str = "sufficient"                              # veredicto del critic
     kb_was_sufficient: bool = False                                 # respondio directamente de KB
+    dashboard_reference: str = ""                                   # Mod 10: dashboard(s) relacionados
     # ── Datos de debug ────────────────────────────────────────────────────────
     step_results: Optional[List] = field(default=None)             # List[StepResult]
     trace_text: str = ""                                            # trazado ReAct
@@ -68,6 +69,11 @@ class ExecutiveResponse:
         if self.kb_was_sufficient:
             lines.append("ℹ️ **Respuesta directa desde documentacion empresarial** "
                          "(sin consulta a base de datos)")
+            lines.append("")
+
+        # Banner de dashboard relacionado [Mod 10]
+        if self.dashboard_reference:
+            lines.append(f"📊 **Datos también visualizados en el dashboard:** {self.dashboard_reference}")
             lines.append("")
 
         # Alerta de ambiguedad
@@ -213,6 +219,7 @@ class ResponseFormatter:
         confidence_estimate=None,       # ConfidenceEstimate | None
         critic=None,                    # CriticResult | None
         kb_was_sufficient: bool = False,
+        dashboard_reference: str = "",
     ) -> "ExecutiveResponse":
         """
         Genera la respuesta ejecutiva final de 7 secciones.
@@ -227,6 +234,7 @@ class ResponseFormatter:
             confidence_estimate: ConfidenceEstimate compuesto (Mod 8).
             critic:              CriticResult del agente critico (Mod 6).
             kb_was_sufficient:   Si la KB fue suficiente sin SQL (Mod 1).
+            dashboard_reference: Dashboard(s) Power BI relacionados, si aplica (Mod 10).
 
         Returns:
             ExecutiveResponse con la respuesta formateada de 7 secciones.
@@ -257,7 +265,7 @@ class ResponseFormatter:
                 or conf_action == "clarify"):
             return self._ambiguity_response(
                 question, intent, reflection, conf_score, conf_label,
-                conf_components, critic_verdict, kb_was_sufficient,
+                conf_components, critic_verdict, kb_was_sufficient, dashboard_reference,
             )
 
         prompt = self._build_prompt(
@@ -273,13 +281,13 @@ class ResponseFormatter:
             return self._parse(
                 response.content, question, intent, reflection,
                 conf_score, conf_label, conf_components,
-                business_flags, critic_verdict, kb_was_sufficient,
+                business_flags, critic_verdict, kb_was_sufficient, dashboard_reference,
             )
         except Exception as e:
             return self._fallback_response(
                 question, step_results, reflection,
                 conf_score, conf_label, conf_components,
-                critic_verdict, kb_was_sufficient, str(e),
+                critic_verdict, kb_was_sufficient, str(e), dashboard_reference,
             )
 
     def _build_prompt(
@@ -346,6 +354,7 @@ class ResponseFormatter:
         business_flags: List[str],
         critic_verdict: str,
         kb_was_sufficient: bool,
+        dashboard_reference: str = "",
     ) -> "ExecutiveResponse":
         def get(marker: str, default: str = "") -> str:
             for line in text.split("\n"):
@@ -406,6 +415,7 @@ class ResponseFormatter:
             confidence_components=conf_components,
             critic_verdict=critic_verdict,
             kb_was_sufficient=kb_was_sufficient,
+            dashboard_reference=dashboard_reference,
         )
 
     @staticmethod
@@ -429,6 +439,7 @@ class ResponseFormatter:
         conf_components: Optional[Dict[str, float]],
         critic_verdict: str,
         kb_was_sufficient: bool,
+        dashboard_reference: str = "",
     ) -> "ExecutiveResponse":
         return ExecutiveResponse(
             question=question,
@@ -451,6 +462,7 @@ class ResponseFormatter:
             confidence_components=conf_components,
             critic_verdict=critic_verdict,
             kb_was_sufficient=kb_was_sufficient,
+            dashboard_reference=dashboard_reference,
         )
 
     def _fallback_response(
@@ -464,6 +476,7 @@ class ResponseFormatter:
         critic_verdict: str,
         kb_was_sufficient: bool,
         error: str,
+        dashboard_reference: str = "",
     ) -> "ExecutiveResponse":
         successful = [sr for sr in step_results if sr.success]
         summary = (
@@ -490,4 +503,5 @@ class ResponseFormatter:
             confidence_components=conf_components,
             critic_verdict=critic_verdict,
             kb_was_sufficient=kb_was_sufficient,
+            dashboard_reference=dashboard_reference,
         )
